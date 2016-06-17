@@ -1,7 +1,11 @@
 import plyj.parser as plyj
+import matplotlib.pyplot as plt
+from mpl_toolkits.mplot3d import Axes3D
 import os 
+import time
+from matplotlib.mlab import PCA
 from os.path import join as pj
-
+import numpy as np
 import inspect
 
 parser = plyj.Parser()
@@ -225,19 +229,75 @@ def cosSimilarity(freqDict1, freqDict2):
 
     return dotProduct / (magnitude1**.5 * magnitude2**.5)
 
-numRecursiveMethods = 0
-
-for p, d, f in os.walk('javafiles'): # path, directories, files
-    f = filter(lambda x: ".java" in x, f)
-    for i in f:
-        tree = parser.parse_file(pj(p,i))
-        print i
-        if recursiveMethodFinder(tree)[0]:
-            numRecursiveMethods += 1
-
-
-    break # break to avoid walking through all sub directories
-
-print numRecursiveMethods
+def countRecursiveMethods(directory):
+    numRecursiveMethods = 0
+    start = time.time()
+    for p, d, f in os.walk(directory): # path, directories, files
+        f = filter(lambda x: ".java" in x, f)
+        for i in f:
+            tree = parser.parse_file(pj(p,i))
+            if recursiveMethodFinder(tree)[0]:
+                numRecursiveMethods += 1
 
 
+        break # break to avoid walking through all sub directories
+    end = time.time()
+    print "time elapsed:" + str(end - start)
+    return numRecursiveMethods
+
+
+def freqPCA(directory):
+    """
+    runs PCA on the .java files in the specified directory
+    and returns the matplotlib PCA object.
+    """
+    frequencyList = []
+    start = time.time()
+    for p, d, f in os.walk(directory): # path, directories, files
+        f = filter(lambda x: ".java" in x, f)
+        for i in f:
+            frequencyList.append(treeToFreqDict(parser.parse_file(pj(p,i))).values())
+        break # break to avoid walking through all sub directories
+    end = time.time()
+    print "time elapsed:" + str(end - start)
+    data = np.array(frequencyList)
+    data = data[:,np.std(data, axis = 0) != 0] #removes columns with all repeated values 
+    print np.shape(data)
+    return PCA(data)
+
+def PCAplot3d(directory):
+    """
+    taken from http://blog.nextgenetics.net/?e=42. 
+    Plots the vectors based on the 3 most significant components.
+    """
+    result = freqPCA(directory)
+    x = []
+    y = []
+    z = []
+    for item in result.Y:
+        x.append(item[0])
+        y.append(item[1])
+        z.append(item[2])
+
+    plt.close('all') # close all latent plotting windows
+    fig1 = plt.figure() # Make a plotting figure
+    ax = Axes3D(fig1) # use the plotting figure to create a Axis3D object.
+    pltData = [x,y,z] 
+    ax.scatter(pltData[0], pltData[1], pltData[2], 'bo') # make a scatter plot of blue dots from the data
+     
+    # make simple, bare axis lines through space:
+    xAxisLine = ((min(pltData[0]), max(pltData[0])), (0, 0), (0,0)) # 2 points make the x-axis line at the data extrema along x-axis 
+    ax.plot(xAxisLine[0], xAxisLine[1], xAxisLine[2], 'r') # make a red line for the x-axis.
+    yAxisLine = ((0, 0), (min(pltData[1]), max(pltData[1])), (0,0)) # 2 points make the y-axis line at the data extrema along y-axis
+    ax.plot(yAxisLine[0], yAxisLine[1], yAxisLine[2], 'r') # make a red line for the y-axis.
+    zAxisLine = ((0, 0), (0,0), (min(pltData[2]), max(pltData[2]))) # 2 points make the z-axis line at the data extrema along z-axis
+    ax.plot(zAxisLine[0], zAxisLine[1], zAxisLine[2], 'r') # make a red line for the z-axis.
+     
+    # label the axes 
+    ax.set_xlabel("x-axis label") 
+    ax.set_ylabel("y-axis label")
+    ax.set_zlabel("y-axis label")
+    ax.set_title("The title of the plot")
+    plt.show() # show the plot
+
+#PCAplot3d('javafiles')

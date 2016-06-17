@@ -89,6 +89,6 @@ def filterForAscii(textList):
 fname = "index-2016-01-08"
 indList = filterByCompilability(createIndexList(fname))
 first1000 = filterForAscii(readFiles("payload-2016-01-08",indList[0:1000]))
-writeFiles(first1000, "/Users/cssummer16/Documents/blackboxProject/javafiles")
+writeFiles(first1000, os.getcwd() + "/javafiles")
 
 
