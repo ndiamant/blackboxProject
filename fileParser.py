@@ -332,7 +332,7 @@ def narrowPCA(directory):
         f = filter(lambda x: ".java" in x, f)
         for i in f:
             tree = parser.parse_file(pj(p,i))
-            frequencyList.append(treeToFreqDict(tree, narrowClassDict).values() + [int(recursiveMethodFinder(tree)[0])])
+            frequencyList.append(treeToFreqDict(tree, narrowClassDict).values()  + [int(recursiveMethodFinder(tree)[0])])
         break # break to avoid walking through all sub directories
     end = time.time()
     print "time elapsed:" + str(end - start)

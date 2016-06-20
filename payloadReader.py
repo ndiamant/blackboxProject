@@ -112,14 +112,19 @@ def writeByFileID(indexList, payloadFileName, writeDir, readDir = os.getcwd()):
 		writeFiles(textList, currentDir)
 		
 
+def filterByText(textList, filterText):
+	"""
+	filters for files containing filterText
+	"""
+	return filter(lambda text: filterText in text, textList)
+
 
 fname = "index-2016-01-08"
-indList = filterByCompilability(createIndexList(fname))[0:5000]
-writeFiles(readFiles("payload-2016-01-08", indList), os.getcwd() + "/javafiles")
+indList = filterByCompilability(createIndexList(fname))
+writeFiles(filterByText(readFiles("payload-2016-01-08", indList), 'factorial'), os.getcwd() + "/javafiles")
 # writeByFileID(indList, "payload-2016-01-08", os.getcwd() + "/javafiles", os.getcwd())
 
 
 #####################################################
-# make consistent directory changing practice
 # catch directory already exists in write by file
 # 
