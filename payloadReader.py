@@ -1,10 +1,12 @@
 import os 
+import itertools
 
-def createIndexList(fileName):
+def createIndexList(fileName, directory = os.getcwd()):
 	"""
 	Takes an index file and converts into a list of tuples with 
 	(start position, length) [bytes].
 	"""
+	os.chdir(directory)
 	indexList = []
 	with open(fileName, "rb") as f:
 	    byte = f.read(1)
@@ -44,11 +46,12 @@ def read4bytes(byteList):
 	return (byteList[0] * 2**24 + byteList[1] * 2**16 + 
 		   byteList[2] * 2**8 + byteList[3])
 
-def readFiles(payloadFileName, indexList):
+def readFiles(payloadFileName, indexList, directory = os.getcwd()):
 	"""
 	takes a list of tupes of (startPos, length) and returns the text of 
 	files from the payload file in a list
 	"""
+	os.chdir(directory)
 	textList = []
 	payloadFile = open(payloadFileName)
 	for index in indexList:
@@ -65,11 +68,10 @@ def writeFiles(textList, directory = os.getcwd()):
 	os.chdir(directory)
 	nameNum = 0
 	for text in textList:
-		file = open("payLoadFile" + str(nameNum) + ".java", "w")
+		file = open("payloadFile" + str(nameNum) + ".java", "w")
 		file.write(text)
 		file.close()
 		nameNum += 1
-
 
 def filterByCompilability(indexList):
 	"""
@@ -86,9 +88,37 @@ def filterForAscii(textList):
 	return filter(lambda text: all(ord(char) < 128 for char in text), textList)
 
 
+def groupByFileID(indexList):
+	"""
+	creates list of lists of indices grouped by file ID going in increasing time order
+	"""
+	return sorted(indexList, key = lambda index: index[0])
+
+
+def writeByFileID(indexList, payloadFileName, writeDir, readDir = os.getcwd()):
+	"""
+	takes an index file and payload file, a directory to read the payload from, and
+	a directory to put the files in and creates directories filled with the 
+	progress of one file ID
+	"""
+	indexList = groupByFileID(indexList)
+	for key, group in itertools.groupby(indexList, lambda index: index[0]):
+		os.chdir(readDir)
+		textList = filterForAscii(readFiles(payloadFileName, list(group), readDir))
+		
+		currentDir = writeDir + '/' + str(key)
+		os.makedirs(currentDir)
+		os.chdir(currentDir)		
+		writeFiles(textList, currentDir)
+		
+
+
 fname = "index-2016-01-08"
-indList = filterByCompilability(createIndexList(fname))
-first1000 = filterForAscii(readFiles("payload-2016-01-08",indList[0:1000]))
-writeFiles(first1000, os.getcwd() + "/javafiles")
+indList = filterByCompilability(createIndexList(fname))[0:100]
+writeByFileID(indList, "payload-2016-01-08", os.getcwd() + "/javafiles", os.getcwd())
 
 
+#####################################################
+# make consistent directory changing practice
+# catch directory already exists in write by file
+# 

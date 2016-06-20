@@ -283,7 +283,7 @@ def PCAplot3d(directory):
     fig1 = plt.figure() # Make a plotting figure
     ax = Axes3D(fig1) # use the plotting figure to create a Axis3D object.
     pltData = [x,y,z] 
-    ax.scatter(pltData[0], pltData[1], pltData[2], 'bo') # make a scatter plot of blue dots from the data
+    ax.scatter(pltData[0], pltData[1], pltData[2], 'asdfasf') # make a scatter plot of blue dots from the data
      
     # make simple, bare axis lines through space:
     xAxisLine = ((min(pltData[0]), max(pltData[0])), (0, 0), (0,0)) # 2 points make the x-axis line at the data extrema along x-axis 
@@ -294,10 +294,10 @@ def PCAplot3d(directory):
     ax.plot(zAxisLine[0], zAxisLine[1], zAxisLine[2], 'r') # make a red line for the z-axis.
      
     # label the axes 
-    ax.set_xlabel("x-axis label") 
-    ax.set_ylabel("y-axis label")
-    ax.set_zlabel("y-axis label")
-    ax.set_title("The title of the plot")
+    ax.set_xlabel("principal component 1") 
+    ax.set_ylabel("principal component 2")
+    ax.set_zlabel("principal component 3")
+    ax.set_title("PCA of 100 java files")
     plt.show() # show the plot
 
 #PCAplot3d('javafiles')
