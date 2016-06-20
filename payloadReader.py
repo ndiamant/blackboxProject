@@ -67,7 +67,7 @@ def writeFiles(textList, directory = os.getcwd()):
 	"""
 	os.chdir(directory)
 	nameNum = 0
-	for text in textList:
+	for text in filterForAscii(textList):
 		file = open("payloadFile" + str(nameNum) + ".java", "w")
 		file.write(text)
 		file.close()
@@ -106,7 +106,7 @@ def writeByFileID(indexList, payloadFileName, writeDir, readDir = os.getcwd()):
 		os.chdir(readDir)
 		textList = filterForAscii(readFiles(payloadFileName, list(group), readDir))
 		
-		currentDir = writeDir + '/' + str(key)
+		currentDir = os.path.join(writeDir, str(key))
 		os.makedirs(currentDir)
 		os.chdir(currentDir)		
 		writeFiles(textList, currentDir)
@@ -114,8 +114,9 @@ def writeByFileID(indexList, payloadFileName, writeDir, readDir = os.getcwd()):
 
 
 fname = "index-2016-01-08"
-indList = filterByCompilability(createIndexList(fname))[0:100]
-writeByFileID(indList, "payload-2016-01-08", os.getcwd() + "/javafiles", os.getcwd())
+indList = filterByCompilability(createIndexList(fname))[0:500]
+writeFiles(readFiles("payload-2016-01-08", indList), os.getcwd() + "/javafiles")
+# writeByFileID(indList, "payload-2016-01-08", os.getcwd() + "/javafiles", os.getcwd())
 
 
 #####################################################

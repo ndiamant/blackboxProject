@@ -267,7 +267,7 @@ def freqPCA(directory):
 
 def PCAplot3d(directory):
     """
-    taken from http://blog.nextgenetics.net/?e=42. 
+    modified from http://blog.nextgenetics.net/?e=42. 
     Plots the vectors based on the 3 most significant components.
     """
     result = freqPCA(directory)
@@ -293,6 +293,8 @@ def PCAplot3d(directory):
     zAxisLine = ((0, 0), (0,0), (min(pltData[2]), max(pltData[2]))) # 2 points make the z-axis line at the data extrema along z-axis
     ax.plot(zAxisLine[0], zAxisLine[1], zAxisLine[2], 'r') # make a red line for the z-axis.
      
+
+    print result.fracs[0:3]
     # label the axes 
     ax.set_xlabel("principal component 1") 
     ax.set_ylabel("principal component 2")
@@ -300,4 +302,26 @@ def PCAplot3d(directory):
     ax.set_title("PCA of 100 java files")
     plt.show() # show the plot
 
-#PCAplot3d('javafiles')
+
+def PCAplot2d(directory):
+    """
+    plots 2d PCA. Modified from http://blog.nextgenetics.net/?e=42
+    """
+    result = freqPCA(directory)
+    x = []
+    y = []
+    for item in result.Y:
+        x.append(item[0])
+        y.append(item[1])
+
+    print result.fracs[0:2]
+    plt.scatter(x, y)
+    plt.show()
+
+result = freqPCA('/Users/cssummer16/Documents/summerResearch/blackboxProject/javafiles')
+PCAplot2d('/Users/cssummer16/Documents/summerResearch/blackboxProject/javafiles')
+
+
+
+
+
