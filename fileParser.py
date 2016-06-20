@@ -193,13 +193,12 @@ def lineCounterHelper(methodTree):
 
 
 
-def treeToFreqDict(tree):
+def treeToFreqDict(tree, classDict = genClassDict()):
     """
     creates a multinomial frequency dictionary of the class types that 
     appear in a tree
     """
-    plyj_dict = genClassDict()
-
+    plyj_dict = classDict.copy()
     def addToDict(tree):
         if type(tree) in plyj_dict:
             plyj_dict[type(tree)] = plyj_dict[type(tree)] + 1
@@ -265,12 +264,12 @@ def freqPCA(directory):
     print np.shape(data)
     return PCA(data)
 
-def PCAplot3d(directory):
+def PCAplot3d(PCAresult):
     """
     modified from http://blog.nextgenetics.net/?e=42. 
     Plots the vectors based on the 3 most significant components.
     """
-    result = freqPCA(directory)
+    result = PCAresult
     x = []
     y = []
     z = []
@@ -303,11 +302,11 @@ def PCAplot3d(directory):
     plt.show() # show the plot
 
 
-def PCAplot2d(directory):
+def PCAplot2d(PCAresult):
     """
     plots 2d PCA. Modified from http://blog.nextgenetics.net/?e=42
     """
-    result = freqPCA(directory)
+    result = PCAresult
     x = []
     y = []
     for item in result.Y:
@@ -318,10 +317,45 @@ def PCAplot2d(directory):
     plt.scatter(x, y)
     plt.show()
 
-result = freqPCA('/Users/cssummer16/Documents/summerResearch/blackboxProject/javafiles')
-PCAplot2d('/Users/cssummer16/Documents/summerResearch/blackboxProject/javafiles')
+
+def narrowPCA(directory):
+    """
+    PCA with only for loop, while loop, recursion presence, methood declaration,
+    variable declaration, Variable, And, Or, ArrayCreation
+    """
+    narrowClassDict = {plyj.For:0, plyj.While:0, plyj.MethodDeclaration:0, plyj.ArrayCreation:0,
+                        plyj.VariableDeclaration:0}
+    #narrowClassDict = {plyj.VariableDeclaration:0, plyj.MethodDeclaration:0}
+    frequencyList = []
+    start = time.time()
+    for p, d, f in os.walk(directory): # path, directories, files
+        f = filter(lambda x: ".java" in x, f)
+        for i in f:
+            tree = parser.parse_file(pj(p,i))
+            frequencyList.append(treeToFreqDict(tree, narrowClassDict).values() + [int(recursiveMethodFinder(tree)[0])])
+        break # break to avoid walking through all sub directories
+    end = time.time()
+    print "time elapsed:" + str(end - start)
+    data = np.array(frequencyList)
+    data = data[:,np.std(data, axis = 0) != 0] #removes columns with all repeated values 
+    #return data
+    return PCA(data) 
+
+def plot2dData(data):
+    x = []
+    y = []
+    for point in data:
+        x += [point[0]]
+        y += [point[1]]
+    plt.scatter(x, y)
+    plt.show()
 
 
+result = narrowPCA('/Users/cssummer16/Documents/summerResearch/blackboxProject/javafiles')
+PCAplot2d(result)
+PCAplot3d(result)
 
+
+# narrow by problem
 
 

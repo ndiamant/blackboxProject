@@ -114,7 +114,7 @@ def writeByFileID(indexList, payloadFileName, writeDir, readDir = os.getcwd()):
 
 
 fname = "index-2016-01-08"
-indList = filterByCompilability(createIndexList(fname))[0:500]
+indList = filterByCompilability(createIndexList(fname))[0:5000]
 writeFiles(readFiles("payload-2016-01-08", indList), os.getcwd() + "/javafiles")
 # writeByFileID(indList, "payload-2016-01-08", os.getcwd() + "/javafiles", os.getcwd())
 
