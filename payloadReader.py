@@ -85,7 +85,7 @@ def filterForAscii(textList):
 	returns a textList with no text containing non ascii characters.
 	Useful becuase plyj does not compile questionmarks
 	"""
-	return filter(lambda text: all(ord(char) < 128 for char in text), textList)
+	return filter(lambda text: all(ord(char) < 128 and ord(char) != 13 for char in text), textList)
 
 
 def groupByFileID(indexList):
@@ -121,7 +121,7 @@ def filterByText(textList, filterText):
 
 fname = "index-2016-01-08"
 indList = filterByCompilability(createIndexList(fname))
-writeFiles(filterByText(readFiles("payload-2016-01-08", indList), 'factorial'), os.getcwd() + "/javafiles")
+writeFiles(filterByText(readFiles("payload-2016-01-08", indList), 'fact'), os.getcwd() + "/javafiles")
 # writeByFileID(indList, "payload-2016-01-08", os.getcwd() + "/javafiles", os.getcwd())
 
 

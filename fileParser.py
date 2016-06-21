@@ -7,6 +7,7 @@ from matplotlib.mlab import PCA
 from os.path import join as pj
 import numpy as np
 import inspect
+import seaborn as sns
 
 parser = plyj.Parser()
 
@@ -247,29 +248,30 @@ def countRecursiveMethods(directory):
 
 def freqPCA(directory):
     """
-    runs PCA on the .java files in the specified directory
-    and returns the matplotlib PCA object.
+    prepares the .java files in the specified directory
+    and returns data ready for the matplotlib PCA object.
     """
     frequencyList = []
     start = time.time()
     for p, d, f in os.walk(directory): # path, directories, files
         f = filter(lambda x: ".java" in x, f)
         for i in f:
-            frequencyList.append(treeToFreqDict(parser.parse_file(pj(p,i))).values())
+            tree = parser.parse_file(pj(p,i))
+            frequencyList.append(treeToFreqDict(tree).values()  + [int(recursiveMethodFinder(tree)[0])])
         break # break to avoid walking through all sub directories
     end = time.time()
     print "time elapsed:" + str(end - start)
     data = np.array(frequencyList)
     data = data[:,np.std(data, axis = 0) != 0] #removes columns with all repeated values 
     print np.shape(data)
-    return PCA(data)
+    return data
 
-def PCAplot3d(PCAresult):
+def PCAplot3d(data):
     """
     modified from http://blog.nextgenetics.net/?e=42. 
     Plots the vectors based on the 3 most significant components.
     """
-    result = PCAresult
+    result = PCA(data)
     x = []
     y = []
     z = []
@@ -282,7 +284,7 @@ def PCAplot3d(PCAresult):
     fig1 = plt.figure() # Make a plotting figure
     ax = Axes3D(fig1) # use the plotting figure to create a Axis3D object.
     pltData = [x,y,z] 
-    ax.scatter(pltData[0], pltData[1], pltData[2], 'asdfasf') # make a scatter plot of blue dots from the data
+    ax.scatter(pltData[0], pltData[1], pltData[2], '.') # make a scatter plot of blue dots from the data
      
     # make simple, bare axis lines through space:
     xAxisLine = ((min(pltData[0]), max(pltData[0])), (0, 0), (0,0)) # 2 points make the x-axis line at the data extrema along x-axis 
@@ -293,35 +295,35 @@ def PCAplot3d(PCAresult):
     ax.plot(zAxisLine[0], zAxisLine[1], zAxisLine[2], 'r') # make a red line for the z-axis.
      
 
-    print result.fracs[0:3]
+    print "variance captured: " + str(result.fracs[0:3])
     # label the axes 
     ax.set_xlabel("principal component 1") 
     ax.set_ylabel("principal component 2")
     ax.set_zlabel("principal component 3")
-    ax.set_title("PCA of 100 java files")
+    ax.set_title("PCA of " + str(len(x)) + " java files")
     plt.show() # show the plot
 
 
-def PCAplot2d(PCAresult):
+def PCAplot2d(data):
     """
     plots 2d PCA. Modified from http://blog.nextgenetics.net/?e=42
     """
-    result = PCAresult
+    result = PCA(data)
     x = []
     y = []
     for item in result.Y:
         x.append(item[0])
         y.append(item[1])
 
-    print result.fracs[0:2]
-    plt.scatter(x, y)
+    print "variance captured: " + str(result.fracs[0:2])
+    plt.scatter(x, y, marker = '.', c = 'k')
     plt.show()
 
 
 def narrowPCA(directory):
     """
-    PCA with only for loop, while loop, recursion presence, methood declaration,
-    variable declaration, Variable, And, Or, ArrayCreation
+    prepares the .java files in the specified directory with a narrower freq dict
+    and returns data ready for the matplotlib PCA object.
     """
     narrowClassDict = {plyj.For:0, plyj.While:0, plyj.MethodDeclaration:0, plyj.ArrayCreation:0,
                         plyj.VariableDeclaration:0}
@@ -339,7 +341,7 @@ def narrowPCA(directory):
     data = np.array(frequencyList)
     data = data[:,np.std(data, axis = 0) != 0] #removes columns with all repeated values 
     #return data
-    return PCA(data) 
+    return data
 
 def plot2dData(data):
     x = []
@@ -347,15 +349,41 @@ def plot2dData(data):
     for point in data:
         x += [point[0]]
         y += [point[1]]
-    plt.scatter(x, y)
+    plt.scatter(x, y, marker='+')
     plt.show()
 
 
-result = narrowPCA('/Users/cssummer16/Documents/summerResearch/blackboxProject/javafiles')
-PCAplot2d(result)
+def plot3dData(data):
+    x = []
+    y = []
+    z = []
+    for item in data:
+        x.append(item[0])
+        y.append(item[1])
+        z.append(item[2])
+
+    plt.close('all') # close all latent plotting windows
+    fig1 = plt.figure() # Make a plotting figure
+    ax = Axes3D(fig1)
+    ax.scatter(x, y, z, marker = '.')
+    plt.show()
+
+def genCorrelationMatrix(data):
+    """
+    takes data in row vector form and returns a correlation matrix
+    """
+    return np.corrcoef(np.transpose(data))
+
+
+def corrHeatMap(corrmat, variableDict):
+    """draws a correllation heat map using SNS corrmat"""
+    sns.heatmap(corrmat, vmax = .9, square = True)
+
+
+
+
+result = freqPCA('/Users/cssummer16/Documents/summerResearch/blackboxProject/javafiles')
 PCAplot3d(result)
-
-
-# narrow by problem
+#corrHeatMap(genCorrelationMatrix(result), 1)
 
 
