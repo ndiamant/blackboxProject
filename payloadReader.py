@@ -119,6 +119,13 @@ def filterByText(textList, filterText):
 	return filter(lambda text: filterText in text, textList)
 
 
+def normalizeVector(vector):
+	"""
+	l2 normalization
+	"""
+	return vector / np.linalg.norm(vector)
+
+
 fname = "index-2016-01-08"
 indList = filterByCompilability(createIndexList(fname))
 writeFiles(filterByText(readFiles("payload-2016-01-08", indList), 'fact'), os.getcwd() + "/javafiles")

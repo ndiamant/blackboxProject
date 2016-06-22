@@ -8,6 +8,7 @@ from os.path import join as pj
 import numpy as np
 import inspect
 import seaborn as sns
+import tsne
 
 parser = plyj.Parser()
 
@@ -245,32 +246,19 @@ def countRecursiveMethods(directory):
     print "time elapsed:" + str(end - start)
     return numRecursiveMethods
 
-
-def freqPCA(directory):
+def delRedundantCols(data):
     """
-    prepares the .java files in the specified directory
-    and returns data ready for the matplotlib PCA object.
+    removes colums of a repeated value. E.g. [1,1,1]
     """
-    frequencyList = []
-    start = time.time()
-    for p, d, f in os.walk(directory): # path, directories, files
-        f = filter(lambda x: ".java" in x, f)
-        for i in f:
-            tree = parser.parse_file(pj(p,i))
-            frequencyList.append(treeToFreqDict(tree).values()  + [int(recursiveMethodFinder(tree)[0])])
-        break # break to avoid walking through all sub directories
-    end = time.time()
-    print "time elapsed:" + str(end - start)
-    data = np.array(frequencyList)
-    data = data[:,np.std(data, axis = 0) != 0] #removes columns with all repeated values 
-    print np.shape(data)
-    return data
+    return data[:,np.std(data, axis = 0) != 0]
 
 def PCAplot3d(data):
     """
     modified from http://blog.nextgenetics.net/?e=42. 
     Plots the vectors based on the 3 most significant components.
     """
+    data = delRedundantCols(data)
+    print np.shape(data)
     result = PCA(data)
     x = []
     y = []
@@ -308,6 +296,8 @@ def PCAplot2d(data):
     """
     plots 2d PCA. Modified from http://blog.nextgenetics.net/?e=42
     """
+    data = delRedundantCols(data)
+    print np.shape(data)
     result = PCA(data)
     x = []
     y = []
@@ -320,27 +310,25 @@ def PCAplot2d(data):
     plt.show()
 
 
-def narrowPCA(directory):
+def freqData(directory, classDict = genClassDict(), recursionIncluded = False):
     """
     prepares the .java files in the specified directory with a narrower freq dict
     and returns data ready for the matplotlib PCA object.
     """
-    narrowClassDict = {plyj.For:0, plyj.While:0, plyj.MethodDeclaration:0, plyj.ArrayCreation:0,
-                        plyj.VariableDeclaration:0}
-    #narrowClassDict = {plyj.VariableDeclaration:0, plyj.MethodDeclaration:0}
     frequencyList = []
     start = time.time()
     for p, d, f in os.walk(directory): # path, directories, files
         f = filter(lambda x: ".java" in x, f)
         for i in f:
             tree = parser.parse_file(pj(p,i))
-            frequencyList.append(treeToFreqDict(tree, narrowClassDict).values()  + [int(recursiveMethodFinder(tree)[0])])
+            freqVec = treeToFreqDict(tree, classDict).values()
+            if recursionIncluded:
+                freqVec += [int(recursiveMethodFinder(tree)[0])]
+            frequencyList.append(freqVec)
         break # break to avoid walking through all sub directories
     end = time.time()
-    print "time elapsed:" + str(end - start)
+    print "time elapsed: " + str(end - start)
     data = np.array(frequencyList)
-    data = data[:,np.std(data, axis = 0) != 0] #removes columns with all repeated values 
-    #return data
     return data
 
 def plot2dData(data):
@@ -377,13 +365,37 @@ def genCorrelationMatrix(data):
 
 def corrHeatMap(corrmat, variableDict):
     """draws a correllation heat map using SNS corrmat"""
+    f, ax = plt.subplots(figsize=(12, 9))
     sns.heatmap(corrmat, vmax = .9, square = True)
+    #f.tight_layout()
+    plt.show()
+
+
+def normalizeVector(vector):
+    """
+    l2 normalization
+    """
+    return vector / np.linalg.norm(vector)
+
+
+def normalizeRows(arr):
+    """
+    l2 normalization of rows
+    """
+    return np.apply_along_axis(normalizeVector, 0, arr)
 
 
 
+data = freqData('/Users/cssummer16/Documents/summerResearch/blackboxProject/javafiles', genClassDict(), True)
+data = normalizeRows(data)
+cm = genCorrelationMatrix(data)
+corrHeatMap(cm,1)
 
-result = freqPCA('/Users/cssummer16/Documents/summerResearch/blackboxProject/javafiles')
-PCAplot3d(result)
-#corrHeatMap(genCorrelationMatrix(result), 1)
 
+#Y = tsne.tsne(result, no_dims = 2)
+# plt.scatter(Y[:,0], Y[:,1])
+# plt.show()
 
+# narrowClassDict = {plyj.For:0, plyj.While:0, plyj.MethodDeclaration:0, plyj.ArrayCreation:0,
+#                         plyj.VariableDeclaration:0}
+    #narrowClassDict = {plyj.VariableDeclaration:0, plyj.MethodDeclaration:0}
