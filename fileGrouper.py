@@ -1,7 +1,7 @@
 import os
 import payloadReader
 
-def getTextFiles(indexDirectory, targetDirectory, targetText):
+def getTextFiles(indexDirectory, targetDirectory, targetText, userName):
 	"""
 	Assumes index files are in the format found on the white box server. 
 	"""
@@ -11,7 +11,7 @@ def getTextFiles(indexDirectory, targetDirectory, targetText):
 			newDir = targetDirectory + os.sep + file[6:]
 			payload = 'payload-' + file[6:]
 			os.mkdir(newDir)
-			scpCommand = 'scp amaor@white.kent.ac.uk:/data/compile-inputs/' + payload + ' ' + newDir
+			scpCommand = 'scp ' + 'userName' + '@white.kent.ac.uk:/data/compile-inputs/' + payload + ' ' + newDir
 			os.system(scpCommand)
 			indexList = payloadReader.createIndexList(file, indexDirectory)
 			payloadReader.writeByFileID(indexList, payload, newDir, newDir, True, targetText)
