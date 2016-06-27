@@ -2,4 +2,5 @@
 javafiles
 index-2016-01-08
 payload-2016-01-08
-tsne.pyc
+*.pyc
+testIndices

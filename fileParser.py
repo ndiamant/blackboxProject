@@ -9,6 +9,7 @@ import numpy as np
 import inspect
 import seaborn as sns
 import tsne
+import random as random
 
 parser = plyj.Parser()
 

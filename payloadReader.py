@@ -61,14 +61,14 @@ def readFiles(payloadFileName, indexList, directory = os.getcwd()):
 	return textList
 
 
-def writeFiles(textList, directory = os.getcwd()):
+def writeFiles(textList, directory = os.getcwd(), name = "payloadFile"):
 	"""
 	writes .java files from a text list in the specified directory
 	"""
 	os.chdir(directory)
 	nameNum = 0
 	for text in filterForAscii(textList):
-		file = open("payloadFile" + str(nameNum) + ".java", "w")
+		file = open(name + str(nameNum) + ".java", "w")
 		file.write(text)
 		file.close()
 		nameNum += 1
@@ -95,7 +95,7 @@ def groupByFileID(indexList):
 	return sorted(indexList, key = lambda index: index[0])
 
 
-def writeByFileID(indexList, payloadFileName, writeDir, readDir = os.getcwd()):
+def writeByFileID(indexList, payloadFileName, writeDir, readDir = os.getcwd(), willFilter = False, filterText = ''):
 	"""
 	takes an index file and payload file, a directory to read the payload from, and
 	a directory to put the files in and creates directories filled with the 
@@ -106,10 +106,14 @@ def writeByFileID(indexList, payloadFileName, writeDir, readDir = os.getcwd()):
 		os.chdir(readDir)
 		textList = filterForAscii(readFiles(payloadFileName, list(group), readDir))
 		
+		if willFilter:
+			textList = filterByText(textList, filterText)
+		
 		currentDir = os.path.join(writeDir, str(key))
-		os.makedirs(currentDir)
-		os.chdir(currentDir)		
-		writeFiles(textList, currentDir)
+		if textList:
+			os.makedirs(currentDir)
+			os.chdir(currentDir)		
+			writeFiles(textList, currentDir)
 		
 
 def filterByText(textList, filterText):
@@ -119,16 +123,10 @@ def filterByText(textList, filterText):
 	return filter(lambda text: filterText in text, textList)
 
 
-def normalizeVector(vector):
-	"""
-	l2 normalization
-	"""
-	return vector / np.linalg.norm(vector)
 
-
-fname = "index-2016-01-08"
-indList = filterByCompilability(createIndexList(fname))
-writeFiles(filterByText(readFiles("payload-2016-01-08", indList), 'fact'), os.getcwd() + "/javafiles")
+# fname = "index-2016-01-08"
+# indList = filterByCompilability(createIndexList(fname))
+# writeFiles(filterByText(readFiles("payload-2016-01-08", indList), 'fact'), os.getcwd() + "/javafiles")
 # writeByFileID(indList, "payload-2016-01-08", os.getcwd() + "/javafiles", os.getcwd())
 
 
