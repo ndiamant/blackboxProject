@@ -40,9 +40,11 @@ def groupByFileID(payloadDirectory, targetDirectory):
 			os.mkdir(targetDir)
 			IDlist.append(ID)
 		for p, d, f in os.walk(path):
-			for filePath in p:
-				shutil.copyfile(filePath, targetDir + os.sep + 'payload' + name)
+			for file in f:
+				dst = targetDir + os.sep + 'payload' + str(name) + '.java'
+				src = path + os.sep + file
+				shutil.copyfile(src, dst)
 				name += 1
 
 
-groupByFileID(os.getcwd() + '/javaFiles', '/Users/cssummer16/Documents/summerResearch/blackboxProject/fileIDs')
+groupByFileID(os.getcwd() + '/javaFiles', os.getcwd() + '/fileIDs')
