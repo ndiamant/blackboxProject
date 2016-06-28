@@ -1,6 +1,8 @@
 import os
 import payloadReader
 import time
+import glob
+import shutil
 
 def getTextFiles(indexDirectory, targetDirectory, targetText, userName):
 	"""
@@ -22,3 +24,25 @@ def getTextFiles(indexDirectory, targetDirectory, targetText, userName):
 
 	end = time.time()
 	print(end - start)
+
+
+def groupByFileID(payloadDirectory, targetDirectory):
+	"""
+	uses a directory built by getTextFiles and groups text by 
+	"""
+	IDlist = []
+	name = 0
+	paths = glob.glob(payloadDirectory + os.sep + '/*/*') # make / os.sep
+	for path in paths:
+		ID = os.path.basename(os.path.normpath(path))
+		targetDir = targetDirectory  + os.sep + ID
+		if ID not in IDlist:
+			os.mkdir(targetDir)
+			IDlist.append(ID)
+		for p, d, f in os.walk(path):
+			for filePath in p:
+				shutil.copyfile(filePath, targetDir + os.sep + 'payload' + name)
+				name += 1
+
+
+groupByFileID(os.getcwd() + '/javaFiles', '/Users/cssummer16/Documents/summerResearch/blackboxProject/fileIDs')
