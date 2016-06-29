@@ -47,4 +47,4 @@ def groupByFileID(payloadDirectory, targetDirectory):
 				name += 1
 
 
-groupByFileID(os.getcwd() + '/javaFiles', os.getcwd() + '/fileIDs')
+#groupByFileID(os.getcwd() + '/javaFiles', os.getcwd() + '/fileIDs')
