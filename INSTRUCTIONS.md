@@ -1,4 +1,4 @@
-blackBoxProject Instructions
+blackboxProject Instructions
 ======
 These instructions are meant to explain how to use the **blackboxProject** without going into detail about how everything works. If you're looking to understand how something works or think you could make it work better, e-mail me, ndiamant@hmc.edu! I'm open to explaining and suggestions.
 
@@ -16,6 +16,9 @@ The rest can be installed with ```$ pip install matplotlib numpy seaborn pylab``
 Plyj only works in Python 2.
 
 ## Structure
-The most fundamental of the programs is payloadReader.py
+The most fundamental of the programs is payloadReader.py. In general, payloadReader.py is used to take an index file from whitebox (like "index-2016-01-08") and a corresponding payload file ("payload-2016-01-08") and separate the java files contained in the payload. To get individual index and payload files, you can scp from the whitebox server: ```$ scp USER@white.kent.ac.uk:/data/compile-inputs/payload-2016-01-08 ~/target/directory```. ([fileGrouper.py](#filegrouper.py) will do it automatically). 
 
+### payloadReader.py
+
+### fileGrouper.py
 
