@@ -6,7 +6,6 @@ blackBoxProject
 **blackboxProject** itself is Python code, so requires no installation except for its dependencies. Simply clone from the github page using, git clone ```$ git clone https://github.com/ndiamant/blackboxProject.git```. Users will need its dependencies: 
 * [plyj](https://github.com/musiKk/plyj) 
 * matplotlib 
-* mpl_toolkits 
 * numpy 
 * seaborn 
 * pylab 
