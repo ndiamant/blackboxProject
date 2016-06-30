@@ -38,3 +38,6 @@ If you want to contribute by adding to the file downloading/organizing infrastru
 * Homepage: https://www.cs.hmc.edu/research/
 * e-mail: ndiamant@hmc.edu
 * Twitter: [@CSTeachingTips](https://twitter.com/csteachingtips "CS Teaching Tips on twitter")
+
+## Funding
+This material is based upon work supported by the National Science Foundation under Grant No. 1339404. Any opinions, findings and conclusions or recommendations expressed in this material are those of the author(s) and do not necessarily reflect the views of the National Science Foundation.
