@@ -159,4 +159,4 @@ groupByFileID(os.getcwd() + '/javaFiles', os.getcwd() + '/fileIDs')
 
 ------
 ### fileParser.py
-_fileParser.py_ uses java files prepared by ([_payloadReader.py_](#payloadreaderpy) and ([_fileGrouper.py_](#filegrouperpy). [plyj](https://github.com/musiKk/plyj) to run various analyses.
+_fileParser.py_ uses java files prepared by [_payloadReader.py_](#payloadreaderpy) and [_fileGrouper.py_](#filegrouperpy). [plyj](https://github.com/musiKk/plyj) to run various analyses.
