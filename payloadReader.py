@@ -4,7 +4,7 @@ import itertools
 def createIndexList(indexFile, directory = os.getcwd()):
         """
         Takes an index file (string of its name) and what directory it's in, and converts 
-        into a list of tuples with  (source file id, master event id, file start position, file length, 
+        into a list of tuples with (source file id, master event id, file start position, file length, 
         compilation success [1 or 0]).
         """
         os.chdir(directory)
@@ -47,7 +47,7 @@ def read4bytes(byteList):
         return (byteList[0] * 2**24 + byteList[1] * 2**16 + 
                         byteList[2] * 2**8 + byteList[3])
 
-def readFiles(payloadFile, indexList, directory = os.getcwd()):
+def readFiles(payloadFileName, indexList, directory = os.getcwd()):
         """
         takes a list of tupes of (startPos, length) and returns the text of 
         files from the payload file in a list
@@ -112,7 +112,7 @@ def writeByFileID(indexList, payloadFileName, writeDir, readDir = os.getcwd(), w
                 
                 currentDir = os.path.join(writeDir, str(key))
                 if textList:
-                        os.makedir(currentDir)
+                        os.makedirs(currentDir)
                         os.chdir(currentDir)            
                         writeFiles(textList, currentDir)
                 
