@@ -7,7 +7,8 @@ blackBoxProject
 * [plyj](https://github.com/musiKk/plyj) 
 * matplotlib 
 * mpl_toolkits 
-* numpy, seaborn 
+* numpy 
+* seaborn 
 * pylab 
 
 Use of [t-SNE](https://lvdmaaten.github.io/tsne/) is planned for data visualization, so tsne.py is included for convenience (created by Laurens van der Maaten on 20-12-08, Copyright (c) 2008 Tilburg University. All rights reserved). 
