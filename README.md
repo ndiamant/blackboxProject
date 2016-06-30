@@ -20,21 +20,13 @@ Use of [t-SNE](https://lvdmaaten.github.io/tsne/) is planned for data visualizat
 * tsne.py - Created by Laurens van der Maaten on 20-12-08, still working on using it for visualizing blackbox data. 
 
 ## Contributors
-
+All work so far on **blackboxProject** has been done by Nathaniel Diamant and Nick Draper from Harvey Mudd College.
 ### Contributors on GitHub
-* [Contributors](https://github.com/username/sw-name/graphs/contributors)
-
-### Translations
-* [Transifex](https://www.transifex.com/projects/p/sw-name/)
-
-### Third party libraries
-* see [LIBRARIES](https://github.com/username/sw-name/blob/master/LIBRARIES.md) files
+* [Contributors](https://github.com/ndiamant/sw-name/graphs/contributors)
+If you want to contribute by adding to the file downloading/organizing infrastrucure or analysis or if you find a bug, e-mail ndiamant@hmc.edu.
 
 ## License 
-* see [LICENSE](https://github.com/username/sw-name/blob/master/LICENSE.md) file
-
-## Version 
-* Version X.Y
+* see [LICENSE.md](blackboxProject/LICENSE.md) file
 
 ## How-to use this code
 * see [INSTRUCTIONS](https://github.com/username/sw-name/blob/master/INSTRUCTIONS.md) file
