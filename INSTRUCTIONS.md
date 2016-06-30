@@ -16,9 +16,34 @@ The rest can be installed with ```$ pip install matplotlib numpy seaborn pylab``
 Plyj only works in Python 2.
 
 ## Structure
-The most fundamental of the programs is payloadReader.py. In general, payloadReader.py is used to take an index file from whitebox (like "index-2016-01-08") and a corresponding payload file ("payload-2016-01-08") and separate the java files contained in the payload. To get individual index and payload files, you can scp from the whitebox server: ```$ scp USER@white.kent.ac.uk:/data/compile-inputs/payload-2016-01-08 ~/target/directory```. ([fileGrouper.py](#filegrouper.py) will do it automatically). 
+The most fundamental of the programs is payloadReader.py. In general, _payloadReader.py_ is used to take an index file from whitebox (like "index-2016-01-08") and a corresponding payload file ("payload-2016-01-08") and separate the java files contained in the payload. To get individual index and payload files, you can scp from the whitebox server: ```$ scp USER@white.kent.ac.uk:/data/compile-inputs/payload-2016-01-08 ~/target/directory```. ([_fileGrouper.py_](#filegrouper.py) will do it for you). 
 
 ### payloadReader.py
+Most of the code in _payloadReader.py_ is helper functions. Here are some that a user might want. 
+
+#### createIndexList
+_createIndexList(indexFile, directory = os.getcwd())_ takes the string name of an index file and the directory it's in (string). It returns a list of tuples with (source file id, master event id, file start position, file length, compilation success [1 or 0]). This can be used by the [readFiles](#readfiles) function to make a list of text files. 
+
+##### Todo
+complete for now
+
+#### readFiles
+_readFiles(payloadFile, indexList, directory = os.getcwd())_ takes an index list made by [_createIndexList_](#createindexlist), the string name of a payload file, and the directory (string) the payload is in. It returns a list of strings where each string is an entire java file from the payload. The text can be put into individual files using [_writeFiles_](#writefiles).
+
+##### Todo
+Considering making [_readFiles_](#readfiles) return a list of tuples with (text, index) so that the index can still be used for stuff like naming the files that get written from the text list.
+
+#### writeFiles
+_writeFiles(textList, directory = os.getcwd(), name = "payloadFile")_ takes a text list made by [_readFiles_](#readfiles) and a directory (string) to write files with the .java extension, and a name to call the java files. The files are named "[name][number].java", where number is an iterated integer counting from zero.
+
+##### Todo
+If [_readFiles_](#readfiles) is changed as suggested in its Todo, then [_writeFiles_](#writefiles) will have to be changed accordingly. If this change is implemented, I will also change the naming convention to use the index.
+
+
+, name = "payloadFile")_, _writeByFileID(indexList, payloadFileName, writeDir, readDir = os.getcwd(), willFilter = False, filterText = '')_. 
+
+
+
 
 ### fileGrouper.py
 
