@@ -119,11 +119,25 @@ _getTextFiles(indexDirectory, targetDirectory, targetText, userName)_ takes the 
         └── payloadFile0.java
 ```
 ##### Todo
-If [_readFiles_](#readfiles) is changed as suggested in its Todo, then [_getTextFiles_](#getextfiles) will have to be adjusted accordingly.
+If [_readFiles_](#readfiles) is changed as suggested in its Todo, then [_getTextFiles_](#gettextfiles) will have to be adjusted accordingly.
 
 ======
-#### readFiles
-_readFiles(payloadFile, indexList, directory = os.getcwd())_ takes an index list made by [_createIndexList_](#createindexlist), the string name of a payload file, and the directory (string) the payload is in. It returns a list of strings where each string is an entire java file from the payload. The text can be put into individual files using [_writeFiles_](#writefiles).
-
+#### groupByFileID
+_groupByFileID(payloadDirectory, targetDirectory)_ takes the string name of a directory made by [[_getTextFiles_](#gettextfiles), and the string name of a new directory to copy files into. It removes the date directories, and organizes only by file ID. In each directory individual files change in ascending number order. This function is especially useful for examining how individual files change over time. The target directory's structure: 
+```
+./fileIDs/
+├── 11906466
+│   ├── payload1670.java
+│   ├── payload1671.java
+│   └── payload1672.java
+├── 17425200
+│   └── payload6447.java
+├── 21393086
+│   └── payload542.java
+└── 34804768
+    ├── payload7111.java
+    ├── payload7112.java
+    └── payload7149.java
+```
 ##### Todo
 Considering making [_readFiles_](#readfiles) return a list of tuples with (text, index) so that the index can still be used for stuff like naming the files that get written from the text list.
