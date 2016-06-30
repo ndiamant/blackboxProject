@@ -77,7 +77,7 @@ Let's say we have an index file named "index-2016-01-08" and a payload file name
 
 ```$ python -i payloadReader.py```
 ```python
-fname = "index-2016-01-08"```
+fname = "index-2016-01-08"
 indList = filterByCompilability(createIndexList(fname)) #create the index list filtered for compilability
 textList = readFiles("payload-2016-01-08", indList) #create the text list
 textList = filterByText('factorial') #filter so all text contains "factorial"
