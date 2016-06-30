@@ -30,7 +30,7 @@ If you want to contribute by adding to the file downloading/organizing infrastru
 * see [LICENSE](blackboxProject/LICENSE.md) file
 
 ## How-to use this code
-* see [INSTRUCTIONS](https://github.com/ndiamant/sw-name/blob/master/INSTRUCTIONS.md) file
+* see [INSTRUCTIONS](blackboxProject/INSTRUCTIONS.md) file
 
 ## Contact
 #### Harvey Mudd CS
