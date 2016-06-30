@@ -89,3 +89,41 @@ writeByFileID(indList, "payload-2016-01-08", os.getcwd() + "/javafiles", os.getc
 ------
 ### fileGrouper.py
 _fileGrouper.py_ uses [_payloadReader.py_](#payloadreaderpy) to download and organize java files from whitebox in two different ways.
+
+#### Index
+* [_getTextFiles_](#getextfiles)
+* [_groupByFileID_](#groupbyfileid)
+
+======
+#### getTextFiles
+_getTextFiles(indexDirectory, targetDirectory, targetText, userName)_ takes the string names of a directory containing as many whitebox index files as you want, a directory to write java files into, text to filter for, and your whitebox user name. If you have not set up an ssh key, it will prompt you for your password. It creates directories organized by day and then file ID as follows:
+```
+./javafiles/
+├── 2015-12-11
+│   ├── 23486260
+│   │   ├── payloadFile0.java
+│   │   ├── payloadFile1.java
+│   │   └── payloadFile2.java
+│   ├── 26796734
+│   │   ├── payloadFile0.java
+│   │   └── payloadFile1.java
+│   └── 26875865
+│       ├── payloadFile0.java
+└── 2016-06-17
+    ├── 34640886
+    │   └──  payloadFile0.java
+    ├── 34651751
+    │   ├── payloadFile0.java
+    │   └── payloadFile5.java
+    └── 34651753
+        └── payloadFile0.java
+```
+##### Todo
+If [_readFiles_](#readfiles) is changed as suggested in its Todo, then [_getTextFiles_](#getextfiles) will have to be adjusted accordingly.
+
+======
+#### readFiles
+_readFiles(payloadFile, indexList, directory = os.getcwd())_ takes an index list made by [_createIndexList_](#createindexlist), the string name of a payload file, and the directory (string) the payload is in. It returns a list of strings where each string is an entire java file from the payload. The text can be put into individual files using [_writeFiles_](#writefiles).
+
+##### Todo
+Considering making [_readFiles_](#readfiles) return a list of tuples with (text, index) so that the index can still be used for stuff like naming the files that get written from the text list.
