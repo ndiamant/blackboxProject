@@ -26,6 +26,7 @@ Most of the code in _payloadReader.py_ is helper functions. Here are some that a
 * [_readFiles_](#readfiles)
 * [_writeFiles_](#writefiles)
 * [_writeByFileID_](#writebyfileid)
+* [_Filters_](#filters)
 
 #### createIndexList
 _createIndexList(indexFile, directory = os.getcwd())_ takes the string name of an index file and the directory it's in (string). It returns a list of tuples with (source file id, master event id, file start position, file length, compilation success [1 or 0]). This can be used by the [readFiles](#readfiles) function to make a list of text files. 
@@ -51,7 +52,11 @@ If [_readFiles_](#readfiles) is changed as suggested in its Todo, then [_writeFi
 ##### Todo
 Add name argument like [_writeFiles_](#writefiles) has and maybe more filtering options. If [_readFiles_](#readfiles) is modified as suggested in its Todo, then [_writeByFileID_](#writebyfileid) could be broken into two parts allowing for more modularity.
 
+#### Filters
+There are two simple filter functions. _filterByCompilability(indexList)_ takes an index list from [_createIndexList_](#createindexlist) and returns an index list of indices corresponding to compileable java files. _filterByText(textList, filterText)_ filters a text list made by [_readFiles_](#readfiles) leaving only text that contains filterText. _filterForAscii(textList)_ filters a text list and returns a list of text with pure ascii characters.
 
+##### Todo
+If [_readFiles_](#readfiles) changes its text list format, the two functions that filter text lists will have to be modified accordingly.
 
 ### fileGrouper.py
 
