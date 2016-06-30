@@ -79,9 +79,11 @@ Let's say we have an index file named "index-2016-01-08" and a payload file name
 fname = "index-2016-01-08"```
 indList = filterByCompilability(createIndexList(fname)) #create the index list filtered for compilability
 textList = readFiles("payload-2016-01-08", indList) #create the text list
-textList = filterByText('factorial')
+textList = filterByText('factorial') #filter so all text contains "factorial"
 textList = readFiles("payload-2016-01-08", indList) #create the text list
 writeFiles(textList, os.getcwd() + "/javafiles", 'test') #write the files into the /javafiles directory
+#If instead we want to group the files by their file IDs and find files that contain "fibonacci"
+writeByFileID(indList, "payload-2016-01-08", os.getcwd() + "/javafiles", os.getcwd(), True, 'fibonacci')
 ```
 
 ------
