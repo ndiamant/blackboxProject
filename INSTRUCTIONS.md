@@ -20,6 +20,7 @@ Structure
 ------
 The most fundamental of the programs is payloadReader.py. In general, _payloadReader.py_ is used to take an index file from whitebox (like "index-2016-01-08") and a corresponding payload file ("payload-2016-01-08") and separate the java files contained in the payload. To get individual index and payload files, you can scp from the whitebox server: ```$ scp USER@white.kent.ac.uk:/data/compile-inputs/payload-2016-01-08 ~/target/directory```. ([_fileGrouper.py_](#filegrouper.py) will do it for you). 
 
+------
 ### payloadReader.py
 Most of the code in _payloadReader.py_ is helper functions. Here are some that a user might want. 
 
@@ -68,5 +69,6 @@ There are two simple filter functions. _filterByCompilability(indexList)_ takes 
 ##### Todo
 If [_readFiles_](#readfiles) changes its text list format, the two functions that filter text lists will have to be modified accordingly.
 
+------
 ### fileGrouper.py
-
+_fileGrouper.py_ uses [_payloadReader.py_](#payloadreader.py) to download and organize java files from whitebox in two different ways.
