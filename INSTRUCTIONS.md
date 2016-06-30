@@ -18,7 +18,7 @@ Plyj only works in Python 2.
 
 Structure
 ------
-The most fundamental of the programs is payloadReader.py. In general, _payloadReader.py_ is used to take an index file from whitebox (like "index-2016-01-08") and a corresponding payload file ("payload-2016-01-08") and separate the java files contained in the payload. To get individual index and payload files, you can scp from the whitebox server: ```$ scp USER@white.kent.ac.uk:/data/compile-inputs/payload-2016-01-08 ~/target/directory```. ([_fileGrouper.py_](#filegrouperpy) will do it for you). 
+The most fundamental of the programs is payloadReader.py. In general, _payloadReader.py_ is used to take an index file from whitebox (like "index-2016-01-08") and a corresponding payload file ("payload-2016-01-08") and separate the java files contained in the payload. To get individual index and payload files, you can scp from the whitebox server: ```$ scp user@white.kent.ac.uk:/data/compile-inputs/payload-2016-01-08 ~/target/directory```. ([_fileGrouper.py_](#filegrouperpy) will do it for you). 
 
 ------
 ### payloadReader.py
@@ -36,14 +36,14 @@ Most of the code in _payloadReader.py_ is helper functions. Here are some that a
 _createIndexList(indexFile, directory = os.getcwd())_ takes the string name of an index file and the directory it's in (string). It returns a list of tuples with (source file id, master event id, file start position, file length, compilation success [1 or 0]). This can be used by the [readFiles](#readfiles) function to make a list of text files. 
 
 ##### Todo
-complete for now
+* complete for now
 
 ======
 #### readFiles
 _readFiles(payloadFile, indexList, directory = os.getcwd())_ takes an index list made by [_createIndexList_](#createindexlist), the string name of a payload file, and the directory (string) the payload is in. It returns a list of strings where each string is an entire java file from the payload. The text can be put into individual files using [_writeFiles_](#writefiles).
 
 ##### Todo
-Considering making [_readFiles_](#readfiles) return a list of tuples with (text, index) so that the index can still be used for stuff like naming the files that get written from the text list.
+* Considering making [_readFiles_](#readfiles) return a list of tuples with (text, index) so that the index can still be used for stuff like naming the files that get written from the text list.
 
 ======
 #### writeFiles
@@ -51,7 +51,7 @@ Considering making [_readFiles_](#readfiles) return a list of tuples with (text,
 _writeFiles(textList, directory = os.getcwd(), name = "payloadFile")_ takes a text list made by [_readFiles_](#readfiles) and a directory (string) to write files with the .java extension, and a name to call the java files. The files are named "[name][number].java", where number is an iterated integer counting from zero.
 
 ##### Todo
-If [_readFiles_](#readfiles) is changed as suggested in its Todo, then [_writeFiles_](#writefiles) will have to be changed accordingly. If this change is implemented, I will also change the naming convention to use the index.
+* If [_readFiles_](#readfiles) is changed as suggested in its Todo, then [_writeFiles_](#writefiles) will have to be changed accordingly. If this change is implemented, I will also change the naming convention to use the index.
 
 ======
 #### writeByFileID
@@ -59,7 +59,8 @@ If [_readFiles_](#readfiles) is changed as suggested in its Todo, then [_writeFi
  _writeByFileID(indexList, payloadFileName, writeDir, readDir = os.getcwd(), willFilter = False, filterText = '')_ takes an index list from [_createIndexList_](#createindexlist), strings of the payload file's name, the directory files will be written into, the directory files the payload is in, and whether the files will be filtered to contain filterText. It creates directories with file IDs from the index list and writes files from the payload file into those directory. This makes a directory of directories named afer file names that contain all of the files of one file ID from the payload. 
 
 ##### Todo
-Add name argument like [_writeFiles_](#writefiles) has and maybe more filtering options. If [_readFiles_](#readfiles) is modified as suggested in its Todo, then [_writeByFileID_](#writebyfileid) could be broken into two parts allowing for more modularity.
+* Add name argument like [_writeFiles_](#writefiles) has and maybe more filtering options. 
+* If [_readFiles_](#readfiles) is modified as suggested in its Todo, then [_writeByFileID_](#writebyfileid) could be broken into two parts allowing for more modularity.
 
 ======
 #### Filters
@@ -67,7 +68,7 @@ Add name argument like [_writeFiles_](#writefiles) has and maybe more filtering 
 There are two simple filter functions. _filterByCompilability(indexList)_ takes an index list from [_createIndexList_](#createindexlist) and returns an index list of indices corresponding to compilable java files. _filterByText(textList, filterText)_ filters a text list made by [_readFiles_](#readfiles) leaving only text that contains filterText. _filterForAscii(textList)_ filters a text list and returns a list of text with pure ascii characters.
 
 ##### Todo
-If [_readFiles_](#readfiles) changes its text list format, the two functions that filter text lists will have to be modified accordingly.
+* If [_readFiles_](#readfiles) changes its text list format, the two functions that filter text lists will have to be modified accordingly.
 
 =====
 #### Examples
@@ -96,7 +97,7 @@ _fileGrouper.py_ uses [_payloadReader.py_](#payloadreaderpy) to download and org
 
 ======
 #### getTextFiles
-_getTextFiles(indexDirectory, targetDirectory, targetText, userName)_ takes the string names of a directory containing as many whitebox index files as you want, a directory to write java files into, text to filter for, and your whitebox user name. If you have not set up an ssh key, it will prompt you for your password. It creates directories organized by day and then file ID as follows:
+_getTextFiles(indexDirectory, targetDirectory, targetText, userName)_ takes the string names of a directory containing as many whitebox index files as you want, a directory to write java files into, text to filter for, and your whitebox user name. _getTextFiles_ uses scp and then deletes the payload files one at a time to reduce memory needs. If you have not set up an ssh key, it will prompt you for your password. It creates directories organized by day and then file ID as follows:
 ```
 ./javafiles/
 ├── 2015-12-11
@@ -119,7 +120,9 @@ _getTextFiles(indexDirectory, targetDirectory, targetText, userName)_ takes the 
         └── payloadFile0.java
 ```
 ##### Todo
-If [_readFiles_](#readfiles) is changed as suggested in its Todo, then [_getTextFiles_](#gettextfiles) will have to be adjusted accordingly.
+* If [_readFiles_](#readfiles) is changed as suggested in its Todo, then [_getTextFiles_](#gettextfiles) will have to be adjusted accordingly.
+* Make faster!
+* * add way to interact with external hard drive to avoid pesky download times
 
 ======
 #### groupByFileID
@@ -140,4 +143,17 @@ _groupByFileID(payloadDirectory, targetDirectory)_ takes the string name of a di
     └── payload7149.java
 ```
 ##### Todo
-Considering making [_readFiles_](#readfiles) return a list of tuples with (text, index) so that the index can still be used for stuff like naming the files that get written from the text list.
+* Replace '/*/*' with something that works on both windows and unix and DOS.
+
+=====
+#### Examples
+
+Let's say we want to download all of the java file that contain "fibonacci" into a directory called "javafiles" and then sort them by only file ID into another directory called fileIDs. 
+```$ scp user@white.kent.ac.uk:/data/compile-inputs/index* ~/Desktop/indices/ #download all index files to desktop```
+```python
+#download payloads, convert to java files, and organize into javafiles directory
+getTextFiles('/Users/username/Desktop/indices', os.getcwd() + '/javaFiles', 'fibonacci’,  ‘user’) 
+#copy files into new structure in fileIDs directory.
+groupByFileID(os.getcwd() + '/javaFiles', os.getcwd() + '/fileIDs') 
+```
+
