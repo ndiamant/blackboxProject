@@ -21,6 +21,12 @@ The most fundamental of the programs is payloadReader.py. In general, _payloadRe
 ### payloadReader.py
 Most of the code in _payloadReader.py_ is helper functions. Here are some that a user might want. 
 
+#### Index
+* [_createIndexList_](#createindexlist)
+* [_readFiles_](#readfiles)
+* [_writeFiles_](#writefiles)
+* [_writeByFileID_](#writebyfileid)
+
 #### createIndexList
 _createIndexList(indexFile, directory = os.getcwd())_ takes the string name of an index file and the directory it's in (string). It returns a list of tuples with (source file id, master event id, file start position, file length, compilation success [1 or 0]). This can be used by the [readFiles](#readfiles) function to make a list of text files. 
 
@@ -39,9 +45,11 @@ _writeFiles(textList, directory = os.getcwd(), name = "payloadFile")_ takes a te
 ##### Todo
 If [_readFiles_](#readfiles) is changed as suggested in its Todo, then [_writeFiles_](#writefiles) will have to be changed accordingly. If this change is implemented, I will also change the naming convention to use the index.
 
+#### writeByFileID
+ _writeByFileID(indexList, payloadFileName, writeDir, readDir = os.getcwd(), willFilter = False, filterText = '')_ takes an index list from [_createIndexList_](#createindexlist), strings of the payload file's name, the directory files will be written into, the directory files the payload is in, and whether the files will be filtered to contain filterText. It creates directories with file IDs from the index list and writes files from the payload file into those directory. This makes a directory of directories named afer file names that contain all of the files of one file ID from the payload. 
 
-, name = "payloadFile")_, _writeByFileID(indexList, payloadFileName, writeDir, readDir = os.getcwd(), willFilter = False, filterText = '')_. 
-
+##### Todo
+Add name argument like [_writeFiles_](#writefiles) has and maybe more filtering options. If [_readFiles_](#readfiles) is modified as suggested in its Todo, then [_writeByFileID_](#writebyfileid) could be broken into two parts allowing for more modularity.
 
 
 
