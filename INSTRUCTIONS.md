@@ -61,6 +61,7 @@ _writeFiles(textList, directory = os.getcwd(), name = "payloadFile")_ takes a te
 ##### Todo
 * Add name argument like [_writeFiles_](#writefiles) has and maybe more filtering options. 
 * If [_readFiles_](#readfiles) is modified as suggested in its Todo, then [_writeByFileID_](#writebyfileid) could be broken into two parts allowing for more modularity.
+* Really slow for some reason. Maybe calls _writeFiles_ too much? Make faster
 
 ======
 #### Filters
