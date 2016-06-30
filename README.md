@@ -26,14 +26,13 @@ All work so far on **blackboxProject** has been done by Nathaniel Diamant and Ni
 If you want to contribute by adding to the file downloading/organizing infrastrucure or analysis or if you find a bug, e-mail ndiamant@hmc.edu.
 
 ## License 
-* see [LICENSE.md](blackboxProject/LICENSE.md) file
+* see [LICENSE](blackboxProject/LICENSE.md) file
 
 ## How-to use this code
 * see [INSTRUCTIONS](https://github.com/ndiamant/sw-name/blob/master/INSTRUCTIONS.md) file
 
 ## Contact
-#### Developer/Company
-* Homepage: 
-* e-mail: 
-* Twitter: [@twitterhandle](https://twitter.com/twitterhandle "twitterhandle on twitter")
-* other communication/social media
+#### Harvey Mudd CS
+* Homepage: https://www.cs.hmc.edu/research/
+* e-mail: ndiamant@hmc.edu
+* Twitter: [@CSTeachingTips](https://twitter.com/csteachingtips "CS Teaching Tips on twitter")
