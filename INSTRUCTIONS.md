@@ -64,10 +64,25 @@ Add name argument like [_writeFiles_](#writefiles) has and maybe more filtering 
 ======
 #### Filters
 
-There are two simple filter functions. _filterByCompilability(indexList)_ takes an index list from [_createIndexList_](#createindexlist) and returns an index list of indices corresponding to compileable java files. _filterByText(textList, filterText)_ filters a text list made by [_readFiles_](#readfiles) leaving only text that contains filterText. _filterForAscii(textList)_ filters a text list and returns a list of text with pure ascii characters.
+There are two simple filter functions. _filterByCompilability(indexList)_ takes an index list from [_createIndexList_](#createindexlist) and returns an index list of indices corresponding to compilable java files. _filterByText(textList, filterText)_ filters a text list made by [_readFiles_](#readfiles) leaving only text that contains filterText. _filterForAscii(textList)_ filters a text list and returns a list of text with pure ascii characters.
 
 ##### Todo
 If [_readFiles_](#readfiles) changes its text list format, the two functions that filter text lists will have to be modified accordingly.
+
+=====
+#### Examples
+
+Let's say we have an index file named "index-2016-01-08" and a payload file named "payload-2016-01-08" in the same directory as [_payloadReader.py](#payloadreaderpy) and we want to fill a directory called "javafiles" with all of the compiliable java files in payload that contain the text "factorial", and we want the java files to be named "test[iterator].java".
+
+```$ python -i payloadReader.py```
+```python
+fname = "index-2016-01-08"```
+indList = filterByCompilability(createIndexList(fname)) #create the index list filtered for compilability
+textList = readFiles("payload-2016-01-08", indList) #create the text list
+textList = filterByText('factorial')
+textList = readFiles("payload-2016-01-08", indList) #create the text list
+writeFiles(textList, os.getcwd() + "/javafiles", 'test') #write the files into the /javafiles directory
+```
 
 ------
 ### fileGrouper.py
