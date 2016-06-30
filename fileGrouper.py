@@ -6,7 +6,9 @@ import shutil
 
 def getTextFiles(indexDirectory, targetDirectory, targetText, userName):
         """
-        Assumes index files are in the format found on the white box server. 
+        Takes a directory, indexDirectory, of index files assumed to be named like they are
+        on the white box server, a directroy to download them into, targetText to be searched for,
+        and the user's white box user name.  
         """
         start = time.time()
 

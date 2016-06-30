@@ -64,7 +64,7 @@ def readFiles(payloadFile, indexList, directory = os.getcwd()):
 
 def writeFiles(textList, directory = os.getcwd(), name = "payloadFile"):
         """
-        writes .java files from a text list in the specified directory
+        writes .java files from a text list in the specified directory with the name 'name'
         """
         os.chdir(directory)
         nameNum = 0
@@ -76,7 +76,7 @@ def writeFiles(textList, directory = os.getcwd(), name = "payloadFile"):
 
 def filterByCompilability(indexList):
         """
-        returns an index list with only compilable files
+        returns an index list with only indices of compilable files
         """
         return filter(lambda index: index[4] == 1, indexList)
 
