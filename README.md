@@ -21,8 +21,9 @@ Use of [t-SNE](https://lvdmaaten.github.io/tsne/) is planned for data visualizat
 
 ## Contributors
 All work so far on **blackboxProject** has been done by Nathaniel Diamant and Nick Draper from Harvey Mudd College.
-### Contributors on GitHub
-* [Contributors](https://github.com/ndiamant/sw-name/graphs/contributors)
+
+### How to contribute
+
 If you want to contribute by adding to the file downloading/organizing infrastrucure or analysis or if you find a bug, e-mail ndiamant@hmc.edu.
 
 ## License 
