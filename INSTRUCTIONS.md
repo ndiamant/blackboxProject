@@ -95,10 +95,24 @@ Creates: a directory filled with .java files with the following structure.
 ======
 #### Filters
 
-There are two simple filter functions. _filterByCompilability(indexList)_ takes an index list from [_createIndexList_](#createindexlist) and returns an index list of indices corresponding to compilable java files. _filterByText(textList, filterText)_ filters a text list made by [_readFiles_](#readfiles) leaving only text that contains filterText. _filterForAscii(textList)_ filters a text list and returns a list of text with pure ascii characters.
+There are two filter functions. 
+_filterByCompilability(indexList)_ takes
+* indexList: an index list from [_createIndexList_](#createindexlist) 
+
+Returns: an index list of indices corresponding to compilable java files. 
+_filterByText(textList, filterText)_ takes
+* textList: a text list made by [_readFiles_](#readfiles)
+* filterText: string that all remaining strings in textList will contain
+
+Returns: a text list of only strings that contains filterText. 
+
+_filterForAscii(textList)_ takes
+* textList: a text list made by [_readFiles_](#readfiles)
+
+Returns: a list of text with pure ascii characters.
 
 ##### Todo
-* If [_readFiles_](#readfiles) changes its text list format, the two functions that filter text lists will have to be modified accordingly.
+* If [_readFiles_](#readfiles) changes its text list format, the functions that filter text lists will have to be modified accordingly.
 
 =====
 #### Examples
