@@ -33,14 +33,23 @@ Most of the code in _payloadReader.py_ is helper functions. Here are some that a
 
 ======
 #### createIndexList
-_createIndexList(indexFile, directory = os.getcwd())_ takes the string name of an index file and the directory it's in (string). It returns a list of tuples with (source file id, master event id, file start position, file length, compilation success [1 or 0]). This can be used by the [readFiles](#readfiles) function to make a list of text files. 
+_createIndexList(indexFile, directory = os.getcwd())_ takes
+* indexFile: the string name of an index file
+* directory: the directory it's in (string). 
+
+Returns: a list of tuples with (source file id, master event id, file start position, file length, compilation success [1 or 0]). This can be used by the [readFiles](#readfiles) function to make a list of text files. 
 
 ##### Todo
 * complete for now
 
 ======
 #### readFiles
-_readFiles(payloadFile, indexList, directory = os.getcwd())_ takes an index list made by [_createIndexList_](#createindexlist), the string name of a payload file, and the directory (string) the payload is in. It returns a list of strings where each string is an entire java file from the payload. The text can be put into individual files using [_writeFiles_](#writefiles).
+_readFiles(payloadFile, indexList, directory = os.getcwd())_ takes 
+* payloadFile: the string name of a payload file
+* indexList: an index list made by [_createIndexList_](#createindexlist)
+* directory: the directory (string) the payload is in. 
+
+Returns: a list of strings where each string is an entire java file from the payload. The text can be put into individual files using [_writeFiles_](#writefiles).
 
 ##### Todo
 * Considering making [_readFiles_](#readfiles) return a list of tuples with (text, index) so that the index can still be used for stuff like naming the files that get written from the text list.
@@ -48,7 +57,19 @@ _readFiles(payloadFile, indexList, directory = os.getcwd())_ takes an index list
 ======
 #### writeFiles
 
-_writeFiles(textList, directory = os.getcwd(), name = "payloadFile")_ takes a text list made by [_readFiles_](#readfiles) and a directory (string) to write files with the .java extension, and a name to call the java files. The files are named "[name][number].java", where number is an iterated integer counting from zero.
+_writeFiles(textList, directory = os.getcwd(), name = "payloadFile")_ takes
+* textList: a text list made by [_readFiles_](#readfiles)
+* directory: a directory (string) where it will write files with the .java extension
+* name: a name to call the java files. The files are named "[name][number].java", where number is an iterated integer counting from zero.
+ 
+Creates: a directory filled with .java files with the following structure.
+```
+2015-12-11
+├── payload0.java
+├── payload1.java
+├── payload2.java
+└── payload3.java
+```
 
 ##### Todo
 * If [_readFiles_](#readfiles) is changed as suggested in its Todo, then [_writeFiles_](#writefiles) will have to be changed accordingly. If this change is implemented, I will also change the naming convention to use the index.
@@ -56,7 +77,15 @@ _writeFiles(textList, directory = os.getcwd(), name = "payloadFile")_ takes a te
 ======
 #### writeByFileID
 
- _writeByFileID(indexList, payloadFileName, writeDir, readDir = os.getcwd(), willFilter = False, filterText = '')_ takes an index list from [_createIndexList_](#createindexlist), strings of the payload file's name, the directory files will be written into, the directory files the payload is in, and whether the files will be filtered to contain filterText. It creates directories with file IDs from the index list and writes files from the payload file into those directory. This makes a directory of directories named afer file names that contain all of the files of one file ID from the payload. 
+ _writeByFileID(indexList, payloadFileName, writeDir, readDir = os.getcwd(), willFilter = False, filterText = '')_ takes 
+ * indexList: an index list from [_createIndexList_](#createindexlist)
+ * payloadFileName: string of the payload file's name
+ * writeDir: string of the directory where files will be written into
+ * readDir: string  of the directory where the payload is
+ * willFilter: boolean of whether the files will be filtered to contain filterText.
+ * filterText: string to filter for text containing it. 
+ 
+ Creates: directories with file IDs from the index list and writes files from the payload file into those directory. This makes a directory of directories named afer file names that contain all of the files of one file ID from the payload. 
 
 ##### Todo
 * Add name argument like [_writeFiles_](#writefiles) has and maybe more filtering options. 
