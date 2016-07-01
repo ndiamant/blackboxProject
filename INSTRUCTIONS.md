@@ -16,6 +16,16 @@ Plyj has a setup.py file, so can be installed by running ```$ python setup.py in
 The rest can be installed with ```$ pip install matplotlib numpy seaborn pylab```. 
 Plyj only works in Python 2.
 
+### Glossary
+* blackbox: the read only server that collects all of the java files from blueJ
+* file ID: part of the index, is a persistent identifier for a file used to track a file over multiple edits
+* index: A tuple of integers taken from the byte code in an index file from whitebox: (source file id, master event id, file start position, file length, compilation success [1 or 0])
+* index file: a file from white box filled with byte codes representing (source file id, master event id, file start position, file length, compilation success [1 or 0]) for the files in a payload file
+* indexList: A list of index tuples
+* payload file: a text file from whitebox full of unseparated java source files written by BlueJ users. Can be indexed into using an index file
+* whitebox: the server members of the blackbox project interact with and download payload and index files from.
+* text list: a list of strings where each string is all of the text of one source file from a payload file
+
 Structure
 ------
 The most fundamental of the programs is payloadReader.py. In general, _payloadReader.py_ is used to take an index file from whitebox (like "index-2016-01-08") and a corresponding payload file ("payload-2016-01-08") and separate the java files contained in the payload. To get individual index and payload files, you can scp from the whitebox server: ```$ scp user@white.kent.ac.uk:/data/compile-inputs/payload-2016-01-08 ~/target/directory```. ([_fileGrouper.py_](#filegrouperpy) will do it for you). 
