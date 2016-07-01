@@ -17,6 +17,7 @@ The rest can be installed with ```$ pip install matplotlib numpy seaborn pylab``
 Plyj only works in Python 2.
 
 ### Glossary
+* [abstract syntax tree](https://en.wikipedia.org/wiki/Abstract_syntax_tree): a tree data structure that represents code's structure. Generated from code to give to the compiler.
 * blackbox: the read only server that collects all of the java files from blueJ
 * file ID: part of the index, is a persistent identifier for a file used to track a file over multiple edits
 * index: A tuple of integers taken from the byte code in an index file from whitebox: (source file id, master event id, file start position, file length, compilation success [1 or 0])
@@ -26,7 +27,7 @@ Plyj only works in Python 2.
 * whitebox: the server members of the blackbox project interact with and download payload and index files from.
 * text list: a list of strings where each string is all of the text of one source file from a payload file
 
-Structure
+blackboxProject Structure
 ------
 The most fundamental of the programs is payloadReader.py. In general, _payloadReader.py_ is used to take an index file from whitebox (like "index-2016-01-08") and a corresponding payload file ("payload-2016-01-08") and separate the java files contained in the payload. To get individual index and payload files, you can scp from the whitebox server: ```$ scp user@white.kent.ac.uk:/data/compile-inputs/payload-2016-01-08 ~/target/directory```. ([_fileGrouper.py_](#filegrouperpy) will do it for you). 
 
@@ -225,4 +226,26 @@ groupByFileID(os.getcwd() + '/javaFiles', os.getcwd() + '/fileIDs')
 
 ------
 ### fileParser.py
-_fileParser.py_ uses java files prepared by [_payloadReader.py_](#payloadreaderpy) and [_fileGrouper.py_](#filegrouperpy). [plyj](https://github.com/musiKk/plyj) to run various analyses.
+_fileParser.py_ uses java files prepared by [_payloadReader.py_](#payloadreaderpy) and [_fileGrouper.py_](#filegrouperpy). [plyj](https://github.com/musiKk/plyj) to run various analyses. Plyj parses java files into abstract sytax trees, which we can search for structure and syntactic devices. The following are some useful methods.
+
+#### Index
+* [recursive tree searchs](#recursivetreesearchs)
+* [_genClassDict_](#genclassdict)
+* [_treeToFreqDict_](#treetofreqdict)
+* [_cosSimilarity_](#cossimilarity)
+* [_freqData_](#freqdata)
+* [plotting function](#plottingfunctions)
+* [PCA functions](#pcafunctions)
+* [correllation functions](#correlationfunctions)
+
+======
+#### recursive tree searchs
+
+All of the tree search functions use recursive depth first search on
+
+
+
+replace all path additions with os.join
+
+
+add gen key for correllation matrix
