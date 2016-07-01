@@ -279,10 +279,38 @@ _treeToFreqDict(tree, classDict = genClassDict())_ takes
 * tree: a plyj tree to make a frequency dictionary from
 * classDict: a dictionary of plyj classes, which represent syntactic devices, to use as keys in the frequency dictionary
  
-Returns: a dictionary with plyj classes as keys and the frequency of those class occurences in the plyj tree. E.g. 
+Returns: a dictionary with plyj classes as keys and the frequency of those class occurences in the plyj tree as the values. E.g. 
 ```python
 ({<class 'plyj.model.While'>: 5, <class 'plyj.model.ArrayAccess'>: 0, ..., 'plyj.model.ClassDeclaration'>: 1}
 ```
+To convert to a vector, use ```dict.values()```.
+
+======
+#### treeToFreqDict
+
+_cosSimilarity(freqDict1, freqDict2)_ takes
+* freqDict1: the first frequency dictionary produced by [treeToFreqDict](#treetofreqdict)
+* freqDict2: the second frequency dictionary produced by [treeToFreqDict](#treetofreqdict)
+
+Returns: Simple [cosine similarity](https://en.wikipedia.org/wiki/Cosine_similarity) as if the dictionaries were vectors.
+
+======
+#### freqData
+
+_freqData(directory, classDict = genClassDict(), recursionIncluded = False)_ takes
+* directory: the string name of a directory filled with .java files
+* classDict: a dictionary with plyj classes as keys and zeroes as values, like what is produced [genClassDict](#genclassdict).
+* recursionIncluded: a boolean whether or not to include the presence of recursion (0 or 1) as the last column of the resultant array. 
+
+Return: a numpy array where columns are frequencies of the syntactic devices included in classDict and each row is a java file.
+
+
+
+
+
+
+
+
 replace all path additions with os.join
 
 get tsne working
