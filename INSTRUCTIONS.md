@@ -373,8 +373,10 @@ cm = genCorrelationMatrix(data) #generate the correlation matrix
 corrHeatMap(cm, None) #plot a heat map of the correlation matrix
 ```
 This should produce something like the following graphics.
-![alt text](blackboxProject/figure_1.png)
+![PCA 3d](https://github.com/ndiamant/blackboxProject/blob/master/figure_1.png)
+![heat map](https://github.com/ndiamant/blackboxProject/blob/master/figure_2.png)
 
+
+Big Todo
+-------
 replace all path additions with os.join
-
-get tsne working
