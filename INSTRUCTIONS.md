@@ -354,10 +354,27 @@ Plots: a heat map of the correllation matrix.
 * Add more structural options / more flexibility for the user to add them
 * Add mutual pairwise information
 
+=====
+#### Examples
 
+Let's say we have a java file called "test.java" in the directory "/javafiles" and we want to see if it has a recursive method. 
+```$ python -i fileParser.py```
+```python
+tree = parser.parse('/javafiles/test.java') #tree is a plyj abstract syntax file
+print recursiveMethodFinder(tree)[0] #get the boolean of whether recursion is present from the tuple (boolean, tree)
+```
+What if we want to create a 3d PCA plot and a correlation matrix with all of plyj's syntactic devices and recursion as the the columns from the java files contained in /javafiles. 
+```$ python -i fileParser.py```
+```python
+data = freqData('javafiles', True) #generate the frequency data
+PCAplot3d(data) #run PCA and plot the data in 3d
+data = normalizeRows(data) #l2 normalize the rows of data
+cm = genCorrelationMatrix(data) #generate the correlation matrix
+corrHeatMap(cm, None) #plot a heat map of the correlation matrix
+```
+This should produce something like the following graphics.
+![alt text](blackboxProject/figure_1.png)
 
 replace all path additions with os.join
 
 get tsne working
-
-add gen key for correllation matrix
