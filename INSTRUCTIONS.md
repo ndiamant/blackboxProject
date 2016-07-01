@@ -140,7 +140,16 @@ _fileGrouper.py_ uses [_payloadReader.py_](#payloadreaderpy) to download and org
 
 ======
 #### getTextFiles
-_getTextFiles(indexDirectory, targetDirectory, targetText, userName)_ takes the string names of a directory containing as many whitebox index files as you want, a directory to write java files into, text to filter for, and your whitebox user name. _getTextFiles_ uses scp and then deletes the payload files one at a time to reduce memory needs. If you have not set up an ssh key, it will prompt you for your password. It creates directories organized by day and then file ID as follows:
+_getTextFiles(indexDirectory, targetDirectory, targetText, userName)_ takes 
+* indexDirectory: the string name of a directory containing as many whitebox index files as you want
+* targetDirectory: the string name of a  directory to write java files into
+* targetText: text to filter for
+* userName: your whitebox user name. 
+
+Note: _getTextFiles_ uses scp and then deletes the payload files one at a time to reduce memory needs. If you have not set up an ssh key, it will prompt you for your password.
+
+Creates: directories organized by day and then file ID as follows:
+
 ```
 ./javafiles/
 ├── 2015-12-11
@@ -165,11 +174,15 @@ _getTextFiles(indexDirectory, targetDirectory, targetText, userName)_ takes the 
 ##### Todo
 * If [_readFiles_](#readfiles) is changed as suggested in its Todo, then [_getTextFiles_](#gettextfiles) will have to be adjusted accordingly.
 * Make faster!
-* * add way to interact with external hard drive to avoid pesky download times
+* add way to interact with external hard drive to avoid pesky download times
 
 ======
 #### groupByFileID
-_groupByFileID(payloadDirectory, targetDirectory)_ takes the string name of a directory made by [[_getTextFiles_](#gettextfiles), and the string name of a new directory to copy files into. It removes the date directories, and organizes only by file ID. In each directory individual files change in ascending number order. This function is especially useful for examining how individual files change over time. The target directory's structure: 
+_groupByFileID(payloadDirectory, targetDirectory)_ takes 
+* payloadDirectory: the string name of a directory made by [[_getTextFiles_](#gettextfiles)
+* targetDirectory: the string name of a new directory to copy files into. 
+
+Creates: removes the date directories from the structure of the directory made by [_getTextFiles_](#gettextfiles), and organizes only by file ID. In each directory individual files change in ascending number order. This function is especially useful for examining how individual files change over time. The target directory's structure: 
 ```
 ./fileIDs/
 ├── 11906466
@@ -186,7 +199,7 @@ _groupByFileID(payloadDirectory, targetDirectory)_ takes the string name of a di
     └── payload7149.java
 ```
 ##### Todo
-* Replace '/*/*' with something that works on both windows and unix and DOS.
+* Replace '/\*/\*' with something that works on both windows and unix and DOS.
 
 =====
 #### Examples
