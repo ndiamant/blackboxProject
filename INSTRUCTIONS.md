@@ -24,6 +24,7 @@ Plyj only works in Python 2.
 * index file: a file from white box filled with byte codes representing (source file id, master event id, file start position, file length, compilation success [1 or 0]) for the files in a payload file
 * indexList: A list of index tuples
 * payload file: a text file from whitebox full of unseparated java source files written by BlueJ users. Can be indexed into using an index file
+* [plyj](https://github.com/musiKk/plyj): an external python library used to create abstract syntax trees from java files
 * whitebox: the server members of the blackbox project interact with and download payload and index files from.
 * text list: a list of strings where each string is all of the text of one source file from a payload file
 
@@ -260,9 +261,30 @@ Some also take a goal to search for. Here is a brief summary of the current tree
 * methodFinder and classFinder could be generalized into an object finder function
 * are these useful?
 
+======
+#### genClassDict
 
+_genClassDict()_ takes no arguments. 
 
+Returns: dictionary with plyj syntactic devices as keys and 0 (integer) as values. 
+E.g. 
+```python
+({<class 'plyj.model.While'>: 0, <class 'plyj.model.ArrayAccess'>: 0, ..., 'plyj.model.ClassDeclaration'>: 0}
+```
+
+======
+#### treeToFreqDict
+
+_treeToFreqDict(tree, classDict = genClassDict())_ takes
+* tree: a plyj tree to make a frequency dictionary from
+* classDict: a dictionary of plyj classes, which represent syntactic devices, to use as keys in the frequency dictionary
+ 
+Returns: a dictionary with plyj classes as keys and the frequency of those class occurences in the plyj tree. E.g. 
+```python
+({<class 'plyj.model.While'>: 5, <class 'plyj.model.ArrayAccess'>: 0, ..., 'plyj.model.ClassDeclaration'>: 1}
+```
 replace all path additions with os.join
 
+get tsne working
 
 add gen key for correllation matrix
