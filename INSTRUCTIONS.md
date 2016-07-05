@@ -235,8 +235,8 @@ _fileParser.py_ uses java files prepared by [_payloadReader.py_](#payloadreaderp
 * [_treeToFreqDict_](#treetofreqdict)
 * [_cosSimilarity_](#cossimilarity)
 * [_freqData_](#freqdata)
-* [PCA functions](#pcafunctions)
-* [correllation functions](#correlationfunctions)
+* [PCA functions](#pca-functions)
+* [correllation functions](#correlation-functions)
 
 ======
 #### recursive tree searches
