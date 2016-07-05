@@ -48,5 +48,3 @@ def groupByFileID(payloadDirectory, targetDirectory):
                                 shutil.copyfile(src, dst)
                                 name += 1
 
-
-#groupByFileID(os.getcwd() + '/javaFiles', os.getcwd() + '/fileIDs')

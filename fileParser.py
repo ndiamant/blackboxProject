@@ -57,6 +57,29 @@ def methodFinder(tree, goal):
         return False, tree
 
 
+def methodInvocationFinder(tree, goal):
+        """
+        finds a goal method with recursive depth first search
+        """
+
+        #base case if we have arrived at our goal method
+        if isinstance(tree, plyj.MethodInvocation):
+                if tree.__dict__['name'] == goal:
+                        return True, tree
+
+        #recursive step if we are at a list
+        if isinstance(tree, list):
+                for part in tree:
+                        result = methodInvocationFinder(part, goal)
+                        if result[0]:
+                                return result
+
+        #recursive step at a plyj class
+        if hasattr(tree,  '__dict__'):
+                return methodInvocationFinder(tree.__dict__.values(), goal)
+
+        #leaf case -> can't go any deeper and haven't found goal
+        return False, tree
 
 
 
@@ -86,31 +109,6 @@ def recursiveMethodFinder(tree):
 
 
 
-def methodInvocationFinder(tree, goal):
-        """
-        finds a goal method invocation with recursive depth first search
-        """
-        
-        #base case if we have arrived at our goal method
-        if isinstance(tree, plyj.MethodInvocation):
-                if tree.__dict__['name'] == goal:
-                                return True, tree
-
-        #recursive step if we are at a list
-        if isinstance(tree, list):
-                for part in tree:
-                        result = methodInvocationFinder(part, goal)
-                        if result[0]:
-                                return result
-
-        #recursive step at a plyj class
-        if hasattr(tree,  '__dict__'):
-                return methodInvocationFinder(tree.__dict__.values(), goal)
-
-        #leaf case -> can't go any deeper and haven't found goal
-        return False, tree
-
-
 def loopDepthFinder(tree, goal):
         """
         finds the loop depth of a method
@@ -125,7 +123,7 @@ def loopDepthFinder(tree, goal):
 
         return forLoopCounter(tree)
 
-def forLoopCounter(tree):
+def loopCounter(tree):
         """
         recursively counts number of loops in tree
         """
@@ -164,7 +162,7 @@ def classFinder(tree, goal):
 
 def lineCounter(tree, goal):
         """
-        finds the number of lines in the goal method
+        estimates the number of lines in the goal method
         """
         methodTree = methodFinder(tree, goal)
         if not methodTree[0]:
@@ -374,29 +372,13 @@ def corrHeatMap(corrmat, variableDict):
 
 def normalizeVector(vector):
         """
-        l2 normalization
+        l2 normalization of vector
         """
         return vector / np.linalg.norm(vector)
 
 
 def normalizeRows(arr):
         """
-        l2 normalization of rows
+        l2 normalization of rows of arr (numpy array).
         """
         return np.apply_along_axis(normalizeVector, 0, arr)
-
-
-
-data = freqData('/Users/cssummer16/Documents/summerResearch/blackboxProject/javafiles', genClassDict(), True)
-data = normalizeRows(data)
-cm = genCorrelationMatrix(data)
-corrHeatMap(cm,1)
-
-
-#Y = tsne.tsne(result, no_dims = 2)
-# plt.scatter(Y[:,0], Y[:,1])
-# plt.show()
-
-# narrowClassDict = {plyj.For:0, plyj.While:0, plyj.MethodDeclaration:0, plyj.ArrayCreation:0,
-#                         plyj.VariableDeclaration:0}
-        #narrowClassDict = {plyj.VariableDeclaration:0, plyj.MethodDeclaration:0}

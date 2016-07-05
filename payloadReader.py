@@ -125,12 +125,3 @@ def filterByText(textList, filterText):
 
 
 
-# fname = "index-2016-01-08"
-# indList = filterByCompilability(createIndexList(fname))
-# writeFiles(filterByText(readFiles("payload-2016-01-08", indList), 'fact'), os.getcwd() + "/javafiles")
-# writeByFileID(indList, "payload-2016-01-08", os.getcwd() + "/javafiles", os.getcwd())
-
-
-#####################################################
-# catch directory already exists in write by file
-# 
