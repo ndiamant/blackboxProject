@@ -49,7 +49,8 @@ def read4bytes(byteList):
 
 def readFiles(payloadFileName, indexList, directory = os.getcwd()):
         """
-        takes a list of tupes of (startPos, length) and returns the text of 
+        takes a list of tuples of (source file id, master event id, file start position, 
+        file length, compilation success [1 or 0]) and returns the text of 
         files from the payload file in a list
         """
         os.chdir(directory)
@@ -57,22 +58,30 @@ def readFiles(payloadFileName, indexList, directory = os.getcwd()):
         payloadFile = open(payloadFileName)
         for index in indexList:
                 payloadFile.seek(index[2])
-                textList.append(payloadFile.read(index[3]))
+                textList.append((payloadFile.read(index[3]), index))
         payloadFile.close()
         return textList
 
 
-def writeFiles(textList, directory = os.getcwd(), name = "payloadFile"):
+def writeFiles(textList, directory = os.getcwd()):
         """
         writes .java files from a text list in the specified directory with the name 'name'
         """
         os.chdir(directory)
         nameNum = 0
         for text in filterForAscii(textList):
-                file = open(name + str(nameNum) + ".java", "w")
-                file.write(text)
+                file = open(str(nameNum) + "-" +  writeName(text[1]) + ".java", "w") #WORK IN PROGRESS
+                file.write(text[0])
                 file.close()
                 nameNum += 1
+
+
+def writeName(index):
+        """
+        takes an index tuple (a, b, c, d, e) and returns "a_b_c_d_e".
+        """
+        return reduce(lambda int1, int2: str(int1) + '_' + str(int2), index)
+
 
 def filterByCompilability(indexList):
         """
@@ -86,7 +95,7 @@ def filterForAscii(textList):
         returns a textList with no text containing non ascii characters.
         Useful becuase plyj does not compile questionmarks
         """
-        return filter(lambda text: all(ord(char) < 128 and ord(char) != 13 for char in text), textList)
+        return filter(lambda text: all(ord(char) < 128 and ord(char) != 13 for char in text[0]), textList)
 
 
 def groupByFileID(indexList):
@@ -121,7 +130,7 @@ def filterByText(textList, filterText):
         """
         filters for files containing filterText
         """
-        return filter(lambda text: filterText in text, textList)
+        return filter(lambda text: filterText in text[0], textList)
 
 
 
