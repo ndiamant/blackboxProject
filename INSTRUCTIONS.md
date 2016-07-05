@@ -333,7 +333,7 @@ Plots: 3d graph of resultant PCA. Code modified from ttp://blog.nextgenetics.net
 * Investigate t-SNE as alternative
 
 ======
-#### correllation functions
+#### correlation functions
 
 These functions are used to find correllations between the frequencies of different syntactic devices and structures (e.g. while loops vs. recursion).
 
