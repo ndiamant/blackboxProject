@@ -230,7 +230,7 @@ groupByFileID(os.getcwd() + '/javaFiles', os.getcwd() + '/fileIDs')
 _fileParser.py_ uses java files prepared by [_payloadReader.py_](#payloadreaderpy) and [_fileGrouper.py_](#filegrouperpy) to run various analyses. [Plyj](https://github.com/musiKk/plyj) parses java files into abstract sytax trees, which we can search for structure and syntactic devices. The following are some useful methods.
 
 #### Index
-* [recursive tree searches](#recursivetreesearches)
+* [recursive tree searches](#recursive-tree-searches)
 * [_genClassDict_](#genclassdict)
 * [_treeToFreqDict_](#treetofreqdict)
 * [_cosSimilarity_](#cossimilarity)
@@ -289,7 +289,7 @@ To convert to a vector, use ```dict.values()```.
 * Complete for now
 
 ======
-#### treeToFreqDict
+#### cosSimilarity
 
 _cosSimilarity(freqDict1, freqDict2)_ takes
 * freqDict1: the first frequency dictionary produced by [_treeToFreqDict_](#treetofreqdict)
