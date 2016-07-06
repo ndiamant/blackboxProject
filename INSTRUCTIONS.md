@@ -98,7 +98,7 @@ Returns: where nameNum left off so that it can be used as an argument if you wan
 
 ##### Todo
 * ~~If [_readFiles_](#readfiles) is modified as suggested in its Todo, then [_writeByFileID_](#writebyfileid) could be broken into two parts allowing for more modularity.~~
-* Really slow for some reason. Maybe calls _writeFiles_ too much? Make faster
+* ~~Really slow for some reason. Maybe calls _writeFiles_ too much? Make faster~~
 
 ======
 #### Filters
@@ -143,46 +143,40 @@ writeByFileID(indList, "payload-2016-01-08", os.getcwd() + "/javafiles", os.getc
 _fileGrouper.py_ uses [_payloadReader.py_](#payloadreaderpy) to download and organize java files from whitebox in two different ways.
 
 #### Index
-* [_getTextFiles_](#getextfiles)
+* [_downloadFiles_](#downloadfiles)
 * [_groupByFileID_](#groupbyfileid)
 
 ======
-#### getTextFiles
+#### downloadFiles
 _getTextFiles(indexDirectory, targetDirectory, targetText, userName)_ takes 
 * indexDirectory: the string name of a directory containing as many whitebox index files as you want
 * targetDirectory: the string name of a  directory to write java files into
 * targetText: text to filter for
 * userName: your whitebox user name. 
 
-Note: _getTextFiles_ uses scp and then deletes the payload files one at a time to reduce memory needs. If you have not set up an ssh key, it will prompt you for your password.
+Note: _downloadFiles_ uses scp and then deletes the payload files one at a time to reduce memory needs. If you have not set up an ssh key, it will prompt you for your password.
 
-Creates: directories organized by day and then file ID as follows:
+Creates: directories organized by file ID as follows (numbers changed):
 
 ```
-./javafiles/
-├── 2015-12-11
-│   ├── 23486260
-│   │   ├── payloadFile0.java
-│   │   ├── payloadFile1.java
-│   │   └── payloadFile2.java
-│   ├── 26796734
-│   │   ├── payloadFile0.java
-│   │   └── payloadFile1.java
-│   └── 26875865
-│       ├── payloadFile0.java
-└── 2016-06-17
-    ├── 34640886
-    │   └──  payloadFile0.java
-    ├── 34651751
-    │   ├── payloadFile0.java
-    │   └── payloadFile5.java
-    └── 34651753
-        └── payloadFile0.java
+./fileIDs/
+├── 11906466
+│   ├── 1-42672857580_66540639979_5163141404_2003_0.java
+│   ├── 2-22058468999_53553909601_33775421920_7542_0.java
+│   └── 3-4838763481_1938435831_288494704_1205_1.java
+├── 17425200
+│   └── 11-75600203909_41689441101_12272300484_8357_1.java
+├── 21393086
+│   └── 1094-64388989835_6237917835_91737326872_3000_1.java
+└── 34804768
+    ├── 2001-41873840350_9282766561_85139233772_5934_1.java
+    ├── 2002-55035693709_51433760997_32553944316_2773_1.java
+    └── 2003-2148356413_3068529452_18430471490_8169_0.java
 ```
 ##### Todo
-* If [_readFiles_](#readfiles) is changed as suggested in its Todo, then [_getTextFiles_](#gettextfiles) will have to be adjusted accordingly.
+* ~~If [_readFiles_](#readfiles) is changed as suggested in its Todo, then [_getTextFiles_](#gettextfiles) will have to be adjusted accordingly.~~
+* ~~add way to interact with external hard drive to avoid pesky download times~~
 * Make faster!
-* add way to interact with external hard drive to avoid pesky download times
 
 ======
 #### groupByFileID
@@ -191,23 +185,9 @@ _groupByFileID(payloadDirectory, targetDirectory)_ takes
 * targetDirectory: the string name of a new directory to copy files into. 
 
 Creates: removes the date directories from the structure of the directory made by [_getTextFiles_](#gettextfiles), and organizes only by file ID. In each directory individual files change in ascending number order. This function is especially useful for examining how individual files change over time. The target directory's structure: 
-```
-./fileIDs/
-├── 11906466
-│   ├── payload1670.java
-│   ├── payload1671.java
-│   └── payload1672.java
-├── 17425200
-│   └── payload6447.java
-├── 21393086
-│   └── payload542.java
-└── 34804768
-    ├── payload7111.java
-    ├── payload7112.java
-    └── payload7149.java
-```
+
 ##### Todo
-* Replace '/\*/\*' with something that works on both windows and unix and DOS.
+* ~~Replace '/\*/\*' with something that works on both windows and unix and DOS.~~
 
 =====
 #### Examples
