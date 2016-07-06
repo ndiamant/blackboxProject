@@ -54,25 +54,3 @@ def bigTextList(indexDirectory, payloadDirectory):
         end = time.time()
         print(end - start)
         return textList              
-
-# def groupByFileID(payloadDirectory, targetDirectory):
-#         """
-#         uses a directory built by getTextFiles and groups text by 
-#         """
-#         IDlist = []
-#         name = 0
-#         paths = glob.glob(payloadDirectory + os.sep + '/*/*') # make / os.sep
-#         for path in paths:
-#                 ID = os.path.basename(os.path.normpath(path))
-#                 targetDir = targetDirectory  + os.sep + ID
-#                 if ID not in IDlist:
-#                         os.mkdir(targetDir)
-#                         IDlist.append(ID)
-#                 for p, d, f in os.walk(path):
-#                         for file in f:
-#                                 dst = targetDir + os.sep + 'payload' + str(name) + '.java'
-#                                 src = path + os.sep + file
-#                                 shutil.copyfile(src, dst)
-#                                 name += 1
-
-
