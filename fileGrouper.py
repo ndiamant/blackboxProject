@@ -4,6 +4,12 @@ import time
 import glob
 import shutil
 
+
+print "None of this works in the current update"
+
+
+
+
 def getTextFiles(indexDirectory, targetDirectory, targetText, userName):
         """
         Takes a directory, indexDirectory, of index files assumed to be named like they are
@@ -47,4 +53,5 @@ def groupByFileID(payloadDirectory, targetDirectory):
                                 src = path + os.sep + file
                                 shutil.copyfile(src, dst)
                                 name += 1
+
 

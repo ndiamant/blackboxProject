@@ -63,18 +63,20 @@ def readFiles(payloadFileName, indexList, directory = os.getcwd()):
         return textList
 
 
-def writeFiles(textList, directory = os.getcwd()):
+def writeFiles(textList, directory = os.getcwd(), nameNum = 0):
         """
-        writes .java files from a text list in the specified directory with the name 'name'
+        writes .java files from a text list in the specified directory. nameNum
+        is an iterator so that you can tell the order of the files.
         """
         os.chdir(directory)
-        nameNum = 0
+
         for text in filterForAscii(textList):
-                file = open(str(nameNum) + "-" +  writeName(text[1]) + ".java", "w") #WORK IN PROGRESS
+                file = open(str(nameNum) + "-" +  writeName(text[1]) + ".java", "w")
                 file.write(text[0])
                 file.close()
                 nameNum += 1
 
+        return nameNum
 
 def writeName(index):
         """
@@ -98,33 +100,19 @@ def filterForAscii(textList):
         return filter(lambda text: all(ord(char) < 128 and ord(char) != 13 for char in text[0]), textList)
 
 
-def groupByFileID(indexList):
+def writeByFileID(textList, directory):
         """
-        creates list of lists of indices grouped by file ID going in increasing time order
+        write .java files from textList into directory grouped in directories
+        by file ID.
         """
-        return sorted(indexList, key = lambda index: index[0])
+        textList = sorted(textList, key = lambda entry: entry[1][0])
+        nameNum = 0
+        # key is the file ID, group is an iterable of the all the entries corresponding to the key
+        for key, group in itertools.groupby(textList, lambda entry: entry[1][0]):
+                currentDir = os.path.join(directory, str(key))
+                os.makedirs(currentDir)
+                nameNum = writeFiles(list(group), currentDir, nameNum)
 
-
-def writeByFileID(indexList, payloadFileName, writeDir, readDir = os.getcwd(), willFilter = False, filterText = ''):
-        """
-        takes an index file and payload file, a directory to read the payload from, and
-        a directory to put the files in and creates directories filled with the 
-        progress of one file ID
-        """
-        indexList = groupByFileID(indexList)
-        for key, group in itertools.groupby(indexList, lambda index: index[0]):
-                os.chdir(readDir)
-                textList = filterForAscii(readFiles(payloadFileName, list(group), readDir))
-                
-                if willFilter:
-                        textList = filterByText(textList, filterText)
-                
-                currentDir = os.path.join(writeDir, str(key))
-                if textList:
-                        os.makedirs(currentDir)
-                        os.chdir(currentDir)            
-                        writeFiles(textList, currentDir)
-                
 
 def filterByText(textList, filterText):
         """
