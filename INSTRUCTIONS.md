@@ -26,7 +26,7 @@ Plyj only works in Python 2.
 * payload file: a text file from whitebox full of unseparated java source files written by BlueJ users. Can be indexed into using an index file
 * [plyj](https://github.com/musiKk/plyj): an external python library used to create abstract syntax trees from java files
 * whitebox: the server members of the blackbox project interact with and download payload and index files from.
-* text list: a list of strings where each string is all of the text of one source file from a payload file
+* text list: a list of (string, index) tuples where each string is all of the text of one source file from a payload file
 
 blackboxProject Structure
 ------
@@ -61,20 +61,21 @@ _readFiles(payloadFile, indexList, directory = os.getcwd())_ takes
 * indexList: an index list made by [_createIndexList_](#createindexlist)
 * directory: the directory (string) the payload is in. 
 
-Returns: a list of strings where each string is an entire java file from the payload. The text can be put into individual files using [_writeFiles_](#writefiles).
+Returns: a list of (string, index) tuples where each string is all of the text of one source file from a payload file. The text can be put into individual files using [_writeFiles_](#writefiles).
 
 ##### Todo
-* Considering making [_readFiles_](#readfiles) return a list of tuples with (text, index) so that the index can still be used for stuff like naming the files that get written from the text list.
+* ~~Considering making [_readFiles_](#readfiles) return a list of tuples with (text, index) so that the index can still be used for stuff like naming the files that get written from the text list.~~
 
 ======
 #### writeFiles
 
-_writeFiles(textList, directory = os.getcwd(), name = "payloadFile")_ takes
+_writeFiles(textList, directory = os.getcwd(), nameNum = 0)_ takes
 * textList: a text list made by [_readFiles_](#readfiles)
 * directory: a directory (string) where it will write files with the .java extension
-* name: a name to call the java files. The files are named "[name][number].java", where number is an iterated integer counting from zero.
+* nameNum: where the name iterator starts from.
  
 Creates: a directory filled with .java files with the following structure.
+Returns: where nameNum left off so that it can be used as an argument if you want to use writeFiles again in the same directory.
 ```
 2015-12-11
 ├── payload0.java
@@ -84,7 +85,7 @@ Creates: a directory filled with .java files with the following structure.
 ```
 
 ##### Todo
-* If [_readFiles_](#readfiles) is changed as suggested in its Todo, then [_writeFiles_](#writefiles) will have to be changed accordingly. If this change is implemented, I will also change the naming convention to use the index.
+* ~~If [_readFiles_](#readfiles) is changed as suggested in its Todo, then [_writeFiles_](#writefiles) will have to be changed accordingly. If this change is implemented, I will also change the naming convention to use the index.~~
 
 ======
 #### writeByFileID
@@ -377,6 +378,7 @@ This should produce something like the following graphics.
 ![heat map](https://github.com/ndiamant/blackboxProject/blob/master/figure_2.png)
 
 
-Big Todo
+Big Todos
 -------
-replace all path additions with os.join
+* replace all path additions with os.join
+* improve commenting
