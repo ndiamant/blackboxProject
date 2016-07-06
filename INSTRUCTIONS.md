@@ -90,19 +90,14 @@ Returns: where nameNum left off so that it can be used as an argument if you wan
 ======
 #### writeByFileID
 
- _writeByFileID(indexList, payloadFileName, writeDir, readDir = os.getcwd(), willFilter = False, filterText = '')_ takes 
- * indexList: an index list from [_createIndexList_](#createindexlist)
- * payloadFileName: string of the payload file's name
- * writeDir: string of the directory where files will be written into
- * readDir: string  of the directory where the payload is
- * willFilter: boolean of whether the files will be filtered to contain filterText.
- * filterText: string to filter for text containing it. 
+ _writeByFileIDwriteByFileID(textList, directory)_ takes 
+ * textList: an index list from [_createIndexList_](#createindexlist)
+ * directory: a directory to write into
  
- Creates: directories with file IDs from the index list and writes files from the payload file into those directory. This makes a directory of directories named afer file names that contain all of the files of one file ID from the payload. 
+ Creates: a directory of directories named afer file names that contain all of the files of one file ID from the text list. 
 
 ##### Todo
-* Add name argument like [_writeFiles_](#writefiles) has and maybe more filtering options. 
-* If [_readFiles_](#readfiles) is modified as suggested in its Todo, then [_writeByFileID_](#writebyfileid) could be broken into two parts allowing for more modularity.
+* ~~If [_readFiles_](#readfiles) is modified as suggested in its Todo, then [_writeByFileID_](#writebyfileid) could be broken into two parts allowing for more modularity.~~
 * Really slow for some reason. Maybe calls _writeFiles_ too much? Make faster
 
 ======
@@ -125,7 +120,7 @@ _filterForAscii(textList)_ takes
 Returns: a list of text with pure ascii characters.
 
 ##### Todo
-* If [_readFiles_](#readfiles) changes its text list format, the functions that filter text lists will have to be modified accordingly.
+* ~~If [_readFiles_](#readfiles) changes its text list format, the functions that filter text lists will have to be modified accordingly.~~
 
 =====
 #### Examples
