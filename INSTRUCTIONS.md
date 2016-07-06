@@ -197,8 +197,11 @@ Let's say we want to download all of the java file that contain "fibonacci" into
 ```python
 #download payloads, convert to java files, and organize into javafiles directory
 getTextFiles('/Users/username/Desktop/indices', os.getcwd() + '/javaFiles', 'fibonacci’,  ‘user’) 
-#copy files into new structure in fileIDs directory.
-groupByFileID(os.getcwd() + '/javaFiles', os.getcwd() + '/fileIDs') 
+```
+Instead we have all of the index and payload files in a directory called "allfiles" and want to get one big text list from them.
+```
+#generate the text list
+textList = bigTextList('/allfiles', '/allfiles') 
 ```
 
 ------
