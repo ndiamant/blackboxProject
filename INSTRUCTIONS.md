@@ -90,7 +90,7 @@ Returns: where nameNum left off so that it can be used as an argument if you wan
 ======
 #### writeByFileID
 
- _writeByFileIDwriteByFileID(textList, directory)_ takes 
+ _writeByFileID(textList, directory)_ takes 
  * textList: an index list from [_createIndexList_](#createindexlist)
  * directory: a directory to write into
  
@@ -125,7 +125,7 @@ Returns: a list of text with pure ascii characters.
 =====
 #### Examples
 
-Let's say we have an index file named "index-2016-01-08" and a payload file named "payload-2016-01-08" in the same directory as [_payloadReader.py](#payloadreaderpy) and we want to fill a directory called "javafiles" with all of the compiliable java files in payload that contain the text "factorial", and we want the java files to be named "test[iterator].java".
+Let's say we have an index file named "index-2016-01-08" and a payload file named "payload-2016-01-08" in the same directory as [_payloadReader.py](#payloadreaderpy) and we want to fill a directory called "javafiles" with all of the compiliable java files in payload that contain the text "factorial".
 
 ```$ python -i payloadReader.py```
 ```python
@@ -133,9 +133,9 @@ fname = "index-2016-01-08"
 indList = filterByCompilability(createIndexList(fname)) #create the index list filtered for compilability
 textList = readFiles("payload-2016-01-08", indList) #create the text list
 textList = filterByText(textList, 'factorial') #filter so all text contains "factorial"
-writeFiles(textList, os.getcwd() + "/javafiles", 'test') #write the files into the /javafiles directory
+writeFiles(textList, os.getcwd() + "/javafiles") #write the files into the /javafiles directory
 #If instead we want to group the files by their file IDs and find files that contain "fibonacci"
-writeByFileID(indList, "payload-2016-01-08", os.getcwd() + "/javafiles", os.getcwd(), True, 'fibonacci')
+writeByFileID(textList, os.getcwd() + "/javafiles")
 ```
 
 ------
@@ -144,7 +144,7 @@ _fileGrouper.py_ uses [_payloadReader.py_](#payloadreaderpy) to download and org
 
 #### Index
 * [_downloadFiles_](#downloadfiles)
-* [_groupByFileID_](#groupbyfileid)
+* [_bigTextList_](#bigtextlist)
 
 ======
 #### downloadFiles
@@ -179,12 +179,12 @@ Creates: directories organized by file ID as follows (numbers changed):
 * Make faster!
 
 ======
-#### groupByFileID
-_groupByFileID(payloadDirectory, targetDirectory)_ takes 
-* payloadDirectory: the string name of a directory made by [[_getTextFiles_](#gettextfiles)
-* targetDirectory: the string name of a new directory to copy files into. 
+#### bigTextList
+_bigTextList(indexDirectory, payloadDirectory)_ takes 
+* indexDirectory: the string name of a directory full of index files named as they are on whitebox.
+* payloadDirectory: the string name of a directory full of payload files named as they are on whitebox. 
 
-Creates: removes the date directories from the structure of the directory made by [_getTextFiles_](#gettextfiles), and organizes only by file ID. In each directory individual files change in ascending number order. This function is especially useful for examining how individual files change over time. The target directory's structure: 
+Returns: A text list containing all of the java files from the index-payload pairs in indexDirectory.
 
 ##### Todo
 * ~~Replace '/\*/\*' with something that works on both windows and unix and DOS.~~
