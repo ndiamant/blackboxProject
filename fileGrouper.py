@@ -1,8 +1,6 @@
 import os
 import payloadReader
 import time
-import glob
-import shutil
 
 
 def downloadFiles(indexDirectory, targetDirectory, targetText, userName):
@@ -20,16 +18,16 @@ def downloadFiles(indexDirectory, targetDirectory, targetText, userName):
                         scpCommand = 'scp ' + userName + '@white.kent.ac.uk:/data/compile-inputs/' + payload + ' ' + targetDirectory
                         os.system(scpCommand)
                         indexList = payloadReader.createIndexList(file, indexDirectory)
-                        textList.append(filterByText(readFiles(indexList), targetText))
+                        textList.append(filterByText(payloadReader.readFiles(indexList), targetText))
                         os.remove(os.path.join(targetDirectory, payload))
 
-        writeByFileID(textList, targetDirectory)
+        payloadReader.writeByFileID(textList, targetDirectory)
         end = time.time()
         print(end - start)
         return textList
 
 
-def bigTextList(indexDirectory, payloadDirectory):
+def bigTextList(indexDirectory, payloadDirectory, willFilter = False, targetText = None):
         """
         Goes through all of the index files from indexDirectory, finds matching payload files from
         payloadDirectory and returns a text list. Files are assumed to be named like they are
@@ -39,18 +37,25 @@ def bigTextList(indexDirectory, payloadDirectory):
         start = time.time()
         finalList = []
         for p, d, f in os.walk(indexDirectory): # path, directories, files
-                f = filter(lambda x: "index" in x, f) # make sure only using index files
-                filesRead = 0
-                for file in f:
-                        percentDone = 100.0 *  filesRead / len(f)
-                        if filesRead % 10 == 0:
-                                print '{:.3f} percent done'.format(percentDone)
+                f = sorted(filter(lambda x: "index" in x, f)) # make sure only using index files in time increasing order               
+                time1, time2 = 0, time.time()
+                for filesRead, file in enumerate(f): 
+                        # print progress
+                        if filesRead % 10 == 0 and not filesRead == 0:
+                                time1, time2 = time2, time.time()
+                                percentDone = 100.0 *  filesRead / len(f)
+                                print '{:.3f}% done\nLast batch done in {:.3f} files per second.'.format(percentDone, 10 / (time2 - time1))
+
                         payload = 'payload-' + file[6:]
                         indexList = payloadReader.createIndexList(file, indexDirectory)
-                        textList = payloadReader.readFiles(payload, indexList, payloadDirectory)
+                        if willFilter:
+                                textList = payloadReader.filterByText(payloadReader.readFiles(payload, indexList, payloadDirectory), targetText)
+                        else: 
+                                textList = payloadReader.readFiles(payload, indexList, payloadDirectory)
                         finalList += textList
-                        filesRead += 1
+                        textList = []
+                        indexList = []
                 break
         end = time.time()
-        print(end - start)
-        return textList              
+        print 'Time elapsed: ' + end - start + ' seconds' 
+        return finalList

@@ -47,7 +47,7 @@ def read4bytes(byteList):
         return (byteList[0] * 2**24 + byteList[1] * 2**16 + 
                         byteList[2] * 2**8 + byteList[3])
 
-def readFiles(payloadFileName, indexList, directory = os.getcwd()):
+def readFiles(payloadFileName, indexList, directory = os.getcwd(), willFilter = False, targetText = None):
         """
         takes a list of tuples of (source file id, master event id, file start position, 
         file length, compilation success [1 or 0]) and returns the text of 
@@ -58,7 +58,12 @@ def readFiles(payloadFileName, indexList, directory = os.getcwd()):
         payloadFile = open(payloadFileName)
         for index in indexList:
                 payloadFile.seek(index[2])
-                textList.append((payloadFile.read(index[3]), index))
+                if willFilter:
+                        text = payloadFile.read(index[3])
+                        if targetText in text:
+                                textList.append((text, index))
+                else:
+                        textList.append((payloadFile.read(index[3]), index))
         payloadFile.close()
         return textList
 
