@@ -47,6 +47,7 @@ def bigTextList(indexDirectory, payloadDirectory, willFilter = False, targetText
                                 print '{:.3f}% done\nLast batch done in {:.3f} files per second.'.format(percentDone, 10 / (time2 - time1))
 
                         payload = 'payload-' + file[6:]
+                        print payload
                         indexList = payloadReader.createIndexList(file, indexDirectory)
                         if willFilter:
                                 textList = payloadReader.readFiles(payload, indexList, payloadDirectory, True, targetText)
