@@ -37,7 +37,7 @@ def bigTextList(indexDirectory, payloadDirectory, willFilter = False, targetText
         start = time.time()
         finalList = []
         for p, d, f in os.walk(indexDirectory): # path, directories, files
-                f = sorted(filter(lambda x: "index" in x, f)) # make sure only using index files in time increasing order               
+                f = sorted(filter(lambda x: "index" in x and '#' not in x, f)) # make sure only using index files in time increasing order               
                 time1, time2 = 0, time.time()
                 for filesRead, file in enumerate(f): 
                         # print progress
