@@ -65,7 +65,7 @@ def readFiles(payloadFileName, indexList, directory = os.getcwd(), willFilter = 
                 else:
                         textList.append((payloadFile.read(index[3]), index))
         payloadFile.close()
-        return textList
+        return textList 
 
 
 def writeFiles(textList, directory = os.getcwd(), nameNum = 0):

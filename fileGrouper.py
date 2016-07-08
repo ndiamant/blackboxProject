@@ -23,7 +23,7 @@ def downloadFiles(indexDirectory, targetDirectory, targetText, userName):
 
         payloadReader.writeByFileID(textList, targetDirectory)
         end = time.time()
-        print(end - start)
+        print 'Time elapsed: ' + str(end - start) + ' seconds' 
         return textList
 
 
@@ -49,7 +49,7 @@ def bigTextList(indexDirectory, payloadDirectory, willFilter = False, targetText
                         payload = 'payload-' + file[6:]
                         indexList = payloadReader.createIndexList(file, indexDirectory)
                         if willFilter:
-                                textList = payloadReader.filterByText(payloadReader.readFiles(payload, indexList, payloadDirectory), targetText)
+                                textList = payloadReader.readFiles(payload, indexList, payloadDirectory, True, targetText)
                         else: 
                                 textList = payloadReader.readFiles(payload, indexList, payloadDirectory)
                         finalList += textList
@@ -57,5 +57,5 @@ def bigTextList(indexDirectory, payloadDirectory, willFilter = False, targetText
                         indexList = []
                 break
         end = time.time()
-        print 'Time elapsed: ' + end - start + ' seconds' 
+        print 'Time elapsed: ' + str(end - start) + ' seconds' 
         return finalList
