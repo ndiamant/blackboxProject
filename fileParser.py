@@ -317,7 +317,7 @@ def freqData(directory, classDict = genClassDict(), recursionIncluded = False):
         frequencyList = []
         start = time.time()
         for p, d, f in os.walk(directory): # path, directories, files
-                f = filter(lambda x: ".java" in x, f)
+                f = sorted(filter(lambda x: ".java" in x, f))
                 for i in f:
                         tree = parser.parse_file(pj(p,i))
                         freqVec = treeToFreqDict(tree, classDict).values()
