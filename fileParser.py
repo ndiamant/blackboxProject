@@ -362,10 +362,13 @@ def genCorrelationMatrix(data):
         return np.corrcoef(np.transpose(data))
 
 
-def corrHeatMap(corrmat, variableDict):
+def corrHeatMap(corrmat, title = ''):
         """draws a correllation heat map using SNS corrmat"""
         f, ax = plt.subplots(figsize=(12, 9))
-        sns.heatmap(corrmat, vmax = .9, square = True)
+        ticks = int(round(corrmat.shape[0]/10,-1))
+        sns.heatmap(corrmat, vmax = .9, square = True, xticklabels = ticks, yticklabels = ticks)
+        if title:
+                sns.plt.title(title)
         #f.tight_layout()
         plt.show()
 
@@ -382,3 +385,5 @@ def normalizeRows(arr):
         l2 normalization of rows of arr (numpy array).
         """
         return np.apply_along_axis(normalizeVector, 0, arr)
+
+
