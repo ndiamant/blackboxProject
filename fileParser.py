@@ -366,7 +366,10 @@ def corrHeatMap(corrmat, title = ''):
         """draws a correllation heat map using SNS corrmat"""
         f, ax = plt.subplots(figsize=(12, 9))
         ticks = int(round(corrmat.shape[0]/10,-1))
-        sns.heatmap(corrmat, vmax = .9, square = True, xticklabels = ticks, yticklabels = ticks)
+        if ticks > 5:
+                sns.heatmap(corrmat, vmax = .9, square = True, xticklabels = ticks, yticklabels = ticks)
+        else:
+                sns.heatmap(corrmat, vmax = .9, square = True)
         if title:
                 sns.plt.title(title)
         #f.tight_layout()

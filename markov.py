@@ -42,17 +42,15 @@ def generalMarkov(textList, stateFunc, order = 1):
         # find the state of each file so that only has to be done once for each
         states = map(stateFunc, textList)
         # find all of the possible state combinations and put in a static order 
-        labels = sorted(list(itertools.combinations_with_replacement(set(states), order)))
+        if order == 1:
+                labels = stateLabels = sorted(list(set(states)))
+        else:
+                labels = sorted(list(itertools.combinations_with_replacement(set(states), order)))
         # label for each state
         stateLabels = sorted(list(set(states)))
         # create the order-dimensional list of states 
-        defaultList = [0]
         numStates = len(stateLabels)
-        for i in xrange(order):
-                defaultList = [numStates * defaultList]
-        defaultList = defaultList[0]
-        # create the transition dictionary using defaultList
-        transDict = defaultdict(lambda: np.array(defaultList))       
+        transArray = np.zeros((numStates,) * (order + 1))
         # an iterator to know where to index into states
         counter = 0      
         # key is the file ID, group is an iterable of the all the entries corresponding to the key
@@ -61,39 +59,38 @@ def generalMarkov(textList, stateFunc, order = 1):
                 length = len(list(group))
                 # loop through items of group
                 for index in xrange(0, length - order):               
-                        # find the state a 
+                        # find the states transitioned to
                         state = []
+                        # first state transitioned to is row, next is column, etc.
                         for step in xrange(0, order):
                                 state.append(stateLabels.index(states[index + step + counter + 1]))
                         # index using the state and updat transDict
-                        transDict[states[index + counter]][tuple(state)] += 1
-                        # print state
-                        # print len(states)
+                        transArray[stateLabels.index(states[index + counter])][tuple(state)] += 1
                 counter += length
-
-        return transDict, labels
-
-
-
-import pickle
-f = open('tl.txt')
-tl = pickle.load(f)
-td, labs = generalMarkov(tl, lambda x: countLines(x[0]))
-data = []
-for i in labs:
-        data.append(fileParser.normalizeVector(td[i[0]]))
-        data2 = []
-
-data = np.array(data)
-NaNs = np.isnan(data)
-data[NaNs] = 0 #nans to 0
-
-
-fileParser.corrHeatMap(data, '1st-order Markov of {} files'.format(len(tl)))
+        return transArray, labels
 
 
 
+def testFunc(text):
+        if 'printAuthor' in text: 
+                return 1
+        elif 'printTitle' in text:
+                return 2
+        elif 'getPages' in text:
+                return 3
+        elif 'printDetails' in text:
+                return 4
+        elif 'setRefNumber' in text:
+                return 5
+        elif 'getRefNumber' in text:
+                return 6
+        else: 
+                return 0      
 
-
-
+def laplaceSmooth(vector, k):
+        """
+        laplace smooth a n by 1 vector with constant k
+        """
+        total = float(sum(vector))
+        return map(lambda entry: (entry + k)/(total + k * len(vector)), vector)
 
