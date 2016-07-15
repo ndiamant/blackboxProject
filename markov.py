@@ -5,6 +5,7 @@ from collections import defaultdict
 import numpy as np
 import fileParser
 import itertools
+import re
 
 def countLines(text):
         return text.count('\n')
@@ -93,4 +94,9 @@ def laplaceSmooth(vector, k):
         """
         total = float(sum(vector))
         return map(lambda entry: (entry + k)/(total + k * len(vector)), vector)
+
+
+def printDetailsState(text):
+        printDetailsText = re.search('(re.DOTALL)printDetails(re.DOTALL){(re.DOTALL)}', text)[2]
+        print printDetailsText
 
