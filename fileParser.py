@@ -87,7 +87,7 @@ def findGoal(tree, goalType, goalName):
         finds a goalType in tree named goalName
         """
         if isinstance(tree, goalType):
-                if tree.__dict__['name'] == goal:
+                if tree.__dict__['name'] == goalName:
                         return True, tree
 
         #recursive step if we are at a list
