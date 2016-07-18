@@ -97,6 +97,8 @@ def laplaceSmooth(vector, k):
 
 
 def printDetailsState(text):
-        printDetailsText = re.search('(re.DOTALL)printDetails(re.DOTALL){(re.DOTALL)}', text)[2]
+        printDetailsLine = text.split('\n')
+        printDetailsLine = filter(lambda line: 'printDetails' in line, printDetailsLine)
+        printDetailsText = printDetailsLine[0] + re.search('(.*)printDetails\(.*\)\{(.*)\}', text, re.DOTALL).group(2)
         print printDetailsText
 

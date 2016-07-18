@@ -82,6 +82,28 @@ def methodInvocationFinder(tree, goal):
         return False, tree
 
 
+def findGoal(tree, goalType, goalName):
+        """
+        finds a goalType in tree named goalName
+        """
+        if isinstance(tree, goalType):
+                if tree.__dict__['name'] == goal:
+                        return True, tree
+
+        #recursive step if we are at a list
+        if isinstance(tree, list):
+                for part in tree:
+                        result = findGoal(part, goalType, goalName)
+                        if result[0]:
+                                return result
+
+        #recursive step at a plyj class
+        if hasattr(tree,  '__dict__'):
+                return findGoal(tree.__dict__.values(), goalType, goalName)
+
+        #leaf case -> can't go any deeper and haven't found goal
+        return False, tree
+
 
 def recursiveMethodFinder(tree):
         """
