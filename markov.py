@@ -6,6 +6,7 @@ import numpy as np
 import fileParser
 import itertools
 import re
+import payloadReader
 
 def countLines(text):
         return text.count('\n')
@@ -97,8 +98,47 @@ def laplaceSmooth(vector, k):
 
 
 def printDetailsState(text):
-        printDetailsLine = text.split('\n')
-        printDetailsLine = filter(lambda line: 'printDetails' in line, printDetailsLine)
-        printDetailsText = printDetailsLine[0] + re.search('(.*)printDetails\(.*\)\{(.*)\}', text, re.DOTALL).group(2)
-        print printDetailsText
+        """ 
+        before passing to this method, filter the textList as follows:
+        textList = filter(lambda x: 'printDetails' in x[0], textList)
+        """
+        state = 0
+        try:
+                tree = fileParser.parser.parse_string(text)
+        except Exception:
+                return 0
+        tree = fileParser.methodFinder(tree, 'printDetails')[1]
+        if equal(tree, 'return_type', 'void'):
+                state = 1
+                if tree.parameters == []:
+                        state = 2
+                        tree = tree.body
+                        if tree:
+                                expressionStatements = filter(lambda x: isinstance(x, fileParser.plyj.ExpressionStatement), tree)
+                                statesPresent = [False, False, False] # prints author, prints title, prints pages
+                                for expressionStatement in expressionStatements:
+                                        expression = expressionStatement.expression
+                                        if equal(expression, 'name', 'println') or equal(expression, 'name', 'print'):
+                                                if fileParser.findGoal(expression.arguments, str, 'author')[0]:
+                                                        statesPresent[0] = True
+                                                if fileParser.findGoal(expression.arguments, str, 'title')[0]:
+                                                        statesPresent[1] = True
+                                                if fileParser.findGoal(expression.arguments, str, 'pages')[0]:
+                                                        statesPresent[2] = True
+                                # binary coding of all combinations of author, title, pages
+                                state += int(statesPresent[0]) + 2 * int(statesPresent[1]) + 4 * int(statesPresent[2]) 
+        return state
+        # printDetailsLine = text.split('\n')
+        # printDetailsLine = filter(lambda line: 'printDetails' in line, printDetailsLine)
+        # printDetailsText = printDetailsLine[0] + re.search('(.*)printDetails\(.*\)\{(.*)\}', text, re.DOTALL).group(2)
+        # print printDetailsText
+
+
+def equal(a, attr, b):
+        try:
+                if a.attr == b:
+                        return True
+        except Exception:
+                return False
+
 

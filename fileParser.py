@@ -87,9 +87,14 @@ def findGoal(tree, goalType, goalName):
         finds a goalType in tree named goalName
         """
         if isinstance(tree, goalType):
-                if tree.__dict__['name'] == goalName:
-                        return True, tree
-
+                if goalType == str:
+                        if tree == goalName:
+                                return True, tree
+                try:
+                        if tree.__dict__['name'] == goalName:
+                                return True, tree
+                except Exception:
+                        pass
         #recursive step if we are at a list
         if isinstance(tree, list):
                 for part in tree:
@@ -100,6 +105,28 @@ def findGoal(tree, goalType, goalName):
         #recursive step at a plyj class
         if hasattr(tree,  '__dict__'):
                 return findGoal(tree.__dict__.values(), goalType, goalName)
+
+        #leaf case -> can't go any deeper and haven't found goal
+        return False, tree
+
+
+def checkInstance(tree, goalType):
+        """
+        finds whether or not there is an instance of goalType in the tree
+        """
+        if isinstance(tree, goalType):
+                return True, tree
+
+        #recursive step if we are at a list
+        if isinstance(tree, list):
+                for part in tree:
+                        result = checkInstance(part, goalType)
+                        if result[0]:
+                                return result
+
+        #recursive step at a plyj class
+        if hasattr(tree,  '__dict__'):
+                return checkInstance(tree.__dict__.values(), goalType)
 
         #leaf case -> can't go any deeper and haven't found goal
         return False, tree
