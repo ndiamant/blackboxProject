@@ -1,13 +1,16 @@
 import plyj.parser as plyj
-import matplotlib.pyplot as plt
-from mpl_toolkits.mplot3d import Axes3D
+try:
+        import matplotlib.pyplot as plt
+        from mpl_toolkits.mplot3d import Axes3D
+        import seaborn as sns
+except Exception:
+        print 'Graphing libraries not imported, do not use graph functions.'
 import os 
 import time
 from matplotlib.mlab import PCA
 from os.path import join as pj
 import numpy as np
 import inspect
-import seaborn as sns
 import tsne
 import random as random
 
