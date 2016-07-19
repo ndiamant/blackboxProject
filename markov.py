@@ -1,16 +1,11 @@
-### IGNORE THIS FILE FOR NOW ###
-
-
 from collections import defaultdict
 import numpy as np
 import fileParser
 import itertools
 import re
 import payloadReader
-
-def countLines(text):
-        return text.count('\n')
-
+import contextlib
+import sys
 
 def transitionFreq(textList):
         """
@@ -142,3 +137,17 @@ def equal(a, attr, b):
                 return False
 
 
+######################## Taken from Alex Martinelli on stack overflow #########################
+class DummyFile(object):
+    def write(self, x): pass
+
+@contextlib.contextmanager
+def nostdout():
+    save_stdout = sys.stdout
+    sys.stdout = DummyFile()
+    yield
+    sys.stdout = save_stdout
+
+def countLines(text):
+        return text.count('\n')
+##############################################################################################
