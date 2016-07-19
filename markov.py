@@ -131,7 +131,7 @@ def printDetailsState(text):
 
 def equal(a, attr, b):
         try:
-                if a.attr == b:
+                if getattr(a, attr) == b:
                         return True
         except Exception:
                 return False
