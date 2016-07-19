@@ -32,7 +32,7 @@ def generalMarkov(textList, stateFunc, order = 1):
         """
         returns a dictionary keyed with states and valued with numpy
         arrays with the number of transitions to all of the other states
-        labelled by labels
+        labelled by labels. Row is from state, column is to state, color is frequency of transition.
         """   
         # order the text list for fileID grouping
         textList = sorted(textList, key = lambda entry: entry[1][0])
@@ -61,7 +61,7 @@ def generalMarkov(textList, stateFunc, order = 1):
                         # first state transitioned to is row, next is column, etc.
                         for step in xrange(0, order):
                                 state.append(stateLabels.index(states[index + step + counter + 1]))
-                        # index using the state and updat transDict
+                        # index using the state and update transDict
                         transArray[stateLabels.index(states[index + counter])][tuple(state)] += 1
                 counter += length
         return transArray, labels
@@ -137,6 +137,56 @@ def equal(a, attr, b):
                 return False
 
 
+def printDetailsState2(text):
+        """
+        257 states possible 
+        """
+        # each part of the method is either present (1) or not (0)
+        states = [0] * 9
+        tree = fileParser.parser.parse_string(text)
+        # check if compiles
+        if tree:
+                states[0] = 1
+        else:
+                return 0
+        # tree is now the AST (abstract syntax tree) of printDetails
+        tree = fileParser.methodFinder(tree, 'printDetails')[1]
+        # correct return type?
+        if equal(tree, 'return_type', 'void'):
+                states[1] = 1
+        # correct params?
+        if equal(tree, 'parameters', []):
+                states[2] = 1
+        # tree is now AST of the body of printDetails
+        tree = tree.body
+        if tree:
+                expressionStatements = filter(lambda x: isinstance(x, fileParser.plyj.ExpressionStatement), tree)
+                for expressionStatement in expressionStatements:
+                        expression = expressionStatement.expression
+                        # check if prints author, title, pages
+                        if equal(expression, 'name', 'println') or equal(expression, 'name', 'print'):
+                                if fileParser.findGoal(expression.arguments, str, 'author')[0]:
+                                        states[3] = 1
+                                if fileParser.findGoal(expression.arguments, str, 'title')[0]:
+                                        states[4] = 1
+                                if fileParser.findGoal(expression.arguments, str, 'pages')[0]:
+                                        states[5] = 1
+                ifStatements = filter(lambda x: isinstance(x, fileParser.plyj.IfThenElse), tree)
+                # check if if statement present
+                if ifStatements:
+                        states[6] = 1
+
+                lengthIf = fileParser.methodInvocationFinder(ifStatements, 'length')
+                # check if length is called on refNumber 
+                if lengthIf[0] and equal(lengthIf[1].target, 'value', 'refNumber'):
+                        states[7] = 1
+                # check if ifStatements contain 'zzz'
+                if fileParser.findGoal(ifStatements, str, 'zzz')[0]:
+                        states[8] = 1
+
+        return states
+
+
 ######################## Taken from Alex Martinelli on stack overflow #########################
 class DummyFile(object):
     def write(self, x): pass
@@ -151,3 +201,8 @@ def nostdout():
 def countLines(text):
         return text.count('\n')
 ##############################################################################################
+
+with open('t.java', 'r') as f: 
+    text = f.read()
+
+print printDetailsState2(text)

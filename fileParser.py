@@ -91,7 +91,7 @@ def findGoal(tree, goalType, goalName):
         """
         if isinstance(tree, goalType):
                 if goalType == str:
-                        if tree == goalName:
+                        if goalName in tree:
                                 return True, tree
                 try:
                         if tree.__dict__['name'] == goalName:
