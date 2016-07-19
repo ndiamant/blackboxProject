@@ -236,8 +236,8 @@ Some also take a goal to search for. Here is a brief summary of the current tree
 
 #### Todo
 * Comment code better
-* methodFinder and classFinder could be generalized into an object finder function
-* are these useful?
+* ~~methodFinder and classFinder could be generalized into an object finder function~~
+* ~~are these useful?~~
 
 ======
 #### genClassDict
