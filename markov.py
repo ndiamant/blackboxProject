@@ -148,7 +148,7 @@ def printDetailsState2(text):
         if tree:
                 states[0] = 1
         else:
-                return 0
+                return states
         # tree is now the AST (abstract syntax tree) of printDetails
         tree = fileParser.methodFinder(tree, 'printDetails')[1]
         # correct return type?
@@ -158,7 +158,10 @@ def printDetailsState2(text):
         if equal(tree, 'parameters', []):
                 states[2] = 1
         # tree is now AST of the body of printDetails
-        tree = tree.body
+        try:
+                tree = tree.body
+        except Exception:
+                return states
         if tree:
                 expressionStatements = filter(lambda x: isinstance(x, fileParser.plyj.ExpressionStatement), tree)
                 for expressionStatement in expressionStatements:
@@ -186,6 +189,47 @@ def printDetailsState2(text):
 
         return states
 
+ 
+def reduceStates(states):
+        """
+        0 = no compile 
+        1 = correct return type (void) and no arguments 
+        2 = not 1 but prints correct things
+        3 = 1 and 2
+        4 = not 1 or 2, but correct if statement
+        5 = 1 and 4 but not 2
+        6 = 2 and 4 but not 1
+        7 = method complete
+        """
+        return states[1] * states[2] + 2 * states[3] * states[4] * states[5] + 4 * states[6] * states[7] * states[8]
+
+
+
+
+def walk(currentState, probMat):
+        """
+        given the current state, go to a random state determined by the probabilities
+        in probabilityMat
+        """
+        return np.random.choice(probMat.shape[0], p = probMat[currentState])
+
+
+
+def meanDistToCompletion(state, probMat, iterations):
+        """
+        Uses Monte Carlo simulation to estimate the number of iterations required 
+        to go from a state to the completion state. Assumes once complete, stays complete.
+        """
+        dists = []
+        for i in xrange(iterations):
+                curState = state
+                dist = 0
+                while not curState == probMat.shape[0] - 1:
+                        curState = walk(curState, probMat)
+                        dist += 1
+                dists.append(dist)
+        return sum(dists) / len(dists)
+
 
 ######################## Taken from Alex Martinelli on stack overflow #########################
 class DummyFile(object):
@@ -201,8 +245,20 @@ def nostdout():
 def countLines(text):
         return text.count('\n')
 ##############################################################################################
+import pickle
+import time
+f = open('tl.txt')
+tl = pickle.load(f)
+f.close()
+tld = filter(lambda x: 'printDetails' in x[0], tl) # len(tld) = 119181
+t0 = time.time()
+with nostdout():
+    td, labs = generalMarkov(tld[0:1000], lambda x: reduceStates(printDetailsState2(x[0])), 1)
 
-with open('t.java', 'r') as f: 
-    text = f.read()
+print time.time() - t0
+a = np.apply_along_axis(lambda v: laplaceSmooth(v, 1), 1, td)
+meanDistToCompletion(0, a, 100)
 
-print printDetailsState2(text)
+
+
+
