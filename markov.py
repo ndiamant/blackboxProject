@@ -2,7 +2,6 @@ from collections import defaultdict
 import numpy as np
 import fileParser
 import itertools
-import re
 import payloadReader
 import contextlib
 import sys
@@ -82,7 +81,7 @@ def testFunc(text):
         elif 'getRefNumber' in text:
                 return 6
         else: 
-                return 0      
+                return 0    
 
 def laplaceSmooth(vector, k):
         """
@@ -233,12 +232,12 @@ def meanDistToCompletion(state, probMat, iterations):
 
 ######################## Taken from Alex Martinelli on stack overflow #########################
 class DummyFile(object):
-    def write(self, x): pass
+        def write(self, x): pass
 
 @contextlib.contextmanager
 def nostdout():
-    save_stdout = sys.stdout
-    sys.stdout = DummyFile()
-    yield
-    sys.stdout = save_stdout
+        save_stdout = sys.stdout
+        sys.stdout = DummyFile()
+        yield
+        sys.stdout = save_stdout
 ##############################################################################################

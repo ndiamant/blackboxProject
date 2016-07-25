@@ -16,6 +16,7 @@ import random as random
 import payloadReader
 import subprocess
 import shutil
+import re
 
 parser = plyj.Parser()
 
@@ -446,7 +447,7 @@ def normalizeRows(arr):
         return np.apply_along_axis(normalizeVector, 1, arr)
 
 #dangerous AF!!!!!
-def getErrMessages(textList, tempDirName = 'temp'):
+def getErrMessages(textList, tempDirName = 'temp', className = 'temp.java'):
         """
         gets error messages in the same order as the textList 
         by attempting to compile the code
@@ -458,7 +459,9 @@ def getErrMessages(textList, tempDirName = 'temp'):
         errors = []
         for p, d, f in os.walk('.'): # path, directories, files
                 for i in f:
-                        error = subprocess.Popen(['javac', i], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+                        if className:
+                                os.rename(i, className)
+                        error = subprocess.Popen(['javac', className], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
                         error = error.communicate()[1]
                         errors.append(error)
                 break
@@ -466,3 +469,37 @@ def getErrMessages(textList, tempDirName = 'temp'):
         print os.getcwd()
         shutil.rmtree(tempDirName)
         return errors
+
+
+def parseError(error):
+        """
+        takes a java compiler error as formatted by javac and 
+        returns a tuple of (error line, error text)
+        """
+        if not error:
+                return None
+        errTuple = re.search('(.*).java:(.*): error: (.*)', error).groups()
+        return int(errTuple[1]), errTuple[2]
+
+
+def parseErrors(errList):
+        """
+        takes a list of errors in the format of the output of getErrMessages and 
+        returns a list of tuples of (error line, error text)
+        """
+        return map(parseError, errList)
+
+
+def getMethodLines(methodName, text):
+        """
+        returns the start and end line of the 
+        target method in a tuple, (startLine, endLine)
+        """
+        lineNums = list(enumerate(text.split('\n')))
+        startLine = filter(lambda t: 'printDetails' in t[1], lineNums)[0][0]
+        parenCount = 1
+        for line in lineNums[startLine + 1::]:
+                parenCount += line[1].count('{')
+                parenCount -= line[1].count('}')
+                if parenCount == 0:
+                        return startLine, line[0]
