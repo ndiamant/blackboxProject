@@ -241,24 +241,4 @@ def nostdout():
     sys.stdout = DummyFile()
     yield
     sys.stdout = save_stdout
-
-def countLines(text):
-        return text.count('\n')
 ##############################################################################################
-import pickle
-import time
-f = open('tl.txt')
-tl = pickle.load(f)
-f.close()
-tld = filter(lambda x: 'printDetails' in x[0], tl) # len(tld) = 119181
-t0 = time.time()
-with nostdout():
-    td, labs = generalMarkov(tld[0:1000], lambda x: reduceStates(printDetailsState2(x[0])), 1)
-
-print time.time() - t0
-a = np.apply_along_axis(lambda v: laplaceSmooth(v, 1), 1, td)
-meanDistToCompletion(0, a, 100)
-
-
-
-

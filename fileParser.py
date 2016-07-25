@@ -13,6 +13,9 @@ import numpy as np
 import inspect
 import tsne
 import random as random
+import payloadReader
+import subprocess
+import shutil
 
 parser = plyj.Parser()
 
@@ -414,11 +417,13 @@ def genCorrelationMatrix(data):
         return np.corrcoef(np.transpose(data))
 
 
-def corrHeatMap(corrmat, title = ''):
+def corrHeatMap(corrmat, title = '', labels = []):
         """draws a correllation heat map using SNS corrmat"""
         f, ax = plt.subplots(figsize=(12, 9))
         ticks = int(round(corrmat.shape[0]/10,-1))
-        if ticks > 5:
+        if labels:
+                sns.heatmap(corrmat, vmax = .9, square = True, xticklabels = labels, yticklabels = labels)
+        elif ticks > 5:
                 sns.heatmap(corrmat, vmax = .9, square = True, xticklabels = ticks, yticklabels = ticks)
         else:
                 sns.heatmap(corrmat, vmax = .9, square = True)
@@ -434,11 +439,30 @@ def normalizeVector(vector):
         """
         return vector / np.linalg.norm(vector)
 
-
 def normalizeRows(arr):
         """
         l2 normalization of rows of arr (numpy array).
         """
-        return np.apply_along_axis(normalizeVector, 0, arr)
+        return np.apply_along_axis(normalizeVector, 1, arr)
 
-
+#dangerous AF!!!!!
+def getErrMessages(textList, tempDirName = 'temp'):
+        """
+        gets error messages in the same order as the textList 
+        by attempting to compile the code
+        """
+        os.mkdir(tempDirName)       
+        os.chdir(tempDirName)
+        payloadReader.writeFiles(textList, os.getcwd())
+        print os.getcwd()
+        errors = []
+        for p, d, f in os.walk('.'): # path, directories, files
+                for i in f:
+                        error = subprocess.Popen(['javac', i], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+                        error = error.communicate()[1]
+                        errors.append(error)
+                break
+        os.chdir('..')
+        print os.getcwd()
+        shutil.rmtree(tempDirName)
+        return errors
