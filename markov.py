@@ -203,8 +203,6 @@ def reduceStates(states):
         return states[1] * states[2] + 2 * states[3] * states[4] * states[5] + 4 * states[6] * states[7] * states[8]
 
 
-
-
 def walk(currentState, probMat):
         """
         given the current state, go to a random state determined by the probabilities
@@ -229,6 +227,31 @@ def meanDistToCompletion(state, probMat, iterations):
                 dists.append(dist)
         return sum(dists) / len(dists)
 
+def mutualInformation(arr, k = 1):
+        """
+        measures the pointwise mutual information between all 
+        of the values in arr. arr should be structured like this:
+        array([[1, 1, 1, ..., 1, 1, 1],
+        [1, 1, 1, ..., 1, 1, 1],
+        [1, 1, 1, ..., 1, 1, 1],
+        ..., 
+        [1, 1, 1, ..., 0, 0, 0],
+        [1, 1, 1, ..., 0, 0, 0],
+        [1, 1, 1, ..., 0, 0, 0]])
+        k makes this PMI^k 
+        See HANDLING THE IMPACT OF LOW FREQUENCY EVENTS 
+        ON CO-OCCURRENCE BASED MEASURES OF WORD SIMILARITY KDIR 2011
+        for analysis
+        """
+        totals = sum(arr)
+        mutualInfo = np.zeros((arr.shape[1], arr.shape[1]))
+        for i in xrange(arr.shape[1]):
+                for j in xrange(i):
+                        # mutualInfo[i][j] = len(filter(lambda v: v[i] == v[j], arr)) / float(totals[i] * totals[j]) * arr.shape[0]
+                        mutualInfo[i][j] = (float(len(filter(lambda v: v[i] == v[j], arr))) / arr.shape[0])**k / (float(totals[i]) * totals[j] / arr.shape[0]**2)
+
+
+        return np.log2(mutualInfo)
 
 ######################## Taken from Alex Martinelli on stack overflow #########################
 class DummyFile(object):
