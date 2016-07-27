@@ -27,19 +27,24 @@ def transitionFreq(textList):
         return transDict, labels
 
 
-def generalMarkov(textList, stateFunc, order = 1):
+def generalMarkov(textList, stateFunc, order = 1, states = []):
         """
-        returns a dictionary keyed with states and valued with numpy
-        arrays with the number of transitions to all of the other states
-        labelled by labels. Row is from state, column is to state, color is frequency of transition.
+        Takes a textList in payloadReader's textList format, a stateFunc that takes 
+        an entry of a textList and finds the state in a Markov model it belongs to, the 
+        order of the markov model, and optionally a list of the states that each entry in
+        the textList belongs to. STATES MUST BE IN THE ORDER OF sorted(textList, key = lambda entry: entry[1][0]).
+        Returns a dictionary keyed with states and valued with numpy arrays with the number of 
+        transitions to all of the other states labelled by labels. Row is from state, column 
+        is to state, color is frequency of transition.
         """   
         # order the text list for fileID grouping
         textList = sorted(textList, key = lambda entry: entry[1][0])
         # find the state of each file so that only has to be done once for each
-        states = map(stateFunc, textList)
+        if not states:
+                states = map(stateFunc, textList)
         # find all of the possible state combinations and put in a static order 
         if order == 1:
-                labels = stateLabels = sorted(list(set(states)))
+                stateLabels = labels = sorted(list(set(states))) #note that this runs into problems when non-sortable
         else:
                 labels = sorted(list(itertools.combinations_with_replacement(set(states), order)))
         # label for each state
@@ -211,7 +216,6 @@ def walk(currentState, probMat):
         return np.random.choice(probMat.shape[0], p = probMat[currentState])
 
 
-
 def meanDistToCompletion(state, probMat, iterations):
         """
         Uses Monte Carlo simulation to estimate the number of iterations required 
@@ -226,6 +230,7 @@ def meanDistToCompletion(state, probMat, iterations):
                         dist += 1
                 dists.append(dist)
         return sum(dists) / len(dists)
+
 
 def mutualInformation(arr, k = 1):
         """
@@ -253,6 +258,28 @@ def mutualInformation(arr, k = 1):
 
         return np.log2(mutualInfo)
 
+
+def printDetailsState3(textList):
+        """
+        As opposed to the previous state functions, printDetailsState3 
+        takes a whole textList and generates the states for the optional fourth
+        argument in generalMarkov.
+        """
+        textList = sorted(textList, key = lambda entry: entry[1][0])
+        errList = fileParser.getErrMessages(textList, 'uniqueNameTemp', 'Book.java')
+        errList = fileParser.parseErrors(errList)
+        states = []
+        for err, entry in itertools.izip(errList, textList):
+                if err: # is there a compiler error?
+                        methodLine = fileParser.getMethodLines('printDetails', entry[0])
+                        print methodLine
+                        if methodLine[0] <= err[0] <= methodLine[1]: # is the error in our method?
+                                states.append(err[1])
+                        else:
+                                states.append(0) # if not return the code for does not compile
+                else:
+                        states.append(reduceStates(printDetailsState2(entry[0]))) # if there is no error, find which non-error state the entry belongs to
+        return states
 ######################## Taken from Alex Martinelli on stack overflow #########################
 class DummyFile(object):
         def write(self, x): pass
@@ -264,3 +291,13 @@ def nostdout():
         yield
         sys.stdout = save_stdout
 ##############################################################################################
+import pickle
+import time
+with open('tld.txt') as f:
+        tld = pickle.load(f)
+def writeErrs(start, end):
+        t0 = time.time()
+        errList = fileParser.getErrMessages(tld[start:end], 'uniqueNameTemp', 'Book.java')
+        errList = fileParser.parseErrors(errList)
+        print time.time() - t0
+        pickle.dump(errList, open('err'+str(start)+'-'+str(end)+'.p', 'wb'))

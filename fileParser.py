@@ -503,3 +503,4 @@ def getMethodLines(methodName, text):
                 parenCount -= line[1].count('}')
                 if parenCount == 0:
                         return startLine, line[0]
+        return startLine, lineNums[-1][0]
