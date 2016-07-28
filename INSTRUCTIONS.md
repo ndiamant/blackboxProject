@@ -56,10 +56,12 @@ Returns: a list of tuples with (source file id, master event id, file start posi
 
 ======
 #### readFiles
-_readFiles(payloadFile, indexList, directory = os.getcwd())_ takes 
+_readFiles(payloadFileName, indexList, directory = os.getcwd(), willFilter = False, targetText = None)_ takes 
 * payloadFile: the string name of a payload file
 * indexList: an index list made by [_createIndexList_](#createindexlist)
 * directory: the directory (string) the payload is in. 
+* willFilter: boolean filter the files by text?
+* targetText: if willFilter, then filter the text to contain targetText
 
 Returns: a list of (string, index) tuples where each string is all of the text of one source file from a payload file. The text can be put into individual files using [_writeFiles_](#writefiles).
 
@@ -78,10 +80,9 @@ Creates: a directory filled with .java files with the following structure.
 Returns: where nameNum left off so that it can be used as an argument if you want to use writeFiles again in the same directory.
 ```
 2015-12-11
-├── payload0.java
-├── payload1.java
-├── payload2.java
-└── payload3.java
+├── 1-42672857580_66540639979_5163141404_2003_0.java
+├── 2-22058468999_53553909601_33775421920_7542_0.java
+└── 3-4838763481_1938435831_288494704_1205_1.java
 ```
 
 ##### Todo
