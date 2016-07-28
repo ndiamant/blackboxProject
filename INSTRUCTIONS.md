@@ -361,5 +361,5 @@ Big Todos
 * replace all path additions with os.join
 * improve commenting
 * make [_freqData_](#freqdata) work with a text list to elimate the step of having to convert to a file then back to text.
-* update [payloadReader](#payloadreaderpy) and [fileGrouper](#filegrouperpy)
+* ~~update [payloadReader](#payloadreaderpy) and [fileGrouper](#filegrouperpy)~~
 * Instead of file.open() and file.close() use with open(file)
