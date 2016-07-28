@@ -350,7 +350,16 @@ _getErrMessages(textList, tempDirName = 'temp', className = 'temp.java')_ takes
  
 Returns: a list of strings that contain the error message produced by the javac compiler in the same order as textList.
 
+Notes: takes about one second per file, requires javac
 
+_parseErrors(errList)_ takes
+* errList: a list from _getErrMessages_
+
+Returns: a list of tuples of (error line number, error text)
+
+_getMethodLines(methodName, text)_ takes
+* methodName: string name of the method to search for
+* text: string of the java file to find the method in
 =====
 #### Examples
 
