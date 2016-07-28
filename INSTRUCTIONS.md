@@ -360,6 +360,7 @@ Returns: a list of tuples of (error line number, error text)
 _getMethodLines(methodName, text)_ takes
 * methodName: string name of the method to search for
 * text: string of the java file to find the method in
+
 =====
 #### Examples
 
@@ -382,6 +383,20 @@ This should produce something like the following graphics.
 ![PCA 3d](https://github.com/ndiamant/blackboxProject/blob/master/figure_1.png)
 ![heat map](https://github.com/ndiamant/blackboxProject/blob/master/figure_2.png)
 
+What if we want to find the compiler error in a java file contained in the string _text_ and then check if that error is in the method body of a method called "printCows"?
+```$ python -i fileParser.py```
+```python
+errorText = writeErrMessages(text)
+errorText = parseErrors(errotText[0])
+startLine, endLine = getMethodLines('printCows', text)
+if errorText:
+        if startLine <= errorText[0] <= endLine:
+                print 'error is in printCows'
+        else:
+                print 'error not in printCows'
+else:
+        print 'no error'
+```
 
 Big Todos
 -------
