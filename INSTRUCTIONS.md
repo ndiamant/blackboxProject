@@ -328,17 +328,28 @@ _genCorrelationMatrix(data)_ takes
 
 Returns: a correlation matrix made by numpy. Entry i,j is the matrix is the correlation between the ith and jth variables in the frequency vector.
 
-_corrHeatMap(corrmat, variableDict)_ takes
+_corrHeatMap(corrmat, title = '', labels = [])_ takes
 * corrMat: a correlation matrix that can be generated with _genCorrelationMatrix_.
-* variableDict: planned feature to label produced graphic. To produce a key, the user can use 
-```python
-for label in enumerate(variableDict)
- print label
-```
+* title: string title of the graph
+* labels: a list of labels for the graph in the order of corrmat's rows
+
 Plots: a heat map of the correllation matrix.
 #### Todo
-* Add more structural options / more flexibility for the user to add them
-* Add mutual pairwise information
+* ~~Add more structural options / more flexibility for the user to add them~~
+* ~~Add mutual pairwise information~~
+
+======
+#### compiler error functions
+
+The compiler error funcitons are used to compile java files and collect there error messages.
+
+_getErrMessages(textList, tempDirName = 'temp', className = 'temp.java')_ takes
+* textList: a text list made by [_readFiles_](#readfiles)
+* tempDirName: string name of the tempory directory to write files into'
+* className: string name of the class that the files contain (useful to avoid misnamed file errors)
+ 
+Returns: a list of strings that contain the error message produced by the javac compiler in the same order as textList.
+
 
 =====
 #### Examples
