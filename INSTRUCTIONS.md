@@ -463,6 +463,22 @@ Returns: a 2d numpy array where entry i, j is the pairwise mutual information be
 ##### Todo
 * Complete for now
 
+=====
+#### Examples
+
+Let's say we have a text list called _textList_ and want to generate and then plot a first order, laplace smoothed Markov model where the number of lines in a file is it's state. 
+```$ python -i markov.py```
+```python
+def lineState(entry):
+        return entry[0].count('\n')
+
+transArray, labels = generalMarkov(textList, lineState)
+transArray = np.apply_along_axis(lambda v: laplaceSmooth(v, 0), 0, transArray)
+fileParser.corrHeatMap(transArray, '1st-order Markov heat map', labels)
+```
+This should produce something like the following.
+![markov heat map](https://github.com/ndiamant/blackboxProject/blob/master/figure_3.png)
+
 Big Todos
 -------
 * replace all path additions with os.join
