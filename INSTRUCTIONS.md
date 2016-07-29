@@ -432,6 +432,9 @@ Returns: transArray, labels
 * transArray: an _order_+1 dimensional array where the first dimension is the first state, then indexing into the next _order_ dimensions will give the number of transtions from the first state to the indexed state. For example, in a 2nd order model with 5 states, to find out how many transitions in _textList_ there were from the 2nd state to the 4th state to the 3rd state, you would do ```transArray[1][3][2]```.
 * stateLabels: a list in order of the variables in transArray of all of the states. Used to index into transArray. For example, if stateLabels' 3rd entry was 'print error', then to get information about transitions from 'print error' to other states from trans array, you would do ```transArray[2]```.
 
+##### Todo
+* Definitely works for first order modelling, but needs more testing on higher orders
+
 ======
 #### laplaceSmooth
 
@@ -441,11 +444,24 @@ _laplaceSmooth(vector, k = 1)_ takes
 
 Returns: a list of floats or ints or a 1 dimensional numpy array [laplace smoothed](https://en.wikipedia.org/wiki/Additive_smoothing) with smoothing constant k.
 
+##### Todo
+* Only works for 1st order models, generalize to higher orders.
+ 
+======
+#### mutualInformation
 
+_mutualInformation(arr, k = 1)_ takes
+* arr: a 2d list or numpy array in the shape 
+[[1, 1, 1, ..., 1, 1, 1],
+..., 
+[1, 1, 1, ..., 0, 0, 0],
+[1, 1, 1, ..., 0, 0, 0]]
+* k: integer default value 1 for normal pairwise mutual information, makes the order PMI^k
 
+Returns: a 2d numpy array where entry i, j is the pairwise mutual information between variable i and variable j. 
 
 ##### Todo
-* Definitely works for first order modelling, but needs more testing on higher orders
+* Complete for now
 
 Big Todos
 -------
