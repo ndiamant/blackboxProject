@@ -33,20 +33,15 @@ def generalMarkov(textList, stateFunc, order = 1, states = []):
         an entry of a textList and finds the state in a Markov model it belongs to, the 
         order of the markov model, and optionally a list of the states that each entry in
         the textList belongs to. STATES MUST BE IN THE ORDER OF sorted(textList, key = lambda entry: entry[1][0]).
-        Returns a dictionary keyed with states and valued with numpy arrays with the number of 
-        transitions to all of the other states labelled by labels. Row is from state, column 
-        is to state, color is frequency of transition.
+        Returns an _order_+1 dimensional array where the first dimension is the first state, then indexing into 
+        the next _order_ dimensions will give the number of transtions from the first state to the indexed state. 
+        In a first order heat map, row is from state, column is to state, color is frequency of transition.
         """   
         # order the text list for fileID grouping
         textList = sorted(textList, key = lambda entry: entry[1][0])
         # find the state of each file so that only has to be done once for each
         if not states:
                 states = map(stateFunc, textList)
-        # find all of the possible state combinations and put in a static order 
-        if order == 1:
-                stateLabels = labels = sorted(list(set(states))) #note that this runs into problems when non-sortable
-        else:
-                labels = sorted(list(itertools.combinations_with_replacement(set(states), order)))
         # label for each state
         stateLabels = sorted(list(set(states)))
         # create the order-dimensional list of states 
@@ -68,7 +63,7 @@ def generalMarkov(textList, stateFunc, order = 1, states = []):
                         # index using the state and update transDict
                         transArray[stateLabels.index(states[index + counter])][tuple(state)] += 1
                 counter += length
-        return transArray, labels
+        return transArray, stateLabels
 
 
 
@@ -88,7 +83,7 @@ def testFunc(text):
         else: 
                 return 0    
 
-def laplaceSmooth(vector, k):
+def laplaceSmooth(vector, k = 1):
         """
         laplace smooth a n by 1 vector with constant k
         """
@@ -295,9 +290,13 @@ import pickle
 import time
 with open('tld.txt') as f:
         tld = pickle.load(f)
-def writeErrs(start, end):
+def writeErrs(start, end, name = 'uniqueNameTemp'):
         t0 = time.time()
-        errList = fileParser.getErrMessages(tld[start:end], 'uniqueNameTemp', 'Book.java')
+        errList = fileParser.getErrMessages(tld[start:end], name, 'Book.java')
         errList = fileParser.parseErrors(errList)
-        print time.time() - t0
+        print time.time() - t0Mr
         pickle.dump(errList, open('err'+str(start)+'-'+str(end)+'.p', 'wb'))
+        return errList
+
+s = writeErrs(0,10)
+print s
