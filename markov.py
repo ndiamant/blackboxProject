@@ -294,9 +294,10 @@ def writeErrs(start, end, name = 'uniqueNameTemp'):
         t0 = time.time()
         errList = fileParser.getErrMessages(tld[start:end], name, 'Book.java')
         errList = fileParser.parseErrors(errList)
-        print time.time() - t0Mr
+        print time.time() - t0
         pickle.dump(errList, open('err'+str(start)+'-'+str(end)+'.p', 'wb'))
         return errList
 
-s = writeErrs(0,10)
-print s
+for i in range(0,10000,100):
+        print i
+        writeErrs(i, i+100)

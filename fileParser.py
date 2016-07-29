@@ -457,13 +457,18 @@ def getErrMessages(textList, tempDirName = 'temp', className = 'temp.java'):
         payloadReader.writeFiles(textList, os.getcwd())
         print os.getcwd()
         errors = []
+        counter = 0
         for p, d, f in os.walk('.'): # path, directories, files
                 for i in f:
+                        if not len(errors) == counter:
+                                print 'uh-oh: ' + str(counter)
+                                return errors
                         if className:
                                 os.rename(i, className)
                         error = subprocess.Popen(['javac', className], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
                         error = error.communicate()[1]
                         errors.append(error)
+                        counter += 1
                 break
         os.chdir('..')
         print os.getcwd()
