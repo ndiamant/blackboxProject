@@ -98,7 +98,7 @@ Returns: where nameNum left off so that it can be used as an argument if you wan
 #### writeByFileID
 
  _writeByFileID(textList, directory)_ takes 
- * textList: an index list from [_createIndexList_](#createindexlist)
+ * textList: a text list made by [_readFiles_](#readfiles)
  * directory: a directory to write into
  
  Creates: a directory of directories named afer file names that contain all of the files of one file ID from the text list. 
@@ -411,7 +411,41 @@ else:
 
 ------
 ### markov.py
-markov.py is used to find the states and parameters of any order Markov models from a a text list made by [_readFiles_](#readfiles). There are also some functions to explore the models created.   
+markov.py is used to find the states and parameters of any order Markov models from a a text list made by [_readFiles_](#readfiles). There are also some functions to explore the models created. Most of the functions in _markov.py_ are specific to the research at Harvey Mudd, but there are a few general ones that anyone could use.
+
+#### Index
+* [_generalMarkov_](#generalmarkov)
+* [_laplaceSmooth_](#laplacesmooth)
+* [_meanDistToCompletion_](#meandisttocompletion)
+* [_mutualInformation_](#mutualinformation)
+
+======
+#### generalMarkov
+
+_generalMarkov(textList, stateFunc, order = 1, states = [])_ takes 
+* textList: a text list made by [_readFiles_](#readfiles)
+* stateFunc: a function that takes an entry of a text list (text, index) and returns the state of that entry
+* order: integer order of the Markov model generated, defaults to first order
+* states: list of states in the order of ```sorted(textList, key = lambda entry: entry[1][0])``` so that a user can pregenerate states if desired.
+ 
+Returns: transArray, labels
+* transArray: an _order_+1 dimensional array where the first dimension is the first state, then indexing into the next _order_ dimensions will give the number of transtions from the first state to the indexed state. For example, in a 2nd order model with 5 states, to find out how many transitions in _textList_ there were from the 2nd state to the 4th state to the 3rd state, you would do ```transArray[1][3][2]```.
+* stateLabels: a list in order of the variables in transArray of all of the states. Used to index into transArray. For example, if stateLabels' 3rd entry was 'print error', then to get information about transitions from 'print error' to other states from trans array, you would do ```transArray[2]```.
+
+======
+#### laplaceSmooth
+
+_laplaceSmooth(vector, k = 1)_ takes
+* vector: a list of floats or ints or a 1 dimensional numpy array 
+* k: the smoothing constant
+
+Returns: a list of floats or ints or a 1 dimensional numpy array [laplace smoothed](https://en.wikipedia.org/wiki/Additive_smoothing) with smoothing constant k.
+
+
+
+
+##### Todo
+* Definitely works for first order modelling, but needs more testing on higher orders
 
 Big Todos
 -------
@@ -420,3 +454,4 @@ Big Todos
 * make [_freqData_](#freqdata) work with a text list to elimate the step of having to convert to a file then back to text.
 * ~~update [payloadReader](#payloadreaderpy) and [fileGrouper](#filegrouperpy)~~
 * Instead of file.open() and file.close() use with open(file)
+* move some parsing functions from _markov.py_ to _fileParser.py_
