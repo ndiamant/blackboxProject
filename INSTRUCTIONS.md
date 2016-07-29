@@ -30,11 +30,17 @@ Plyj only works in Python 2.
 
 blackboxProject Structure
 ------
-The most fundamental of the programs is payloadReader.py. In general, _payloadReader.py_ is used to take an index file from whitebox (like "index-2016-01-08") and a corresponding payload file ("payload-2016-01-08") and separate the java files contained in the payload. To get individual index and payload files, you can scp from the whitebox server: ```$ scp user@white.kent.ac.uk:/data/compile-inputs/payload-2016-01-08 ~/target/directory```. ([_fileGrouper.py_](#filegrouperpy) will do it for you). 
+The blackboxProject is made of 4 main files, _payloadReader.py_, _fileGrouper.py_, _fileParser.py_, and _markov.py_. _payloadReader.py_ converts files from the storage format of the whitebox server into java files and python readable data. _fileGrouper.py_ downloads and organizes the whitebox storage files from whitebox. _fileParser.py_ extracts information from the python readable files, partly by parsing java files into abstract syntax trees. _markov.py_ generates simple Markov models from the files to try to understand how java programs change over time.
+
+#### Index
+* [_payloadReader.py_](#payloadreaderpy)
+* [_fileGrouper.py_](#filegrouperpy)
+* [_fileParser.py_](#fileparserpy)
+* [_markov.py_](#markovpy)
 
 ------
 ### payloadReader.py
-Most of the code in _payloadReader.py_ is helper functions. Here are some that a user might want. 
+The most fundamental of the programs is _payloadReader.py_. In general, _payloadReader.py_ is used to take an index file from whitebox (like "index-2016-01-08") and a corresponding payload file ("payload-2016-01-08") and separate the java files contained in the payload. To get individual index and payload files, you can scp from the whitebox server: ```$ scp user@white.kent.ac.uk:/data/compile-inputs/payload-2016-01-08 ~/target/directory```. ([_fileGrouper.py_](#filegrouperpy) will do it for you). Most of the code in _payloadReader.py_ is helper functions. Here are some that a user might want. 
 
 #### Index
 * [_createIndexList_](#createindexlist)
@@ -350,7 +356,7 @@ _getErrMessages(textList, tempDirName = 'temp', className = 'temp.java')_ takes
  
 Returns: a list of strings that contain the error message produced by the javac compiler in the same order as textList.
 
-Notes: takes about one second per file, requires javac
+Notes: takes about one second per file, requires javac.
 
 _parseErrors(errList)_ takes
 * errList: a list from _getErrMessages_
@@ -360,6 +366,11 @@ Returns: a list of tuples of (error line number, error text)
 _getMethodLines(methodName, text)_ takes
 * methodName: string name of the method to search for
 * text: string of the java file to find the method in
+
+Returns: tuple of the line number the method starts on and the line number the method ends on, (start, end).
+
+#### Todo
+* Speed up _getErrMessages_
 
 =====
 #### Examples
@@ -397,6 +408,10 @@ if errorText:
 else:
         print 'no error'
 ```
+
+------
+### markov.py
+markov.py is used to find the states and parameters of any order Markov models from a a text list made by [_readFiles_](#readfiles). There are also some functions to explore the models created.   
 
 Big Todos
 -------
