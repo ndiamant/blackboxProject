@@ -68,6 +68,25 @@ def readFiles(payloadFileName, indexList, directory = os.getcwd(), willFilter = 
         return textList 
 
 
+def indexOfFilesWithString(payloadFilePath, indexList, targetText = None):
+        """
+        payloadFilePath: string path to payload file
+        indexList: corresponding index list
+        targetText: string to filter for
+
+        returns: list of all indices whose files contained targetText
+        """
+        indices = []
+        payloadFile = open(payloadFilePath)
+        for index in indexList:
+                payloadFile.seek(index[2])
+                text = payloadFile.read(index[3])
+                if targetText in text:
+                        indices.append(index)
+        payloadFile.close()
+        return indices 
+
+
 def writeFiles(textList, directory = os.getcwd(), nameNum = 0):
         """
         writes .java files from a text list in the specified directory. nameNum
@@ -126,4 +145,14 @@ def filterByText(textList, filterText):
         return filter(lambda text: filterText in text[0], textList)
 
 
+##############################
+## Experimentation
+##############################
+indexList =  createIndexList("index-2017-01-29", directory = "/home/nate/projects/blackbox/")
+print(len(indexList))
+factorialIndices =  indexOfFilesWithString("/home/nate/projects/blackbox/payload-2017-01-29", indexList, targetText = 'factorial')
+print(len(factorialIndices))
 
+textList = readFiles("payload-2017-01-29", factorialIndices, directory = "/home/nate/projects/blackbox/", willFilter = False, targetText = None)
+
+print(textList[0:10])
