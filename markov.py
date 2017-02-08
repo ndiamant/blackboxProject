@@ -275,6 +275,27 @@ def printDetailsState3(textList):
                 else:
                         states.append(reduceStates(printDetailsState2(entry[0]))) # if there is no error, find which non-error state the entry belongs to
         return states
+
+
+def printDetailsState4(textList):
+    states = []
+    agreements = []
+    for entry in textList:
+        if entry[1][4] == 0:
+            states.append(0)
+            agreements.append(True)
+        else:
+            state = reduceStates(printDetailsState2(entry[0]))
+            agreements.append(bool(state))
+            states.append(state)
+    return states, agreements
+
+def isAscii(text):
+    for c in text:
+        if ord(c) > 127:
+            return False
+    return True
+
 ######################## Taken from Alex Martinelli on stack overflow #########################
 class DummyFile(object):
         def write(self, x): pass
@@ -286,17 +307,4 @@ def nostdout():
         yield
         sys.stdout = save_stdout
 ##############################################################################################
-import pickle
-import time
-with open('tld.txt') as f:
-        tld = pickle.load(f)
-def writeErrs(start, end, name = 'uniqueNameTemp'):
-        t0 = time.time()
-        errList = fileParser.getErrMessages(tld[start:end], name, 'Book.java')
-        errList = fileParser.parseErrors(errList)
-        print time.time() - t0Mr
-        pickle.dump(errList, open('err'+str(start)+'-'+str(end)+'.p', 'wb'))
-        return errList
 
-s = writeErrs(0,10)
-print s

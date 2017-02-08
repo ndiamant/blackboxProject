@@ -1,5 +1,6 @@
 import os 
 import itertools
+from functools import reduce
 
 def createIndexList(indexFile, directory = os.getcwd()):
         """
@@ -148,11 +149,23 @@ def filterByText(textList, filterText):
 ##############################
 ## Experimentation
 ##############################
-indexList =  createIndexList("index-2017-01-29", directory = "/home/nate/projects/blackbox/")
-print(len(indexList))
-factorialIndices =  indexOfFilesWithString("/home/nate/projects/blackbox/payload-2017-01-29", indexList, targetText = 'factorial')
-print(len(factorialIndices))
-
-textList = readFiles("payload-2017-01-29", factorialIndices, directory = "/home/nate/projects/blackbox/", willFilter = False, targetText = None)
-
-print(textList[0:10])
+#indexList =  createIndexList("index-2017-01-29", directory = "/home/nate/projects/blackbox/")
+#print(len(indexList))
+#
+#factorialIndices =  indexOfFilesWithString("/home/nate/projects/blackbox/payload-2017-01-29", indexList, targetText = 'int factorial')
+#print(len(factorialIndices))
+#
+#textList = readFiles("payload-2017-01-29", factorialIndices, directory = "/home/nate/projects/blackbox", willFilter = False, targetText = None)
+#
+#id_set = set()
+#
+#for index in factorialIndices:
+#    id_set.add(index[1])
+#
+#or_string = ''
+#for i in id_set:
+#    or_string += 'id=' + str(i) + ' or ' 
+#
+#print(or_string)
+#writeByFileID(textList, "/home/nate/projects/blackbox/javafiles")
+#
