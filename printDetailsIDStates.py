@@ -1,11 +1,10 @@
 import markov
 import pickle
+import numpy as np
 with open('tl.txt') as f:
     tl = pickle.load(f)
 
 tl = filter(lambda x: 'printDetails' in x[0] and markov.isAscii(x[0]), tl)
-
-tl = tl[0:10000]
 
 ids = [x[1] for x in tl]
 print(len(ids), ids[0:10])
