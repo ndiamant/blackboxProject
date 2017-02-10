@@ -2,6 +2,8 @@ import numpy as np
 import pickle
 import itertools
 
+# source file id, master event id
+
 with open('ids_states', 'rb') as f:
     ids, states = pickle.load(f)
 
@@ -31,7 +33,27 @@ def clean_for_states(ids, states, target_states = [1, 7]):
     return np.array(new_ids_states_list)
 
 t = clean_for_states(ids, states)
-print(tuple(t[:,1].tolist()))
+
+def read_stamps_csv(file_name):
+    import pandas as pd
+    return pd.read_csv(file_name, sep ='|').as_matrix()
+
+times = read_stamps_csv('./all_stamps.csv')
+
+time_order = np.argsort(times[:,0])
+times = times[time_order]
+
+t_order = np.argsort(t[:,1])
+t = t[t_order]
+
+t_time = np.hstack((t, times[:,1][:,np.newaxis]))
+t_reorder = np.argsort(t_time[:,0])
+t_time = t_time[t_reorder]
+
+
+# print t to copy to query mysql database
+#print(tuple(t[:,1].tolist()))
+
 # pie plot of states
 #import matplotlib.pyplot as plt
 #counts = np.bincount(states)
