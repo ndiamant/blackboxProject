@@ -1,7 +1,7 @@
 import numpy as np
 import pickle
 import itertools
-
+from dateutil.parser import parse as date_parse
 # source file id, master event id
 
 with open('ids_states', 'rb') as f:
@@ -45,10 +45,38 @@ times = times[time_order]
 
 t_order = np.argsort(t[:,1])
 t = t[t_order]
-
 t_time = np.hstack((t, times[:,1][:,np.newaxis]))
 t_reorder = np.argsort(t_time[:,0])
 t_time = t_time[t_reorder]
+
+def parse_time(string):
+    if 'AM' in string or 'PM' in string:
+        return parse_AM(string)
+    if '.' in string:
+        return parse_period(string)
+    if '-' in string:
+        return parse_dash(string)
+    else:
+        return parse_spacey(string)
+
+
+def parse_period(string):
+# 1007774150 | 14.des.2015 14:51:08       
+    pass
+
+t_time2 = []
+
+for i in t_time:
+    date = None
+    try: 
+        date = date_parse(i[-1])
+    except:
+        continue
+    t_time2.append(np.hstack((i[:-1], date)))
+
+t_time2 = np.array(t_time2)
+
+print(t_time2[0], t_time.shape, t_time2.shape)
 
 
 # print t to copy to query mysql database
