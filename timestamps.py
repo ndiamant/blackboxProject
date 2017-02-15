@@ -1,7 +1,13 @@
 import numpy as np
+import datetime
 import pickle
 import itertools
 from dateutil.parser import parse as date_parse
+import matplotlib.pyplot as plt
+from matplotlib.collections import LineCollection
+from matplotlib.colors import ListedColormap, BoundaryNorm
+
+plt.rcParams['axes.facecolor'] = 'gray'
 # source file id, master event id
 
 with open('ids_states', 'rb') as f:
@@ -49,21 +55,6 @@ t_time = np.hstack((t, times[:,1][:,np.newaxis]))
 t_reorder = np.argsort(t_time[:,0])
 t_time = t_time[t_reorder]
 
-def parse_time(string):
-    if 'AM' in string or 'PM' in string:
-        return parse_AM(string)
-    if '.' in string:
-        return parse_period(string)
-    if '-' in string:
-        return parse_dash(string)
-    else:
-        return parse_spacey(string)
-
-
-def parse_period(string):
-# 1007774150 | 14.des.2015 14:51:08       
-    pass
-
 t_time2 = []
 
 for i in t_time:
@@ -78,6 +69,42 @@ t_time2 = np.array(t_time2)
 
 print(t_time2[0], t_time.shape, t_time2.shape)
 
+def plot_deltas(data):
+    '''
+    Each row has the format:
+    file id, event id, asdf, compile success, state, datetime
+    The file ids should all be the same
+    '''
+    r = data.copy()
+    r = r[np.argsort(r[:,-1])]
+
+    deltas = r[:,-1].copy()
+    d1 = np.hstack((deltas, np.array(datetime.datetime.max))) 
+    d2 = np.hstack((np.array(datetime.datetime.max), deltas)) 
+    deltas = (d1 - d2)[1:-1]
+    deltas = map(lambda x: x.total_seconds(), deltas)
+
+    times = r[:,-1] 
+    times -= times[0]
+    times = map(lambda x: x.total_seconds(), times)[:-1]
+
+    points = np.array([times, deltas]).T.reshape(-1, 1, 2)
+    segments = np.concatenate([points[:-1], points[1:]], axis=1)
+    
+    cmap = ListedColormap(['b', 'g', 'r', 'c', 'm', 'y', 'k', 'w'])
+    norm = BoundaryNorm(np.array(range(0,9)), cmap.N)
+    lc = LineCollection(segments, cmap=cmap, norm = norm)
+    lc.set_array(r[:,-2])
+    lc.set_linewidth(3)
+
+    fig1 = plt.figure()
+    plt.gca().add_collection(lc)
+    plt.xlim(min(times), max(times))
+    plt.ylim(min(deltas), max(deltas))
+   
+
+plot_deltas(t_time2[t_time2[:,0] == 3432383])
+plt.show()
 
 # print t to copy to query mysql database
 #print(tuple(t[:,1].tolist()))
