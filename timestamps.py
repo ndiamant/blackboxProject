@@ -67,8 +67,6 @@ for i in t_time:
 
 t_time2 = np.array(t_time2)
 
-print(t_time2[0], t_time.shape, t_time2.shape)
-
 def plot_deltas(data):
     '''
     Each row has the format:
@@ -94,17 +92,75 @@ def plot_deltas(data):
     cmap = ListedColormap(['b', 'g', 'r', 'c', 'm', 'y', 'k', 'w'])
     norm = BoundaryNorm(np.array(range(0,9)), cmap.N)
     lc = LineCollection(segments, cmap=cmap, norm = norm)
-    lc.set_array(r[:,-2])
+    lc.set_array(r[:,-2][:-1])
     lc.set_linewidth(3)
 
     fig1 = plt.figure()
     plt.gca().add_collection(lc)
     plt.xlim(min(times), max(times))
     plt.ylim(min(deltas), max(deltas))
-   
 
-plot_deltas(t_time2[t_time2[:,0] == 3432383])
-plt.show()
+    print(times)
+    print(len(deltas))
+    print(r[:,-2].shape)
+
+def plot_deltas2(data):
+    '''
+    Each row has the format:
+    file id, event id, asdf, compile success, state, datetime
+    The file ids should all be the same
+    '''
+    r = data.copy()
+    r = r[np.argsort(r[:,-1])]
+
+    deltas = r[:,-1].copy()
+    d1 = np.hstack((deltas, np.array(datetime.datetime.max))) 
+    d2 = np.hstack((np.array(datetime.datetime.max), deltas)) 
+    deltas = (d1 - d2)[1:-1]
+    deltas = np.array(map(lambda x: x.total_seconds(), deltas))
+
+    times = r[:,-1] 
+    times -= times[0]
+    times = np.array(map(lambda x: x.total_seconds(), times)[:-1])
+
+    cmap = np.array(['b', 'g', 'r', 'c', 'm', 'y', 'k', 'w'])
+    indices = r[:,-2][:-1].astype(int) 
+    for s in range(8):
+        i = indices == s
+        plt.scatter(times[i], deltas[i], c=cmap[s], cmap=cmap, label = s)
+    plt.legend()
+    #plt.scatter(times, deltas, c=c, cmap=cmap)
+    #c = cmap[indices] 
+    plt.plot(times, deltas)
+    plt.xlim(min(times), 1.1 * max(times))
+    plt.ylim(0, 1.2 * max(deltas))
+
+def plot_deltas3(data):
+    '''
+    Each row has the format:
+    file id, event id, asdf, compile success, state, datetime
+    The file ids should all be the same
+    '''
+    r = data.copy()
+    r = r[np.argsort(r[:,-1])]
+    
+    times = r[:,-1] 
+    times -= times[0]
+    times = np.array(map(lambda x: x.total_seconds(), times))
+    
+    cmap = np.array(['b', 'g', 'r', 'c', 'w', 'y', 'k', 'm'])
+   
+    indices = r[:,-2] 
+    for s in range(8):
+        i = indices == s
+        plt.eventplot(times[i], colors=cmap[s], label = s)
+    plt.hlines(1,1,max(times))  # Draw a horizontal line
+    plt.axis('off')
+    plt.legend()
+
+for i in np.unique(t_time2[:,0]):
+    plot_deltas3(t_time2[t_time2[:,0] == i])
+    plt.show()
 
 # print t to copy to query mysql database
 #print(tuple(t[:,1].tolist()))
