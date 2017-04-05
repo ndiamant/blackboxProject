@@ -155,7 +155,7 @@ _fileGrouper.py_ uses [_payloadReader.py_](#payloadreaderpy) to download and org
 
 ======
 #### downloadFiles
-_getTextFiles(indexDirectory, targetDirectory, targetText, userName)_ takes 
+_downloadFiles(indexDirectory, targetDirectory, targetText, userName)_ takes 
 * indexDirectory: the string name of a directory containing as many whitebox index files as you want
 * targetDirectory: the string name of a  directory to write java files into
 * targetText: text to filter for
@@ -206,7 +206,7 @@ Let's say we want to download all of the java file that contain "fibonacci" into
 ``` python -i fileGrouper.py ```
 ```python
 #download payloads, convert to java files, and organize into javafiles directory
-getTextFiles('/Users/username/Desktop/indices', os.getcwd() + '/javaFiles', 'fibonacci’,  ‘user’) 
+downloadFiles('/Users/username/Desktop/indices', os.getcwd() + '/javaFiles', 'fibonacci’,  ‘user’) 
 ```
 Instead we have all of the index and payload files in a directory called "allfiles" and want to get one big text list from them.
 ```
