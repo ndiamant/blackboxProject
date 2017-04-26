@@ -18,7 +18,7 @@ def downloadFiles(indexDirectory, targetDirectory, targetText, userName):
                         scpCommand = 'scp ' + userName + '@white.kent.ac.uk:/data/compile-inputs/' + payload + ' ' + targetDirectory
                         os.system(scpCommand)
                         indexList = payloadReader.createIndexList(file, indexDirectory)
-                        textList.append(payloadReader.filterByText(payloadReader.readFiles(indexList), targetText))
+                        textList += payloadReader.readFiles(payload, indexList, targetDirectory, True, targetText)
                         os.remove(os.path.join(targetDirectory, payload))
 
         payloadReader.writeByFileID(textList, targetDirectory)
