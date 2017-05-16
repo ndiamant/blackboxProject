@@ -1,0 +1,52 @@
+%%%%%%%%%%%%%%%%%%%%%% STATE 1 %%%%%%%%%%%%%%%%%%%%%%
+Good base case:
+	1. contains 1 if statement, possibly 1 else statement
+	2. if statement should be equal to:
+		variable==1
+		variable==0
+		variable<1
+		variable<=1
+		variable<2
+		variable!>1
+		variable!>2
+	note: extract variable name from function declaration
+		after first if statement parse out white space
+		check for equality to one of the above statements
+		no hint neccessary
+
+
+%%%%%%%%%%%%%%%%%%%%%% STATE 2 %%%%%%%%%%%%%%%%%%%%%%
+Redundant basecase
+	has two or more ifs or any number of elifs
+		hint: can you combine second if OR elif into basecase or recursive step
+
+
+%%%%%%%%%%%%%%%%%%%%%% STATE 3 %%%%%%%%%%%%%%%%%%%%%%
+Incorrect basecase
+	criteria 1 for good base case holds, but criteria 2 does not
+		hint: think about basecase
+
+
+%%%%%%%%%%%%%%%%%%%%%% STATE 4 %%%%%%%%%%%%%%%%%%%%%%
+No base case
+	4A: no conditionals but recursive step == looping forever
+		hint: basecase
+	4B: no conditionals but for/while loop == not using recursion
+		hint: recursion
+	4C: no conditionals, recursive step or for/while loop == not yet implemented
+
+*basecase not reachable
+	- looks like state 1 for basecase
+	- get argument, check for it in body, make sure variabe is not decremented elsewhere
+
+
+
+Thoughts:
+	Look for return statement in base case
+	What is easier/quicker to find using ASTs vs looping through code?
+
+
+
+
+
+
