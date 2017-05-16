@@ -18,27 +18,34 @@ Good base case:
 %%%%%%%%%%%%%%%%%%%%%% STATE 2 %%%%%%%%%%%%%%%%%%%%%%
 Redundant basecase
 	has two or more ifs or any number of elifs
-		hint: can you combine second if OR elif into basecase or recursive step
+		potential hint for student: can you combine second if OR elif into basecase or recursive step
 
 
 %%%%%%%%%%%%%%%%%%%%%% STATE 3 %%%%%%%%%%%%%%%%%%%%%%
 Incorrect basecase
 	criteria 1 for good base case holds, but criteria 2 does not
-		hint: think about basecase
+		potential hint for student: think about basecase
 
 
 %%%%%%%%%%%%%%%%%%%%%% STATE 4 %%%%%%%%%%%%%%%%%%%%%%
-No base case
-	4A: no conditionals but recursive step == looping forever
-		hint: basecase
-	4B: no conditionals but for/while loop == not using recursion
-		hint: recursion
-	4C: no conditionals, recursive step or for/while loop == not yet implemented
-
+no conditionals but recursive step == looping forever
+		potential hint for students: basecase
+		
+		
+%%%%%%%%%%%%%%%%%%%%%% STATE 5 %%%%%%%%%%%%%%%%%%%%%%
 *basecase not reachable
 	- looks like state 1 for basecase
 	- get argument, check for it in body, make sure variabe is not decremented elsewhere
+	
 
+%%%%%%%%%%%%%%%%%%%%%% STATE 6 %%%%%%%%%%%%%%%%%%%%%%
+no conditionals but for/while loop == not using recursion
+		potential hint for students: recursion
+		
+		
+%%%%%%%%%%%%%%%%%%%%%% STATE 7 %%%%%%%%%%%%%%%%%%%%%%
+no conditionals, recursive step or for/while loop == not yet implemented
+ 
 
 
 Thoughts:
