@@ -32,7 +32,7 @@ Incorrect basecase:
 %%%%%%%%%%%%%%%%%%%%%% STATE 4 %%%%%%%%%%%%%%%%%%%%%%
 No base case, but recursive step
 	has function call to factorial function
-	code will recurse forever
+	code may recurse forever
 	
 	potential hint for students: basecase
 		

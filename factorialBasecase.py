@@ -13,22 +13,19 @@ def factorialSelector(bbfile):
 	openBrackets = 0
 	closeBrackets = 0
 	inFunction = false
-	for x in len(bbfile):
+	for x in range(len(bbfile)):
 		if bbfile[x:x+9] == "factorial":
 			inFunction = true
-			x += 1
 		if inFunction:
 			facString += bbfile[x]
 			if bbfile[x] == "{":
 				openBrackets += 1
-			if bbfile[x] == "}":
-				closeBrackets -= 1
+			elif bbfile[x] == "}":
+				closeBrackets += 1
 			if openBrackets == closeBrackets != 0:
 				break
-		else:
-			x += 1
-	print "Factorial method declaration not found in file"
-	return ""
+	#print "Factorial method declaration not found in file"
+	return facString
 
 
 def treeSelector(bbfile):
@@ -88,13 +85,13 @@ def defineCase(plyjTree, conditionals, condCount):
 	takes in information about the conditionals in a factorial function and
 	returns a state based on the accuracy of the if statement written
 	"""
-	if stateOne(conditionals, condCount) and recursiveMethodFinder(plyjTree):
+	if stateOne(conditionals, condCount) and recursiveMethodFinder(plyjTree)[0]:
 		return "State one"
-	elif stateTwo(conditionals, condCount) and recursiveMethodFinder(plyjTree):
+	elif stateTwo(conditionals, condCount) and recursiveMethodFinder(plyjTree)[0]:
 		return "State two"
-	elif stateThree(conditionals, condCount) and recursiveMethodFinder(plyjTree):
+	elif stateThree(conditionals, condCount) and recursiveMethodFinder(plyjTree)[0]:
 		return "State three"
-	elif stateFour(conditionals, condCount) and recursiveMethodFinder(plyjTree):
+	elif stateFour(conditionals, condCount) and recursiveMethodFinder(plyjTree)[0]:
 		return stateFourType(textfile, conditionals, condCount, plyjTree)
 	else:
 		return "Case not covered in potential states"
@@ -120,49 +117,65 @@ def stateTwo(conditionals, condCount):
 	return (condCount[0][1] > 1 or condCount[1][1] > 0)
 
 
-def stateThree(conditionals, condCount):
+def stateThree(conditionals, condCount, plyjTree):
 	"""
 	checks if program is in State 3 (base case structured properly but incorrect)
 	returns true if the State 3 criteria are met, false otherwise
 	"""
 	return (condCount[0][1] == 1 and condCount[1][1] == 0 and condCount[2][1] == 1)
-		 #and !stateOne)
+		 #and !stateOne and !stateFive and recursiveMethodFinder(plyjTree))
 
 
-def stateFour(conditionals, condCount):
+def stateFour(conditionals, condCount, plyjTree):
 	"""
 	checks if program is in State 4 (no base case)
 	returns true if the State 4 criteria are met, false otherwise
 	"""
-	return (condCount[0][1] == 0 and condCount[1][1] == 0 and condCount[2][1] == 0)
+	return (condCount[1][1] == 0 and condCount[2][1] == 0 and
+		recursiveMethodFinder(plyjTree)[0]) 
 
+def stateFive(textfile, conditionals, condCount, plyjTree):
+	start = 0
+	end = 0
+	for i in range(len(facString)):
+		if facString[i] == '(':
+			start = i
+		elif facString[i] == ')':
+			end = i
+	args = facString[start+1: end]
+	args = args.replace("byte", "")
+	args = args.replace("char", "")
+	args = args.replace("short", "")
+	args = args.replace("int", "")
+	args = args.replace("long", "")
+	args = args.replace("float", "")
+	args = args.replace("double", "")
+	args = args.replace(" ", "")
+	listOfArgs = args.split(',')
 
-def stateFourType(textfile, conditionals, condCount, plyjTree):
-	"""
-	given the conditionals and condCount for a function already
-	determined to be in State 4, determines a more specific state
-	for the given function using the following criteria:
-		4A: Has no base case, but does have a recursive step
-		4B: Has no base case and uses a for or while loop
-		4C: Has no base case and no method implemented
-	"""
-	if condCount[0][1] != 0 or condCount[1][1] != 0 or condCount[2][1] != 0:
-		return "program is not in state 4"
-
-	#check 4A by looking for recursive step
-	elif recursiveMethodFinder(plyjTree):
-		return "State 4A"
-
-	#check 4B by looking for for or while loop
-	for x in range(len(textfile)-1):
-		if textfile[x:x+2] == "for":
-			return "State 4B"
-		elif textfile[x:x+4] == "while":
-			return "State 4B"
+	if recursiveMethodFinder(plyjTree)[0]:
+		if len(listOfArgs) == 1:
+			if listOfArgs[0] + "-1" in facString.replace(" ", ""):
+				return False
+		elif len(listOfArgs) == 2:
+			#TODO
+			#Maybe tail recursion
+			...
 		else:
-			x += 1
+			return True
+	return False
 
-	#if in state 4, but not 4A or 4B, it must be in state 4C
-	return "State 4C"
+def stateSix(facString):
+	""" 
+	check if program is in State 6 by looking for
+	evidence of for or while loops
+	"""
+	for x in range(len(facString)-1):
+		if facString[x:x+2] == "for":
+			return True
+		elif facString[x:x+4] == "while":
+			return True
+	return False
+
 
 
