@@ -86,20 +86,20 @@ def defineCase(plyjTree, conditionals, condCount):
 	takes in information about the conditionals in a factorial function and
 	returns a state based on the accuracy of the if statement written
 	"""
+	if stateTwo(condCount, plyjTree):
+		print "State two"
+	if stateThree(condCount, plyjTree, facString):
+		print "State three"
+	if stateFour(condCount, plyjTree):
+		print "State four"
+	if stateFive(facString, plyjTree):
+		print "State five"
+	if stateSix(facString):
+		print "State six"
 	if stateOne(facString, condCount, plyjTree):
-		return "State one"
-	elif stateTwo(condCount, plyjTree):
-		return "State two"
-	elif stateThree(condCount, plyjTree, facString):
-		return "State three"
-	elif stateFour(condCount, plyjTree):
-		return "State four"
-	elif stateFive(facString, plyjTree):
-		return "State five"
-	elif stateSix(facString):
-		return "State six"
+		print "State one"
 	else:
-		return "State seven"
+		print "State seven"
 
 
 def stateOne(facString, condCount, plyjTree):
