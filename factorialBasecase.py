@@ -1,6 +1,7 @@
 # blackbox project
-# basecase identifier
+# basecase classifier for factorial functions written in Java
 import plyj.parser as plyj
+
 
 
 def factorialSelector(bbfile):
@@ -106,9 +107,9 @@ def stateOne(facString, condCount, plyjTree):
 	checks if program is in State 1 (the base case is correct)
 	returns true if the State 1 criteria are met, false otherwise
 	"""
-	if condCount[0][1] != 1 or condCount[1][1] != 0 or condCount[2][1] != 1 or !recursiveMethodFinder(plyjTree)[0]:
+	if condCount[0][1] != 1 or condCount[1][1] != 0 or condCount[2][1] != 1 or not recursiveMethodFinder(plyjTree)[0]:
 		return False
-	listOfArgs = getArgs(facString)ß
+	listOfArgs = getArgs(facString)
 	if len(listOfArgs) != 1:
 			return False
 	else:
@@ -127,8 +128,6 @@ def stateOne(facString, condCount, plyjTree):
 		elif listOfArgs[0] + "!>2" in facString.replace(" ", ""):
 			return True
 	return False
-
-
 		
 
 def stateTwo(condCount, plyjTree):
@@ -145,7 +144,7 @@ def stateThree(condCount, plyjTree, facString):
 	returns true if the State 3 criteria are met, false otherwise
 	"""
 	return (condCount[0][1] == 1 and condCount[1][1] == 0 and condCount[2][1] == 1
-		 and !stateOne(facString, condCount) and !stateFive(facString, plyjTree) and recursiveMethodFinder(plyjTree)[0])
+		 and not stateOne(facString, condCount) and not stateFive(facString, plyjTree) and recursiveMethodFinder(plyjTree)[0])
 
 
 def stateFour(condCount, plyjTree):
@@ -167,10 +166,9 @@ def stateFive(facString, plyjTree):
 		if len(listOfArgs) == 1:
 			if listOfArgs[0] + "-1" in facString.replace(" ", ""):
 				return False
-		elif len(listOfArgs) == 2:
+		#elif len(listOfArgs) == 2:
 			#TODO
 			#Maybe tail recursion
-			...
 		else:
 			return True
 	return False

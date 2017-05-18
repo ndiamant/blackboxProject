@@ -1,0 +1,9 @@
+public int factorial(int k) {
+	if (k <= 1) {
+		return 1;
+	} else {
+		temp = k;
+		k -= 1;
+		return factorial(k) * temp;
+	}
+}
