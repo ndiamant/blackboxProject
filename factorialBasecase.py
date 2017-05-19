@@ -1,7 +1,11 @@
 # blackbox project
 # basecase classifier for factorial functions written in Java
 import plyj.parser as plyj
+import fileGrouper
+import fileParser
+import payloadReader
 
+parser = plyj.Parser()
 
 
 def factorialSelector(bbfile):
@@ -10,18 +14,19 @@ def factorialSelector(bbfile):
 	if the file contains the function return it
 	otherwise return error message
 	"""
+	fileString = open(bbfile).read()
 	facString = ""
 	openBrackets = 0
 	closeBrackets = 0
-	inFunction = false
-	for x in range(len(bbfile)):
-		if bbfile[x:x+9] == "factorial":
-			inFunction = true
+	inFunction = False
+	for x in range(len(fileString)):
+		if fileString[x:x+9] == "factorial":
+			inFunction = True
 		if inFunction:
-			facString += bbfile[x]
-			if bbfile[x] == "{":
+			facString += fileString[x]
+			if fileString[x] == "{":
 				openBrackets += 1
-			elif bbfile[x] == "}":
+			elif fileString[x] == "}":
 				closeBrackets += 1
 			if openBrackets == closeBrackets != 0:
 				break
@@ -35,12 +40,11 @@ def treeSelector(bbfile):
 	factorial function in the file as a plyj tree
 	returns error message if the method cannot be called
 	"""
-	if 'factorial' not in open(bbfile).read():	
-		print "Factorial Function does not exist in this file" 
-		return None
-	else:
-		parser = plyj.Parser()
-		return parser.parse_file(file(bbfile))
+	#if 'factorial' not in open(bbfile).read():	
+	#	print "Factorial Function does not exist in this file" 
+	#	return None
+	#else:s
+	return parser.parse_string(bbfile)
 
 
 def conditionalFinder(facString):
