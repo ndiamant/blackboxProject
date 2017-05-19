@@ -205,6 +205,7 @@ def getArgs(facString):
 			start = i
 		elif facString[i] == ')':
 			end = i
+			break;
 	args = facString[start+1: end]
 	args = args.replace("byte", "")
 	args = args.replace("char", "")
