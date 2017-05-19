@@ -1,9 +1,9 @@
 # blackbox project
 # basecase classifier for factorial functions written in Java
 import plyj.parser as plyj
-import fileGrouper
-import fileParser
-import payloadReader
+from fileGrouper import *
+from fileParser import *
+from payloadReader import *
 
 parser = plyj.Parser()
 
@@ -31,10 +31,10 @@ def factorialSelector(bbfile):
 			if openBrackets == closeBrackets != 0:
 				break
 	#print "Factorial method declaration not found in file"
-	return facString
+	return "public int " + facString
 
 
-def treeSelector(bbfile):
+def treeSelector(facString):
 	"""
 	takes in our file name and uses plyj to return
 	factorial function in the file as a plyj tree
@@ -44,7 +44,7 @@ def treeSelector(bbfile):
 	#	print "Factorial Function does not exist in this file" 
 	#	return None
 	#else:s
-	return parser.parse_string(bbfile)
+	return parser.parse_string('public class Foo {' + facString + '}')
 
 
 def conditionalFinder(facString):
@@ -55,14 +55,14 @@ def conditionalFinder(facString):
 	conditionals = []
 	x = 0
 	while x < len(facString):
-		if textfile[x:x+7] == "else if":
-			conditionals += ("else if", x)
+		if facString[x:x+7] == "else if":
+			conditionals.append(["else if", x])
 			x += 7
-		elif textfile[x:x+4] == "else":
-			conditionals += ("else", x)
+		elif facString[x:x+4] == "else":
+			conditionals.append(["else", x])
 			x += 4
-		elif textfile[x:x+2] == "if":
-			conditionals += ("if", x)
+		elif facString[x:x+2] == "if":
+			conditionals.append(["if", x])
 			x += 2
 		x += 1
 	return conditionals
@@ -74,7 +74,7 @@ def conditionalCounter(conditionals):
 	and turns in into a list of tuples with each containing the type of 
 	conditional and the number of times it appears in the code
 	"""
-	condCount = [("if", 0), ("else if", 0), ("else", 0)]
+	condCount = [["if", 0], ["else if", 0], ["else", 0]]
 	for x in range(len(conditionals)):
 		if conditionals[x][0] == "if":
 			condCount[0][1] += 1
@@ -85,7 +85,7 @@ def conditionalCounter(conditionals):
 	return condCount
 
 
-def defineCase(plyjTree, conditionals, condCount):
+def defineCase(plyjTree, condCount, facString):
 	""" 
 	takes in information about the conditionals in a factorial function and
 	returns a state based on the accuracy of the if statement written
@@ -114,6 +114,8 @@ def stateOne(facString, condCount, plyjTree):
 	if condCount[0][1] != 1 or condCount[1][1] != 0 or condCount[2][1] != 1 or not recursiveMethodFinder(plyjTree)[0]:
 		return False
 	listOfArgs = getArgs(facString)
+	print "list of args is: " + str(listOfArgs)
+
 	if len(listOfArgs) != 1:
 			return False
 	else:
@@ -148,7 +150,7 @@ def stateThree(condCount, plyjTree, facString):
 	returns true if the State 3 criteria are met, false otherwise
 	"""
 	return (condCount[0][1] == 1 and condCount[1][1] == 0 and condCount[2][1] == 1
-		 and not stateOne(facString, condCount) and not stateFive(facString, plyjTree) and recursiveMethodFinder(plyjTree)[0])
+		 and not stateOne(facString, condCount, plyjTree) and not stateFive(facString, plyjTree) and recursiveMethodFinder(plyjTree)[0])
 
 
 def stateFour(condCount, plyjTree):
