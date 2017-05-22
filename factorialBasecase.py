@@ -85,25 +85,28 @@ def conditionalCounter(conditionals):
 	return condCount
 
 
+
 def defineCase(plyjTree, condCount, facString):
 	""" 
 	takes in information about the conditionals in a factorial function and
 	returns a state based on the accuracy of the if statement written
 	"""
-	if stateTwo(condCount, plyjTree):
-		print "State two"
-	if stateThree(condCount, plyjTree, facString):
-		print "State three"
-	if stateFour(condCount, plyjTree):
-		print "State four"
-	if stateFive(facString, plyjTree):
-		print "State five"
 	if stateSix(facString):
 		print "State six"
-	if stateOne(facString, condCount, plyjTree):
+	elif stateSeven(plyjTree):
+		print "State seven"
+	elif stateTwo(condCount, plyjTree):
+		print "State two"
+	elif stateThree(condCount, plyjTree, facString):
+		print "State three"
+	elif stateFour(condCount, plyjTree):
+		print "State four"
+	elif stateFive(facString, plyjTree):
+		print "State five"
+	elif stateOne(facString, condCount, plyjTree):
 		print "State one"
 	else:
-		print "State seven"
+		print "State eight"
 
 
 def stateOne(facString, condCount, plyjTree):
@@ -193,6 +196,18 @@ def stateSix(facString):
 		elif facString[x:x+4] == "while":
 			return True
 	return False
+
+
+def stateSeven(plyjTree):
+	"""
+	checks if program is using tail recursion by looking for a call
+	to a function that is not itself
+	"""
+	if checkInstance(plyjTree, plyj.MethodDeclaration)[0] and not recursiveMethodFinder(plyjTree)[0]:
+		return True
+	return False
+	# try to analyze function that is called
+	# check the number of arguments in function that is called
 
 
 def getArgs(facString):
