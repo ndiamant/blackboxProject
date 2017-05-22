@@ -30,20 +30,16 @@ def factorialSelector(bbfile):
 				closeBrackets += 1
 			if openBrackets == closeBrackets != 0:
 				break
-	#print "Factorial method declaration not found in file"
+	if inFunction == False:
+		print "Factorial method declaration not found in file"
 	return "public int " + facString
 
 
-def treeSelector(facString):
+def makeTree(facString):
 	"""
-	takes in our file name and uses plyj to return
-	factorial function in the file as a plyj tree
-	returns error message if the method cannot be called
+	takes in our string of factorial function and uses plyj to return
+	factorial function as a plyj tree
 	"""
-	#if 'factorial' not in open(bbfile).read():	
-	#	print "Factorial Function does not exist in this file" 
-	#	return None
-	#else:s
 	return parser.parse_string('public class Foo {' + facString + '}')
 
 
@@ -89,7 +85,7 @@ def conditionalCounter(conditionals):
 def defineCase(plyjTree, condCount, facString):
 	""" 
 	takes in information about the conditionals in a factorial function and
-	returns a state based on the accuracy of the if statement written
+	returns the state that it is classified under
 	"""
 	if stateSix(facString):
 		print "State six"
@@ -122,6 +118,7 @@ def stateOne(facString, condCount, plyjTree):
 	if len(listOfArgs) != 1:
 			return False
 	else:
+		# testing for the possible correct basecase eqaulities and inequalities
 		if listOfArgs[0] + "==1" in facString.replace(" ", ""):
 			return True
 		elif listOfArgs[0] + "==0" in facString.replace(" ", ""):
@@ -166,6 +163,7 @@ def stateFour(condCount, plyjTree):
 	return (condCount[1][1] == 0 and condCount[2][1] == 0 and
 		recursiveMethodFinder(plyjTree)[0]) 
 
+
 def stateFive(facString, plyjTree):
 	"""
 	check is program is in state 5, meaning that there is a basecase
@@ -173,13 +171,11 @@ def stateFive(facString, plyjTree):
 	"""
 	listOfArgs = getArgs(facString)
 
+	# Check to see if factorial argument is changed before or during recursive call
 	if recursiveMethodFinder(plyjTree)[0]:
 		if len(listOfArgs) == 1:
 			if listOfArgs[0] + "-1" in facString.replace(" ", ""):
 				return False
-		#elif len(listOfArgs) == 2:
-			#TODO
-			#Maybe tail recursion
 		else:
 			return True
 	return False
@@ -191,9 +187,9 @@ def stateSix(facString):
 	evidence of for or while loops
 	"""
 	for x in range(len(facString)-1):
-		if facString[x:x+2] == "for":
+		if facString[x:x+3] == "for":
 			return True
-		elif facString[x:x+4] == "while":
+		elif facString[x:x+5] == "while":
 			return True
 	return False
 
@@ -206,8 +202,8 @@ def stateSeven(plyjTree):
 	if checkInstance(plyjTree, plyj.MethodDeclaration)[0] and not recursiveMethodFinder(plyjTree)[0]:
 		return True
 	return False
-	# try to analyze function that is called
-	# check the number of arguments in function that is called
+	# TODO: try to analyze function that is called
+	# TODO: check the number of arguments in function that is called
 
 
 def getArgs(facString):
@@ -215,6 +211,7 @@ def getArgs(facString):
 	helper function that extracts the name of the argument
 	passed into the factorial function
 	"""
+	# loop through function to extract parameters
 	start = 0
 	end = 0
 	for i in range(len(facString)):
@@ -224,6 +221,7 @@ def getArgs(facString):
 			end = i
 			break;
 	args = facString[start+1: end]
+	# remove types from argument names
 	args = args.replace("byte", "")
 	args = args.replace("char", "")
 	args = args.replace("short", "")
@@ -232,6 +230,7 @@ def getArgs(facString):
 	args = args.replace("float", "")
 	args = args.replace("double", "")
 	args = args.replace(" ", "")
+	# return argument names as a list
 	return args.split(',')
 
 

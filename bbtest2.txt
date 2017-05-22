@@ -1,0 +1,210 @@
+
+/**
+ * ### ## ##### # ####### ### ## ###### #### ### #####
+ * 
+ * ##### & ###### 
+ * #.##.##
+ */
+import java.util.*;
+import java.text.DecimalFormat;
+import java.math.RoundingMode;
+import java.lang.Double;
+import javax.swing.JOptionPane;
+public class CheatersTrial10
+{
+    static void main(String [] args)
+    {
+        double numOfQ = 0;
+        double numOfAns = 0;
+        double numOfStudents = 0;
+        double C = 0;
+        double fin = 0;
+        double probCorrect = 0;
+        double probWrong = 0;
+        double avg = 0;
+        double lowest = 1000;
+        double lowest2 = 1001;
+        double highest = 0;
+        String chart = new String("");
+        String highRange = new String("");
+        String lowRange = new String("");
+        Scanner reader = new Scanner(System.in);
+        Scanner readerChart = new Scanner(System.in);
+        //this belongs to dialog box
+        lowRange = "";
+        DecimalFormat df3 = new DecimalFormat("#.###");
+        df3.setRoundingMode(RoundingMode.HALF_UP);
+        
+        DecimalFormat df2 = new DecimalFormat("####");
+        df2.setRoundingMode(RoundingMode.HALF_UP);
+        
+        DecimalFormat df = new DecimalFormat("0.000");
+        df.setRoundingMode(RoundingMode.HALF_UP);
+        
+        //System.out.println("\n***************HOW TO CATCH CHEATERS****************");
+        String inputQ = JOptionPane.showInputDialog("Enter the number of questions: ", "");
+        if(inputQ == null)
+        {
+            return;
+        }
+        numOfQ = Double.parseDouble(inputQ);
+        
+        String inputAns = JOptionPane.showInputDialog("Enter the number of answers: ", "");
+        if(inputAns == null)
+        {
+            return;
+        }
+        numOfAns = Double.parseDouble(inputAns);
+        
+        String inputStudents = JOptionPane.showInputDialog("Enter the number of students taking the test: ", "");
+        if(inputStudents == null)
+        {
+            return;
+        }
+        numOfStudents = Double.parseDouble(inputStudents);
+        
+        
+        //System.out.println("***************************************************");
+        
+        
+        probCorrect = 1 / (numOfAns);
+        avg = numOfQ * probCorrect;
+    
+        for(double x = 0; x <= numOfQ; x++)
+        {
+           fin = calcProb(numOfQ, x, numOfAns);
+      
+          if(fin < .001)
+          {
+              if (x < lowest && x < avg)
+              {
+                  lowest = x;
+              }
+              else if (x > highest && x < avg)
+              {
+                  highest = x;
+              }
+              else if (x < lowest2 && x > avg)
+              {
+                  lowest2 = x;
+              }
+          }
+        }
+        
+        
+        if ( lowest != 1000 && highest != 0 )
+        {
+            //System.out.println("\nStarting at " + df2.format(lowest) + " and up to " + df2.format(highest) + " probabilty is less than .001%");
+            lowRange = "\nStarting at " + df2.format(lowest) + " and up to " + df2.format(highest) + " probabilty is less than .001%";
+            //JOptionPane.showMessageDialog(null, "\nStarting at " + df2.format(lowest) + " and up to " + df2.format(highest) + " probabilty is less than .001%");
+        }
+        if ( lowest2 < 1000 )
+        {
+            highRange = "\nStarting at " + df2.format(lowest2) + " and up to " + df2.format(numOfQ) + " probabilty is less than .001%";
+            //JOptionPane.showMessageDialog(null, "Starting at " + df2.format(lowest2) + " and up to " + df2.format(numOfQ) + " probabilty is less than .001%");
+            //System.out.println("Starting at " + df2.format(lowest2) + " and up to " + df2.format(numOfQ) + " probabilty is less than .001%");
+        }
+        
+        if (lowRange != "")
+        {
+            JOptionPane.showMessageDialog(null, lowRange + highRange);
+        }
+        else 
+        {
+            JOptionPane.showMessageDialog(null, "There are no probabilities less than .001%");
+        }
+        
+        
+        //System.out.println("***************************************************");
+        //System.out.print("\nIf " + df2.format(numOfStudents) + " students took the test, the average number correct is: " + df3.format(avg));
+
+        //JOptionPane.showMessageDialog(null, "\nIf " + df2.format(numOfStudents) + " students took the test, the average number correct is: " + df3.format(avg));
+        //System.out.print("\n\nPrint chart? ");
+        //chart = readerChart.nextLine();
+        String inputChart = JOptionPane.showInputDialog("Print chart? ", "");
+        if(inputStudents == null)
+        {
+            return;
+        }
+        
+        chart = inputChart;
+        
+        if(chart.equals("Yes"))
+        {
+           System.out.println("NUMBER OF CORRECT ANSWERS \t PERCENT PROBABILITY");
+           for(double x = 0; x <= numOfQ; x++)
+           {
+               fin = calcProb(numOfQ, x, numOfAns);
+               
+               if(fin > .001)
+               {
+                  System.out.println("\t" + df2.format(x) + "\t\t\t\t" + df.format(fin) + "%");
+               } 
+            } 
+        }
+        
+        
+    }
+    
+    public static double factorial(double i)
+    {
+        double total =  1;
+        for(double counter = 2; counter <= i; counter++)
+        {
+            total = total * counter;  
+        }
+        return total;
+    }
+    
+    public static double power(double b, double e)
+    {
+        double result = b;
+        double counter1 = e;
+        
+        while(counter1 > 1 )
+        {
+            result = b * result;
+            counter1--;
+        }
+        
+        if(e == 1)
+        {
+            result = b;
+        }
+          
+        if(e == 0)
+        {
+            result = 1;
+        }
+        return result;
+    }
+    
+    public static double calcProb(double Q, double x, double A)
+    {
+            double C = 0;
+            double fin = 0;
+            double probCorrect = 0;
+            double probWrong = 0;
+        
+            probCorrect = 1 / (A);
+            probWrong = 1 - (probCorrect);
+        
+            C = factorial(Q);
+            C = C / factorial(x);
+            C = C / (factorial(Q - x));
+            
+
+            fin = power(probCorrect , x );
+            
+            fin = fin * (power(probWrong, Q - x));
+            fin = fin * C;
+            fin = fin * 100;
+            
+            return fin;
+        
+    }
+}
+
+
+
+
