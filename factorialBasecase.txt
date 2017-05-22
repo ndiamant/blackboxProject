@@ -51,8 +51,12 @@ Looping rather than recursion:
 	
 	potential hint for students: use recursion
 		
-		
 %%%%%%%%%%%%%%%%%%%%%% STATE 7 %%%%%%%%%%%%%%%%%%%%%%
+Tail recursion:
+	look for wrapper functions that call helper functions
+
+		
+%%%%%%%%%%%%%%%%%%%%%% STATE 8 %%%%%%%%%%%%%%%%%%%%%%
 Not yet implemented:
 	no conditionals, recursive step or for/while loop
 	potential hint for students: use recursion
