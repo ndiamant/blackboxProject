@@ -133,6 +133,8 @@ def stateOne(facString, condCount, plyjTree):
 			return True
 		elif listOfArgs[0] + "!>2" in facString.replace(" ", ""):
 			return True
+		elif listOfArgs[0] + "<=0" in facString.replace(" ", ""):
+			return True
 	return False
 		
 
