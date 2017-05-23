@@ -24,6 +24,10 @@ def factorialSelector(bbfile):
 			inFunction = True
 		if inFunction:
 			facString += fileString[x]
+			if openBrackets == 0 and fileString[x] == ";":
+				facString = ""
+				inFunction = False
+				closeBrackets = 0
 			if fileString[x] == "{":
 				openBrackets += 1
 			elif fileString[x] == "}":
@@ -113,7 +117,6 @@ def stateOne(facString, condCount, plyjTree):
 	if condCount[0][1] != 1 or condCount[1][1] != 0 or condCount[2][1] != 1 or not recursiveMethodFinder(plyjTree)[0]:
 		return False
 	listOfArgs = getArgs(facString)
-	print "list of args is: " + str(listOfArgs)
 
 	if len(listOfArgs) != 1:
 			return False
