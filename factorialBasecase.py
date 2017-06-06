@@ -92,21 +92,21 @@ def defineCase(plyjTree, condCount, facString):
 	returns the state that it is classified under
 	"""
 	if stateSix(facString):
-		print "State six"
+		return "State six"
 	elif stateSeven(plyjTree):
-		print "State seven"
+		return "State seven"
 	elif stateTwo(condCount, plyjTree):
-		print "State two"
+		return "State two"
 	elif stateThree(condCount, plyjTree, facString):
-		print "State three"
+		return "State three"
 	elif stateFour(condCount, plyjTree):
-		print "State four"
+		return "State four"
 	elif stateFive(facString, plyjTree):
-		print "State five"
+		return "State five"
 	elif stateOne(facString, condCount, plyjTree):
-		print "State one"
+		return "State one"
 	else:
-		print "State eight"
+		return "State eight"
 
 
 def stateOne(facString, condCount, plyjTree):
