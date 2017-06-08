@@ -105,8 +105,10 @@ def defineCase(plyjTree, condCount, facString):
 		return "State five"
 	elif stateOne(facString, condCount, plyjTree):
 		return "State one"
+	elif stateEight(facString, condCount, plyjTree):
+		return "State Eight"
 	else:
-		return "State eight"
+		return "State Nine"
 
 
 def stateOne(facString, condCount, plyjTree):
@@ -207,6 +209,15 @@ def stateSeven(plyjTree):
 	return False
 	# TODO: try to analyze function that is called
 	# TODO: check the number of arguments in function that is called
+
+def stateEight(facString, condCount, plyjTree):
+	"""
+	check if program is using ternary operator by looking if the code string
+	contains colons and question marks
+	"""
+	if condCount[0][1] == 0 and condCount[1][1] == 0 and condCount[2][1] == 0 and ':' in facString and '?' in facString and recursiveMethodFinder(plyjTree)[0]:
+		return True
+	return False
 
 
 def getArgs(facString):
