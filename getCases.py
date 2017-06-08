@@ -2,6 +2,9 @@ import os
 from factorialBasecase import *
 
 def getFileNames():
+	"""
+	get the names of the java files that are to be analyzed 
+	"""
 	fileList = []
 	subDirList = []
 	#path = '/Users/cssummer17/Desktop/abc'
@@ -24,6 +27,10 @@ def getFileNames():
 
 
 def getCases(fileList):
+	"""
+	run the case analysis on all the java files and store the results
+	in analysis.txt file 
+	"""
 	caseDict = {}
 	for l in fileList:
 		for fileName in l:
