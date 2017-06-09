@@ -36,6 +36,7 @@ def factorialSelector(bbfile):
 				break
 	if inFunction == False:
 		print "Factorial method declaration not found in file"
+		return ""
 	return "public int " + facString
 
 

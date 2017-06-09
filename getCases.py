@@ -55,29 +55,30 @@ def getCases():
 		for dirpath, dirnames, filenames in os.walk(directory):
 			for fileName in filenames:
 				fac = factorialSelector(fileName)
-				tree = makeTree(fac)
-				cond = conditionalFinder(fac)
-				condCount = conditionalCounter(cond)
-				case = defineCase(tree, condCount, fac)
-				caseDict[fileName] = case
-				if case == "State one":
-					categoryDict["State one"] += 1
-				elif case == "State two":
-					categoryDict["State two"] += 1
-				elif case == "State three":
-					categoryDict["State three"] += 1
-				elif case == "State four":
-					categoryDict["State four"] += 1
-				elif case == "State five":
-					categoryDict["State five"] += 1
-				elif case == "State six":
-					categoryDict["State six"] += 1
-				elif case == "State seven":
-					categoryDict["State seven"] += 1
-				elif case == "State eight":
-					categoryDict["State eight"] += 1
-				elif case == "State nine":
-					categoryDict["State nine"] += 1
+				if fac != "":
+					tree = makeTree(fac)
+					cond = conditionalFinder(fac)
+					condCount = conditionalCounter(cond)
+					case = defineCase(tree, condCount, fac)
+					caseDict[fileName] = case
+					if case == "State one":
+						categoryDict["State one"] += 1
+					elif case == "State two":
+						categoryDict["State two"] += 1
+					elif case == "State three":
+						categoryDict["State three"] += 1
+					elif case == "State four":
+						categoryDict["State four"] += 1
+					elif case == "State five":
+						categoryDict["State five"] += 1
+					elif case == "State six":
+						categoryDict["State six"] += 1
+					elif case == "State seven":
+						categoryDict["State seven"] += 1
+					elif case == "State eight":
+						categoryDict["State eight"] += 1
+					elif case == "State nine":
+						categoryDict["State nine"] += 1
 
 	success = len(caseDict)
 
@@ -92,3 +93,7 @@ def getCases():
 	for key in categoryDict:
 		with open("percentage.txt", "a+") as f:
 			f.write(key + ": " + str(categoryDict[key]*100.0/total) + "%" + '\n')
+
+	for key in categoryDict:
+		with open("percentage2.txt", "a+") as f:
+			f.write(key + ": " + str(categoryDict[key]*100.0/success) + "%" + '\n')
