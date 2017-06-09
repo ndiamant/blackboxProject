@@ -106,9 +106,9 @@ def defineCase(plyjTree, condCount, facString):
 	elif stateOne(facString, condCount, plyjTree):
 		return "State one"
 	elif stateEight(facString, condCount, plyjTree):
-		return "State Eight"
+		return "State eight"
 	else:
-		return "State Nine"
+		return "State nine"
 
 
 def stateOne(facString, condCount, plyjTree):
