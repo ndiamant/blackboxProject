@@ -47,7 +47,6 @@ def getCases():
 		os.chdir(directory)
 		for dirpath, dirnames, filenames in os.walk(directory):
 			for fileName in filenames:
-				print fileName
 				fac = factorialSelector(fileName)
 				tree = makeTree(fac)
 				cond = conditionalFinder(fac)
@@ -55,7 +54,7 @@ def getCases():
 				case = defineCase(tree, condCount, fac)
 				caseDict[fileName] = case
 
-	os.chdir(homePath)
+	os.chdir('/Users/cssummer17/Desktop/CSTT/blackboxProject')
 	for key in caseDict:
 		with open("analysis.txt", "a+") as f:
 			f.write(key + ": " + caseDict[key] + '\n')
