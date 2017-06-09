@@ -8,23 +8,24 @@ def getFileNames():
 	fileList = []
 	subDirList = []
 	#path = '/Users/cssummer17/Desktop/abc'
-	homePath = '/Users/cssummer17/Desktop/CSTT/blackboxProject/javaFiles'
+	homePath = '/Users/cssummer17/Desktop/CSTT/blackboxProject/javafiles'
+	#homePath = '/Users/cssummer17/Desktop/CSTT/blackboxProject/javafiles2'
 	for dirpath, dirnames, filenames in os.walk(homePath):
 		fileList.append(filenames)
 		#print dirpath
 		subDirList.append(dirpath)
-	#flatFileList = [item for sublist in fileList for item in sublist]
-	#flatFileList[:] = [x for x in flatFileList if x != '.DS_Store']
+	flatFileList = [item for sublist in fileList for item in sublist]
+	flatFileList[:] = [x for x in flatFileList if x != '.DS_Store']
 	#return flatFileList
-	#for l in fileList:
-	#	if '.DS_Store' in l:
-	#		l.remove('.DS_Store')
-	#result = []
-	#for l in fileList:
-	#	if l != []:
-	#		result.append(l)
+	for l in fileList:
+		if '.DS_Store' in l:
+			l.remove('.DS_Store')
+	result = []
+	for l in fileList:
+		if l != []:
+			result.append(l)
 	#return result
-	return homePath, subDirList
+	return homePath, subDirList, result, flatFileList
 
 
 def getCases():
@@ -32,8 +33,11 @@ def getCases():
 	run the case analysis on all the java files and store the results
 	in analysis.txt file 
 	"""
-	homePath, subDirList = getFileNames()
+	homePath, subDirList, fileList, flatFileList = getFileNames()
 	caseDict = {}
+	categoryDict = {"State one": 0, "State two": 0, "State three": 0, 
+					"State four": 0, "State five": 0, "State six": 0,
+					"State seven": 0, "State eight": 0, "State nine": 0}
 	#for l in fileList:
 	#	for fileName in l:
 	#		fac = factorialSelector(fileName)
@@ -42,6 +46,9 @@ def getCases():
 	#		condCount = conditionalCounter(cond)
 	#		case = defineCase(tree, condCount, fac)
 	#		caseDict[fileName] = case
+	success = 0
+	record = 0
+	total = len(flatFileList)
 
 	for directory in subDirList[1:]:
 		os.chdir(directory)
@@ -53,8 +60,35 @@ def getCases():
 				condCount = conditionalCounter(cond)
 				case = defineCase(tree, condCount, fac)
 				caseDict[fileName] = case
+				if case == "State one":
+					categoryDict["State one"] += 1
+				elif case == "State two":
+					categoryDict["State two"] += 1
+				elif case == "State three":
+					categoryDict["State three"] += 1
+				elif case == "State four":
+					categoryDict["State four"] += 1
+				elif case == "State five":
+					categoryDict["State five"] += 1
+				elif case == "State six":
+					categoryDict["State six"] += 1
+				elif case == "State seven":
+					categoryDict["State seven"] += 1
+				elif case == "State eight":
+					categoryDict["State eight"] += 1
+				elif case == "State nine":
+					categoryDict["State nine"] += 1
+
+	success = len(caseDict)
 
 	os.chdir('/Users/cssummer17/Desktop/CSTT/blackboxProject')
+	with open("analysis.txt", "a+") as f:
+			f.write(str(success) + "/" + str(total) + '\n')
 	for key in caseDict:
 		with open("analysis.txt", "a+") as f:
-			f.write(key + ": " + caseDict[key] + '\n')
+			record += 1
+			f.write(str(record) + ': ' + key + ": " + caseDict[key] + '\n')
+
+	for key in categoryDict:
+		with open("percentage.txt", "a+") as f:
+			f.write(key + ": " + str(categoryDict[key]*100.0/total) + "%" + '\n')
