@@ -37,6 +37,7 @@ def factorialSelector(bbfile):
 				break
 	if inFunction == False:
 		print "Factorial method declaration not found in file"
+		return ""
 	return "public int " + facString
 
 """
@@ -109,9 +110,9 @@ def defineCase(plyjTree, condCount, facString):
 	elif stateOne(facString, condCount, plyjTree):
 		return "State one"
 	elif stateEight(facString, condCount, plyjTree):
-		return "State Eight"
+		return "State eight"
 	else:
-		return "State Nine"
+		return "State nine"
 
 """
 checks if program is in State 1 (the base case is correct)
