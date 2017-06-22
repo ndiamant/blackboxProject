@@ -8,12 +8,13 @@ from payloadReader import *
 parser = plyj.Parser()
 
 
+""" 
+takes in a java file that contains multiple methods
+if the file contains the function return it
+otherwise return error message
+"""
 def factorialSelector(bbfile):
-	""" 
-	takes in a java file that contains multiple methods
-	if the file contains the function return it
-	otherwise return error message
-	"""
+	
 	fileString = open(bbfile).read()
 	facString = ""
 	openBrackets = 0
@@ -38,20 +39,21 @@ def factorialSelector(bbfile):
 		print "Factorial method declaration not found in file"
 	return "public int " + facString
 
-
+"""
+takes in our string of factorial function and uses plyj to return
+factorial function as a plyj tree
+"""
 def makeTree(facString):
-	"""
-	takes in our string of factorial function and uses plyj to return
-	factorial function as a plyj tree
-	"""
+	
 	return parser.parse_string('public class Foo {' + facString + '}')
 
 
+""" 
+returns a list of tuples containing the type of statement 
+(if, else if or else) and the index at which each statement begins
+"""
 def conditionalFinder(facString):
-	""" 
-	returns a list of tuples containing the type of statement 
-	(if, else if or else) and the index at which each statement begins
-	"""
+	
 	conditionals = []
 	x = 0
 	while x < len(facString):
@@ -68,12 +70,13 @@ def conditionalFinder(facString):
 	return conditionals
 
 
+"""
+takes in a list of tuples containing the type of conditional and its index
+and turns in into a list of tuples with each containing the type of 
+conditional and the number of times it appears in the code
+"""
 def conditionalCounter(conditionals):
-	"""
-	takes in a list of tuples containing the type of conditional and its index
-	and turns in into a list of tuples with each containing the type of 
-	conditional and the number of times it appears in the code
-	"""
+	
 	condCount = [["if", 0], ["else if", 0], ["else", 0]]
 	for x in range(len(conditionals)):
 		if conditionals[x][0] == "if":
@@ -85,12 +88,12 @@ def conditionalCounter(conditionals):
 	return condCount
 
 
-
+""" 
+takes in information about the conditionals in a factorial function and
+returns the state that it is classified under
+"""
 def defineCase(plyjTree, condCount, facString):
-	""" 
-	takes in information about the conditionals in a factorial function and
-	returns the state that it is classified under
-	"""
+	
 	if stateSix(facString):
 		return "State six"
 	elif stateSeven(plyjTree):
@@ -110,12 +113,12 @@ def defineCase(plyjTree, condCount, facString):
 	else:
 		return "State Nine"
 
-
+"""
+checks if program is in State 1 (the base case is correct)
+returns true if the State 1 criteria are met, false otherwise
+"""
 def stateOne(facString, condCount, plyjTree):
-	"""
-	checks if program is in State 1 (the base case is correct)
-	returns true if the State 1 criteria are met, false otherwise
-	"""
+	
 	if condCount[0][1] != 1 or condCount[1][1] != 0 or condCount[2][1] != 1 or not recursiveMethodFinder(plyjTree)[0]:
 		return False
 	listOfArgs = getArgs(facString)
@@ -142,38 +145,41 @@ def stateOne(facString, condCount, plyjTree):
 			return True
 	return False
 		
-
+"""
+checks if program is in State 2 (redundant basecase)
+returns true if the State 2 criteria are met, false otherwise
+"""
 def stateTwo(condCount, plyjTree):
-	"""
-	checks if program is in State 2 (redundant basecase)
-	returns true if the State 2 criteria are met, false otherwise
-	"""
+	
 	return ((condCount[0][1] > 1 or condCount[1][1] > 0) and recursiveMethodFinder(plyjTree))
 
 
+"""
+checks if program is in State 3 (base case structured properly but incorrect)
+returns true if the State 3 criteria are met, false otherwise
+"""
 def stateThree(condCount, plyjTree, facString):
-	"""
-	checks if program is in State 3 (base case structured properly but incorrect)
-	returns true if the State 3 criteria are met, false otherwise
-	"""
+	
 	return (condCount[0][1] == 1 and condCount[1][1] == 0 and condCount[2][1] == 1
 		 and not stateOne(facString, condCount, plyjTree) and not stateFive(facString, plyjTree) and recursiveMethodFinder(plyjTree)[0])
 
-
+	
+"""
+checks if program is in State 4 (no base case)
+retrns true if the State 4 criteria are met, false otherwise
+"""
 def stateFour(condCount, plyjTree):
-	"""
-	checks if program is in State 4 (no base case)
-	returns true if the State 4 criteria are met, false otherwise
-	"""
+
 	return (condCount[1][1] == 0 and condCount[2][1] == 0 and
 		recursiveMethodFinder(plyjTree)[0]) 
 
 
+"""
+check is program is in state 5, meaning that there is a basecase
+implemented, but it is not reachable
+"""
 def stateFive(facString, plyjTree):
-	"""
-	check is program is in state 5, meaning that there is a basecase
-	implemented, but it is not reachable
-	"""
+	
 	listOfArgs = getArgs(facString)
 
 	# Check to see if factorial argument is changed before or during recursive call
@@ -186,11 +192,12 @@ def stateFive(facString, plyjTree):
 	return False
 
 
+""" 
+check if program is in State 6 by looking for
+evidence of for or while loops
+"""
 def stateSix(facString):
-	""" 
-	check if program is in State 6 by looking for
-	evidence of for or while loops
-	"""
+	
 	for x in range(len(facString)-1):
 		if facString[x:x+3] == "for":
 			return True
@@ -199,32 +206,36 @@ def stateSix(facString):
 	return False
 
 
+"""
+checks if program is using tail recursion by looking for a call
+to a function that is not itself
+"""
 def stateSeven(plyjTree):
-	"""
-	checks if program is using tail recursion by looking for a call
-	to a function that is not itself
-	"""
+	
 	if checkInstance(plyjTree, plyj.MethodDeclaration)[0] and not recursiveMethodFinder(plyjTree)[0]:
 		return True
 	return False
 	# TODO: try to analyze function that is called
 	# TODO: check the number of arguments in function that is called
 
+
+"""
+check if program is using ternary operator by looking if the code string
+contains colons and question marks
+"""
 def stateEight(facString, condCount, plyjTree):
-	"""
-	check if program is using ternary operator by looking if the code string
-	contains colons and question marks
-	"""
+	
 	if condCount[0][1] == 0 and condCount[1][1] == 0 and condCount[2][1] == 0 and ':' in facString and '?' in facString and recursiveMethodFinder(plyjTree)[0]:
 		return True
 	return False
 
 
+"""
+helper function that extracts the name of the argument
+passed into the factorial function
+"""
 def getArgs(facString):
-	"""
-	helper function that extracts the name of the argument
-	passed into the factorial function
-	"""
+	
 	# loop through function to extract parameters
 	start = 0
 	end = 0

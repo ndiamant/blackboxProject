@@ -1,21 +1,22 @@
 import os
 from factorialBasecase import *
 
+
+"""
+get the names of the java files that are to be analyzed 
+"""
 def getFileNames():
-	"""
-	get the names of the java files that are to be analyzed 
-	"""
 	fileList = []
 	subDirList = []
 	#path = '/Users/cssummer17/Desktop/abc'
-	path = '/Users/cssummer17/Desktop/CSTT/blackboxProject/javaFiles'
+	path = '/Volumes/Seagate/allfiles/javafiles'
 	for dirpath, dirnames, filenames in os.walk(path):
 		fileList.append(filenames)
 		#print dirpath
 		subDirList.append(dirpath)
-	#flatFileList = [item for sublist in fileList for item in sublist]
-	#flatFileList[:] = [x for x in flatFileList if x != '.DS_Store']
-	#return flatFileList
+	flatFileList = [item for sublist in fileList for item in sublist]
+	flatFileList[:] = [x for x in flatFileList if x != '.DS_Store']
+	return flatFileList
 	#for l in fileList:
 	#	if '.DS_Store' in l:
 	#		l.remove('.DS_Store')
@@ -26,11 +27,11 @@ def getFileNames():
 	#return result
 
 
+"""
+run the case analysis on all the java files and store the results
+in analysis.txt file 
+"""
 def getCases(fileList):
-	"""
-	run the case analysis on all the java files and store the results
-	in analysis.txt file 
-	"""
 	caseDict = {}
 	for l in fileList:
 		for fileName in l:
