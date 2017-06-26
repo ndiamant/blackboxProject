@@ -1,0 +1,10 @@
+int factorial(int n) {
+	# should not be in state 5
+	if(n == 0 || n == 1) {
+		return 1;
+	}
+	else {
+		n--;
+		return (n+1)*factorial(n);
+	}
+}

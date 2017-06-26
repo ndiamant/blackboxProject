@@ -1,3 +1,0 @@
-public int factorial(int num) {
-	return factorial(num-1);
-}

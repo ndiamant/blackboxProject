@@ -1,0 +1,3 @@
+public int factorial(int k) {
+	return k*factorial(k-1);
+}

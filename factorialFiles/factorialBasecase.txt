@@ -1,0 +1,79 @@
+%%%%%%%%%%%%%%%%%%%%%% STATE 1 %%%%%%%%%%%%%%%%%%%%%%
+Good base case:
+	1. contains 1 if statement, possibly 1 else statement
+	2. if statement should be equal to:
+		variable==1
+		variable==0
+		variable<1
+		variable<=1
+		variable<2
+		variable!>1
+		variable!>2
+	note: extract variable name from function declaration
+		after first if statement parse out white space
+		check for equality to one of the above statements
+		no hint necessary
+
+
+%%%%%%%%%%%%%%%%%%%%%% STATE 2 %%%%%%%%%%%%%%%%%%%%%%
+Redundant basecase:
+	has two or more ifs or any number of elifs
+	
+	potential hint for student: can you combine second if OR elif into base case or recursive step
+
+
+%%%%%%%%%%%%%%%%%%%%%% STATE 3 %%%%%%%%%%%%%%%%%%%%%%
+Incorrect basecase:
+	criteria 1 for good base case holds, but criteria 2 does not
+		
+	potential hint for student: think about base case/when you want to stop recursing
+
+
+%%%%%%%%%%%%%%%%%%%%%% STATE 4 %%%%%%%%%%%%%%%%%%%%%%
+No base case, but recursive step
+	has function call to factorial function
+	code may recurse forever
+	
+	potential hint for students: base case
+		
+		
+%%%%%%%%%%%%%%%%%%%%%% STATE 5 %%%%%%%%%%%%%%%%%%%%%%
+Basecase not reachable:
+	argument of recursive call not updated, so base case is never reached
+	- looks like state 1 for base case
+	- get argument, check for it in body, make sure variable is not decremented elsewhere
+	
+	potential hint for students: think about argument of call to factorial 
+
+%%%%%%%%%%%%%%%%%%%%%% STATE 6 %%%%%%%%%%%%%%%%%%%%%%
+Looping rather than recursion:
+	look for for or while loops
+	
+	potential hint for students: use recursion
+		
+%%%%%%%%%%%%%%%%%%%%%% STATE 7 %%%%%%%%%%%%%%%%%%%%%%
+Tail recursion:
+	look for wrapper functions that call helper functions
+
+%%%%%%%%%%%%%%%%%%%%%% STATE 8 %%%%%%%%%%%%%%%%%%%%%%	
+Ternary Operator:
+	uses the “? :” notation to represent if/else
+	also has recursive call
+
+%%%%%%%%%%%%%%%%%%%%%% STATE 9 %%%%%%%%%%%%%%%%%%%%%%
+Not yet implemented:
+	no conditionals, recursive step or for/while loop
+	potential hint for students: use recursion
+ 
+
+
+Thoughts:
+	Look for return statement in base case
+	What is easier/quicker to find using ASTs vs looping through code?
+	State 8? -> base case below recursive call
+
+
+
+
+
+
