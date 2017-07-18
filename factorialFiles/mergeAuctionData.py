@@ -2,10 +2,6 @@
 
 
 def mergeData(SQLpath, statesPath):
-	# initialize dictionary which will hold userids as keys and states 
-	# (in compilation order) as values
-	dic = {}
-
 	# initializes array that will hold eventid, date, user, compilation boolean
 	# and state for each compilation in that order
 	fullList = []
@@ -16,18 +12,25 @@ def mergeData(SQLpath, statesPath):
 
 	#for each compilation event, get relevant data
 	for line in lines:
-        eventid =
-		is_error =
-		date = line[15:97].rstrip()
-		data = getState(eventid, statesPath)
-		
+		splitLine = line.split('|')
+		master_id = splitLine[1].rstrip()
+		event_id = splitLine[2].rstrip()
+		is_error = splitLine[3].rstrip()
+		message = [splitLine[4].rstrip()]
+		created_at = splitLine[5].rstrip()
+		# if the line is about a file already added to our full list,
+		# just add the error message to the array
+		if event_id in fullList[:][0]:
+			for x in fullList:
+				if x[1] == event_id:
+					x[3].append(message)
 
-		
+		# if the file is not yet in the list, add all info as a new item in the array
+		else:
+			data = getState(event_id, statesPath)
+			fullList.append([master_id, event_id, is_error, message, created_at, compiles, state])
 
-		# add all data to array
-		fullList.append([eventid, date, user, compiles, state])
-
-	return dic, fullList
+	return  fullList
 
 
 
@@ -40,6 +43,7 @@ def getState(eventid, statesPath):
 	for line in states:
 		if eventid in line:
 			underscores = 0
+			colons = 0
 			for x in range(len(line)):
 				if line[x] == "_":
 					underscores += 1
@@ -48,12 +52,23 @@ def getState(eventid, statesPath):
 				if line[x] == "_" and underscores == 4:
 					compiles = line[x+1]
 
+				if line[x] == ':':
+					colons += 1
+
 				# Gets state from anaylsis.txt
 				# .rstrip() removes whitespace & newline chars
-				if line[x] == "S":
+				if line[x] == ":" and colons == 2:
 					state = line[x:].rstrip()
 					break
 			break
 	#return the compilation result and state of file with given eventid
 	return [compiles, state]
+
+
+
+def errorsByState(fullList):
+	""" takes the full list and makes a dictionary for each for/while loop
+	state where the key is the message and the value is the number of files
+	with that error message"""
+	au
 
