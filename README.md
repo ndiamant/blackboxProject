@@ -14,16 +14,23 @@ Use of [t-SNE](https://lvdmaaten.github.io/tsne/) is planned for data visualizat
 
 ## Overview
 **blackboxProject** currently has the following files:
-* auction files - directory contains all files made for analysis of errors and coder's tendencies in files containing the Auction() class, a problem made by BlueJ developers 
-  * mergeAuctionData.py - merges together the outputs of mySQL search produced by mySQLAuctionQuery.py and the states list produced by ""
-  * mySQLAuctionQuery.py - takes in files with names in the format created by the function 'downloadfiles' in fileGrouper.py and makes an SQL query that gets relevant data from mySQL tables on the whitebox server
+* auctionFiles* - directory contains all files made for analysis of errors and coder's tendencies in files containing the Auction() class, a problem made by BlueJ developers
+  * mergeAuctionData.py - merges together the outputs of mySQL search produced by mySQLAuctionQuery.py and the states list produced by
+  * mySQLAuctionQuery.py - takes in files with names in the format created by the function ``` downloadFiles ``` in fileGrouper.py and makes an SQL query that gets relevant data from mySQL tables on the whitebox server
+* factorialFiles* - directory contains all files made for categorization of files containing a factorial function signature
+ * factorialBasecase.py - classifies a file with a factorial function signature
+ * factorialFunctionStates.txt - describes classification system used in factorialbasecase.py
+ * factorialMarkov.py - creates a markov for factorial states
+ * getFactorialCases.py - takes in files with names in the format created by the function ``` downloadFiles ``` in fileGrouper.py and gets the state of the factorial function in the file
+ * mergeFactorialData.py - merges the data about factorial functions as made from mySQLFactorialQuery and getFactorialCases.py to compile information into one data structure
+ * mySQLFactorialQuery.py - generates a mySQL query to get relevant information about files from mySQL tables on the whitebox server
 * payloadReader.py - can read whitebox payload files and write java files using whitebox index files and filter the files. 
 * fileParser.py - uses plyj parser to parse java files into abstract syntax trees and then create frequency vectors of syntactic devices for further analysis.
 * fileGrouper.py - downloads all javafiles that match user input text (e.g. 'factorial') and groups them by day modified and file ID.
 * tsne.py - Created by Laurens van der Maaten on 20-12-08, still working on using it for visualizing blackbox data. 
 
 ## Contributors
-All work so far on **blackboxProject** has been done by Nathaniel Diamant and Nick Draper from Harvey Mudd College.
+All work so far on **blackboxProject** has been done by Nathaniel Diamant, Nick Draper, Katie Erickson and Steve Zhong from Harvey Mudd College.
 
 ### How to contribute
 
