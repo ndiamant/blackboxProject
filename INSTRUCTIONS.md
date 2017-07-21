@@ -30,13 +30,16 @@ Plyj only works in Python 2.
 
 blackboxProject Structure
 ------
-The blackboxProject is made of 4 main files, _payloadReader.py_, _fileGrouper.py_, _fileParser.py_, and _markov.py_. _payloadReader.py_ converts files from the storage format of the whitebox server into java files and python readable data. _fileGrouper.py_ downloads and organizes the whitebox storage files from whitebox. _fileParser.py_ extracts information from the python readable files, partly by parsing java files into abstract syntax trees. _markov.py_ generates simple Markov models from the files to try to understand how java programs change over time.
+The blackboxProject is made of 4 main files, _payloadReader.py_, _fileGrouper.py_, _fileParser.py_, and _markov.py_, as well as two directories, _auctionFiles_ and _factorialFiles_ which contain files related to analysis of specific programs.  _payloadReader.py_ converts files from the storage format of the whitebox server into java files and python readable data. _fileGrouper.py_ downloads and organizes the whitebox storage files from whitebox. _fileParser.py_ extracts information from the python readable files, partly by parsing java files into abstract syntax trees. _markov.py_ generates simple Markov models from the files to try to understand how java programs change over time. _auctionFiles_ contains the files used to analyze functions from a recommended assignment by blueJ developers involving the auction Class. _factorialFiles_ contains the files used to analyze factorial functions in files on the blackbox server.
 
 #### Index
 * [_payloadReader.py_](#payloadreaderpy)
 * [_fileGrouper.py_](#filegrouperpy)
 * [_fileParser.py_](#fileparserpy)
 * [_markov.py_](#markovpy)
+* [_auctionFiles_](#auctionfiles)
+* [_factorialFiles_](#factorialfiles)
+
 
 ------
 ### payloadReader.py
