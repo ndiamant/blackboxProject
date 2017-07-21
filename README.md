@@ -14,10 +14,10 @@ Use of [t-SNE](https://lvdmaaten.github.io/tsne/) is planned for data visualizat
 
 ## Overview
 **blackboxProject** currently has the following files:
-* auctionFiles* - directory contains all files made for analysis of errors and coder's tendencies in files containing the Auction() class, a problem made by BlueJ developers
+* auctionFiles - directory contains all files made for analysis of errors and coder's tendencies in files containing the Auction() class, a problem made by BlueJ developers
   * mergeAuctionData.py - merges together the outputs of mySQL search produced by mySQLAuctionQuery.py and the states list produced by
   * mySQLAuctionQuery.py - takes in files with names in the format created by the function ``` downloadFiles ``` in fileGrouper.py and makes an SQL query that gets relevant data from mySQL tables on the whitebox server
-* factorialFiles* - directory contains all files made for categorization of files containing a factorial function signature
+* factorialFiles - directory contains all files made for categorization of files containing a factorial function signature
  * factorialBasecase.py - classifies a file with a factorial function signature
  * factorialFunctionStates.txt - describes classification system used in factorialbasecase.py
  * factorialMarkov.py - creates a markov for factorial states
