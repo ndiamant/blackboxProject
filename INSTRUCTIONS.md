@@ -209,7 +209,7 @@ Let's say we want to download all of the java file that contain "fibonacci" into
 ``` python -i fileGrouper.py ```
 ```python
 #download payloads, convert to java files, and organize into javafiles directory
-downloadFiles('/Users/username/Desktop/indices', os.getcwd() + '/javaFiles', 'fibonacci’,  ‘user’) 
+downloadFiles('/Users/username/Desktop/indices', os.getcwd() + '/javaFiles', 'fibonacci',  'user') 
 ```
 Instead we have all of the index and payload files in a directory called "allfiles" and want to get one big text list from them.
 ```
