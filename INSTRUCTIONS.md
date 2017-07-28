@@ -515,12 +515,12 @@ takes in a list of file names, like the list produced in the ```getFileNames``` 
 
 ------
 ### factorialFiles
-auctionFiles holds the files relevant to analysis of the BlueJ assignment auction with particular attention to its close() function. Starter code for this file can be downloaded by clicking the _Book Projects_ link on ![this website](https://www.bluej.org/objects-first/)
+auctionFiles holds the files relevant to analysis of the BlueJ assignment auction with particular attention to its close() function. Starter code for this file can be downloaded by clicking the _Book Projects_ link on [this website](https://www.bluej.org/objects-first/)
 
 =====
 
 #### Index
-* [_factorialTests__](#factorialtests)
+* [_factorialTests_](#factorialtests)
 * [_factorialBasecase.py_](#factorialBasecase)
 * [_factorialFunctionStates.txt_](#functionstates)
 * [_factorialMarkox.py_](#factorialmarkov)
