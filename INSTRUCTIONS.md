@@ -482,7 +482,7 @@ fileParser.corrHeatMap(transArray, '1st-order Markov heat map', labels)
 This should produce something like the following.
 ![markov heat map](https://github.com/ndiamant/blackboxProject/blob/master/figure_3.png)
 
-
+------
 ### auctionFiles
 auctionFiles holds the files relevant to analysis of the BlueJ assignment auction with particular attention to its close() function. Starter code for this file can be downloaded by clicking the _Book Projects_ link on ![this website](https://www.bluej.org/objects-first/)
 
@@ -493,20 +493,31 @@ auctionFiles holds the files relevant to analysis of the BlueJ assignment auctio
 #### mergeAuctionData.py
 The code in this file works with compiling and organizing data collected from the blackbox mySQL tables and anaylsis of code files and putting the data in multiple forms to make it easy to analyze.
 
+=====
+
 ##### mergeData
 _mergeData_ will take in two files, one of which holds a tab separated mySQL table like the one produced by the mySQLAuctionQuery.py, and the other which holds a list of file names and their corresponding states. It merges these two data sets by matching the event_id for each entry and returns the information in a 2D array
+
+=====
 
 #### mySQLAuctionQuery.py
 Generates a mySQL for analysis of auction Class files that have been downloaded using the ```downloadFiles()``` function in the _fileGrouper.py_ file. This function will generate a Query that then can be put in a .txt file and uploaded to the whitebox server before running it on its mySQL tables using the line ```echo 'source query.txt' | mysql -u whitebox -p blackbox_production > ~/out.txt``` where _query.txt_ holds the query generated and _out.txt_ is where the results of the query will be saved.
 
+=====
+
 ##### getFileNames
 this function takes a path to java files stored with the file and naming conventions produced by the ```downloadFiles``` function in the _fileGrouper.py_ file and puts the filenames into a list to easily be used to generate a mySQL Query
+
+=====
 
 ##### generateQuery
 takes in a list of file names, like the list produced in the ```getFileNames``` function and uses them to generate a mySQL Query that includes the compile_event_id, is_error compile boolen, compile message, and time created_at
 
+------
 ### factorialFiles
 auctionFiles holds the files relevant to analysis of the BlueJ assignment auction with particular attention to its close() function. Starter code for this file can be downloaded by clicking the _Book Projects_ link on ![this website](https://www.bluej.org/objects-first/)
+
+=====
 
 #### Index
 * [_factorialTests__](#factorialtests)
@@ -517,29 +528,47 @@ auctionFiles holds the files relevant to analysis of the BlueJ assignment auctio
 * [_mergeFactorialData.py_](#mergefactorialdata)
 * [_mySQLFactorialQuery.py_](#mySQLFactorialQuery)
 
+=====
+
 ##### factorialTests
 This directory holds files used for preliminary testing of our factorial function classifier in _factorialBasecase.py_
+
+=====
 
 ##### factorialBasecase
 This python files holds the code to classify factorial functions based on their structures. 
 
+=====
+
 ###### factorialSelector
 This functions takes in a file and returns as a string the first factorial function declaration and implementation found in that file.
+
+=====
 
 ###### makeTree
 Takes in a string of a factorialFunction and returns an abstract syntax tree for that function by using the [plyj](https://github.com/musiKk/plyj) library.
 
+=====
+
 ###### conditionalFinder
 Identifies the conditional statements in a function that is passed in as a string
+
+=====
 
 ###### conditionalCounter
 Takes the conditionalFinder output and turns it into a list of tuples of the form (conditionalName, number of occurances)
 
+=====
+
 ###### defineCase
 Using a plyjTree, condCount, and facString for a function, which are the outputs of makeTree, conditionalCounter and factorialSlector, respectively, find the state of the given function based on the categorization system in factorialFunctionStates.txt
 
+=====
+
 ##### factorialFunctionStates
 Provides an overview of the classification system used for the classification of factorial function basecases and structures.
+
+=====
 
 
 
